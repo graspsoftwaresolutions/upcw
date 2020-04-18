@@ -32,8 +32,10 @@
         <li class="bold {{ Request::is('importExportView','subscriptionList') ? 'active' : '' }}"><a class="collapsible-header waves-effect waves-cyan " href="JavaScript:void(0)" tabindex="0"><i class="material-icons">note</i><span class="menu-title" data-i18n="Advanced UI">Subscription</span></a>
           <div class="collapsible-body" style="">
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
-              <li><a href="{{ route('importExportView') }}" class="{{ Request::is('importExportView') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="New Members">Subscription Upload</span></a>
+              <li><a href="{{ route('SubsUploadView') }}" class="{{ Request::is('importExportView') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="New Members">Subscription Upload</span></a>
               </li>	
+            <!--    <li><a href="{{ route('importExportView') }}" class="{{ Request::is('importExportView') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="New Members">Subscription Upload</span></a>
+              </li>  -->
 			<li><a href="{{ route('subscriptionList') }}" class="{{ Request::is('subscriptionList') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="New Members">Subscription List</span></a>
               </li>	
             </ul>

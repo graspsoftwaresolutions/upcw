@@ -74,3 +74,6 @@ Route::post('get_resignmember_list', 'ResignmemberController@get_resignmember_li
 Route::post('update_memberresignstatus', 'ResignmemberController@update_memberresignstatus')->middleware('is_admin');
 Route::post('update_memberactivestatus/{id}', 'ResignmemberController@update_memberactivestatus')->middleware('is_admin');
 Route::get('resignmember_view/{id}', 'ResignmemberController@resignmember_view')->name('resignmember_view')->middleware('is_admin');
+
+Route::get('subscription_upload', 'SubscriptionBulkController@SubsUploadView')->name('SubsUploadView')->middleware('is_admin');
+Route::get('get_tomonth', 'SubscriptionBulkController@GetToMonth')->name('get_tomonth')->middleware('is_admin');

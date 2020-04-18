@@ -19,7 +19,7 @@
         <!--nav class="navbar-main navbar-color nav-collapsible sideNav-lock navbar-dark gradient-45deg-indigo-purple no-shadow"-->
         <nav class="navbar-main navbar-color nav-collapsible navbar-dark gradient-45deg-indigo-purple no-shadow nav-collapsed">
           <div class="nav-wrapper">
-            <div class="header-search-wrapper hide-on-med-and-down"><i class="material-icons">search</i>
+            <div class="header-search-wrapper hide-on-med-and-down hide"><i class="material-icons">search</i>
               <input class="header-search-input z-depth-2" type="text" name="Search" placeholder="" data-search="template-list">
               <ul class="search-list collection display-none"></ul>
             </div>
