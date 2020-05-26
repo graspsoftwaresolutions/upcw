@@ -22,14 +22,14 @@ class SubscriptionBulkController extends Controller
        $year = date('Y');
        $month = date('m');        
        $data['company'] =Company::where('status','=','1')->get();
-       $data['report']= DB::table('statusmonth')
-       ->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id')
-       ->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id')
-       ->select('company_id', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
-       ->whereYear('statusmonth.statusMonth','=',$year)
-       ->whereMonth('statusmonth.statusMonth', '=', $month)
-       ->groupBy('subcompany.company_id')
-       ->get();
+    //    $data['report']= DB::table('statusmonth')
+    //    ->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id')
+    //    ->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id')
+    //    ->select('company_id', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
+    //    ->whereYear('statusmonth.statusMonth','=',$year)
+    //    ->whereMonth('statusmonth.statusMonth', '=', $month)
+    //    ->groupBy('subcompany.company_id')
+    //    ->get();
 
        return view('subscription.import_subscription')->with('data',$data);
     }

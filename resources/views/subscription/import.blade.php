@@ -72,14 +72,14 @@ use App\Model\SubMatchmaster;
 									<form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
 											@csrf
                                             <div class="col s12 m6 l3">
-											<input type="month" name="statusdate" id="statusdate" class="form-control">
+											<input type="month" name="statusdate" id="statusdate" value="{{ date('Y-m') }}" class="form-control">
                                             </div>
 											<div class="col s12 m6 l5">
 											<select class="error" id="company_name" name="company_name" data-error=".errorTxt9" required="">
 											  <option value="">Choose company name</option>
 											  
 											  @foreach($data['company'] as $row_res)
-											  <option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+											  <option selected="" value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 											  @endforeach
 											 <!-- <option value="1">company 1
 											  <option value="2">company 2-->
@@ -112,7 +112,7 @@ use App\Model\SubMatchmaster;
 								
 								<!--end sub-->
 								<div class="col s12 m6 l6 card">
-								<span class="col l12" style="padding:1%;font-weight:bold;color:black;width:100%;text-align:center;"><u>Summary for the Current Month</u></span>
+								<span class="col l12" style="padding:1%;font-weight:bold;color:black;width:100%;text-align:center;"><u>Summary for <span id="summary_month">{{ date('Y-m') }} </span></u></span>
 								
 								
 								<table style="width:100%;">
@@ -156,7 +156,7 @@ use App\Model\SubMatchmaster;
 								</table>
 								<br><br><br>
 								</div>
-								<div class="col s12 m6 l6 card">
+								<div class="col s12 m6 l6 card hide">
 								<span class="col l12" style="padding:1%;font-weight:bold;color:black;width:100%;text-align:center;"><u>Member Status</u></span>
 								<!--<table style="width:100%;">
 								<tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
@@ -245,6 +245,7 @@ $(document).ready(function(){
 	$('#tbdy2').empty();
 	$('#tbdycmpy2').empty();
 	$('#tbdycmpy1').empty();
+	$("#summary_month").text($("#statusdate").val());
 	//var dataString = "&_token"+ "{{csrf_token()}}"+'&statusmonth=' + statusmonth ;
 	/*$.ajax({
 			   type:"POST",
@@ -298,7 +299,7 @@ $(document).ready(function(){
 			success:function(response) {
 				if(response == 0)
 				{
-					$("#file_upload_show").css("display","block");
+					//$("#file_upload_show").css("display","block");
 				}
 				else
 				{

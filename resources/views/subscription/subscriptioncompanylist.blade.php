@@ -77,7 +77,7 @@
 													<div class="row" style="background: #ff5a92;margin-right:0px;">
 														<div class="col m10">
 															<h3 style="margin: 18px;color: #fff;font-size: 25px;font-weight: bold;text-transform:uppercase">{{$row->member_name}} [{{$row->member_no}}]</h3>
-														<h5>{{$row->company_name}}</h5>
+														<h5>{{$row->member_name}}</h5>
 														</div>
 														<div class="col m1">
 															<p style="text-align: right;margin: 15px 0;"><a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">

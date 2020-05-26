@@ -116,6 +116,7 @@ class SubscriptionController extends Controller
        ->whereYear('statusmonth.statusMonth','=',$year)
        ->whereMonth('statusmonth.statusMonth', '=', $month)
        ->groupBy('subcompany.company_id')
+       //->dump()
        ->get();
       // dd($data['report']);
 
