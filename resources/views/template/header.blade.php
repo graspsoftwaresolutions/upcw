@@ -9,6 +9,8 @@
     <meta name="keywords" content="">
     <title>Admin</title>
     @include('template.style')
+    @section('headSection')
+    @show
     <!-- END: Custom CSS-->
   </head>
   <!-- END: Head-->

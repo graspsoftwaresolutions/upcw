@@ -33,7 +33,9 @@ use App\Model\SubMatchmaster;
 						  </li>
 						</ol>
 					  </div>
-					  
+					  <div class="col s2 m6 l6">
+					  	<a class="btn waves-effect waves-light cyan breadcrumbs-btn right " href="{{ asset('storage/app/subscription/subscription.xlsx') }}">Download Sample</a>
+					  </div>
 					</div>
 				  </div>
 				</div>
@@ -49,14 +51,18 @@ use App\Model\SubMatchmaster;
                                 <div class="col s12 m12">
 
                                     <div class="row">
-                                       <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                                       <form action="{{ route('importbulk') }}" method="POST" enctype="multipart/form-data">
 											@csrf                                            <div class="row">
 												<div class="col m2 s12">
                                                     <label for="sub_company">No of months*</label>
                                                     <select class="error" id="noofmonths" name="noofmonths" onchange="return getToDate();" data-error=".errorTxt9" required="">
 													  <option disabled="" value="">Choose months</option>
 													 
+													  <option value="1" >1 Month</option>
+													  <option value="2" >2 Months</option>
+													  <option value="3" >3 Months</option>
 													  <option selected="" value="4" >4 Months</option>
+													  <option value="5" >5 Months</option>
 													  <option value="6" >6 Months</option>
 													 
 													</select>
@@ -64,7 +70,7 @@ use App\Model\SubMatchmaster;
                                                 </div>
                                                 <div class="col m2 s12">
                                                     <label for="doe" class="active">From Month*</label>
-                                                    <input type="text" name="frommonth" id="frommonth" value="" class="datepicker-custom month-year-input">
+                                                    <input type="text" name="frommonth" id="frommonth" readonly="" value="" class="datepicker-custom month-year-input">
                                                    <!--  <input type="text" name="entry_date" id="entry_date" value="Apr/2020" class="datepicker-custom month-year-input" readonly="readonly"> -->
                                                 </div>
                                                 <div class="col m1 s12">
@@ -97,7 +103,7 @@ use App\Model\SubMatchmaster;
                                                 </div>
                                                 <div class="col m1 s12 " style="padding-top:5px;">
                                                     <br>
-                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="button">Submit</button>
+                                                    <button id="submit-upload" class="mb-6 btn waves-effect waves-light purple lightrn-1 form-download-btn" type="submit">Submit</button>
 
                                                 </div>
 

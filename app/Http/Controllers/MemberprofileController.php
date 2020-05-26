@@ -187,6 +187,7 @@ class MemberprofileController extends Controller
             $view =  route('memberprofiles.show',$mprofile->id);
            // $view =  $mprofile['id'];
             $edit =  route('memberprofiles.edit',$mprofile->id);
+            $print =  route('memberprofiles.print',$mprofile->id);
            // $edit = $mprofile['id'];
             $member_status ="";
             if($mprofile->member_status == "1")
@@ -230,7 +231,7 @@ class MemberprofileController extends Controller
             $nestedData['dob'] = $dob;
             $nestedData['doj'] = $doj;
             $nestedData['member_status'] = $member_status;
-            $nestedData['options'] = "<a href='".$edit."'><i class='material-icons' style='color: #00bcd4!important;'>edit</i></a>&nbsp;<a href='".$view."'><i class='material-icons' style='color: #ff6f00!important;'>remove_red_eye</i></a>";
+            $nestedData['options'] = "<a href='".$edit."'><i class='material-icons' style='color: #00bcd4!important;'>edit</i></a>&nbsp;<a href='".$view."'><i class='material-icons' style='color: #ff6f00!important;'>remove_red_eye</i></a>&nbsp;&nbsp;<a href='".$print."'><i class='material-icons' style='color: #f2000!important;'>print</i></a>";
             $data[] = $nestedData;
 
         }
@@ -435,5 +436,11 @@ class MemberprofileController extends Controller
     public function destroy(Memberprofile $memberprofile)
     {
         //
+    }
+
+    public function PrintMember(Request $request,$memberid){
+       // return $memberid;
+        $memberprofile = Memberprofile::find($memberid); 
+        return view('memberprofile.memberprofile_print',compact('memberprofile'));
     }
 }

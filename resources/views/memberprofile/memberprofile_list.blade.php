@@ -32,7 +32,7 @@
 								<div class="card">
 								  <div class="card-content">
 									<!-- datatable start -->
-									<div class="row">								
+									<div class="row hide">								
 										<div class="input-field col m12 s12">
 										<h3>Filter</h3>
 										</div>
@@ -91,7 +91,7 @@
 <!-- BEGIN PAGE VENDOR JS-->
 <script src="{{ asset('public/app-assets/vendors/data-tables/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('public/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('public/app-assets/js/scripts/page-users.min.js') }}"></script>
+<!-- <script src="{{ asset('public/app-assets/js/scripts/page-users.min.js') }}"></script> -->
 
 <script>
 $(document).ready(function() {

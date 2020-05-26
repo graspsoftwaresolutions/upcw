@@ -77,3 +77,7 @@ Route::get('resignmember_view/{id}', 'ResignmemberController@resignmember_view')
 
 Route::get('subscription_upload', 'SubscriptionBulkController@SubsUploadView')->name('SubsUploadView')->middleware('is_admin');
 Route::get('get_tomonth', 'SubscriptionBulkController@GetToMonth')->name('get_tomonth')->middleware('is_admin');
+
+Route::get('member_print/{id}', 'MemberprofileController@PrintMember')->name('memberprofiles.print')->middleware('is_admin');
+
+Route::post('importbulk', 'SubscriptionBulkController@import')->name('importbulk')->middleware('is_admin');;
