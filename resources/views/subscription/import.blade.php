@@ -26,6 +26,10 @@
 .swal-footer {
 	text-align: center;
 }
+.task-cat{
+	font-size: 28px !important;
+	padding: 5px 15px !important;
+}
 </style>
 <meta name="csrf-token" content="{!! csrf_token() !!}">
 @include('template.header')
@@ -72,7 +76,7 @@ use App\Model\SubMatchmaster;
 									<form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
 											@csrf
                                             <div class="col s12 m6 l3">
-											<input type="month" name="statusdate" id="statusdate" value="{{ date('Y-m') }}" class="form-control">
+											<input type="month" name="statusdate" id="statusdate" value="{{ date('Y-m',strtotime($data['subsdate'])) }}" class="form-control">
                                             </div>
 											<div class="col s12 m6 l5">
 											<select class="error" id="company_name" name="company_name" data-error=".errorTxt9" required="">
@@ -112,7 +116,7 @@ use App\Model\SubMatchmaster;
 								
 								<!--end sub-->
 								<div class="col s12 m6 l6 card">
-								<span class="col l12" style="padding:1%;font-weight:bold;color:black;width:100%;text-align:center;"><u>Summary for <span id="summary_month">{{ date('Y-m') }} </span></u></span>
+								<span class="col l12" style="padding:1%;font-weight:bold;color:black;width:100%;text-align:center;"><u>Summary for <span id="summary_month">{{ date('Y-m',strtotime($data['subsdate'])) }} </span></u></span>
 								
 								
 								<table style="width:100%;">
@@ -123,23 +127,26 @@ use App\Model\SubMatchmaster;
 								<td>Total Amount</td>
 								</tr>
 								@php
-								$tot=0;
-								$sum=0;
+									$tot=0;
+									$sum=0;
+									//dd($data['subsdate']);
 								@endphp
 								@foreach($data['report'] as $k=>$cmpcunt)
 								@php
 								//var_dump($cmpcunt->company_id);
 								//exit;
+
+								$costcenter = CommonHelper::getCostCenterName($cmpcunt->sub_cid);
 								
-								$cmpy_name= Company::where([
-									['id','=',$cmpcunt->company_id]
-								])->value('company_name');
+								// $cmpy_name= Company::where([
+									// ['id','=',$cmpcunt->sub_cid]
+								// ])->value('company_name');
 								//var_dump($cmpy_name);
 								//exit;
 								@endphp
 								<tr class="hideonchg">
 								<td>{{ $k+1 }}</td>
-								<td>{{ $cmpy_name  }}</td>
+								<td>{{ $costcenter  }}</td>
 								<td>@php $tot += $cmpcunt->total; @endphp {{ $cmpcunt->total }}</td>
 								<td>@php $sum += $cmpcunt->sum; @endphp {{ $cmpcunt->sum }}</td>
 								</tr>
@@ -156,45 +163,63 @@ use App\Model\SubMatchmaster;
 								</table>
 								<br><br><br>
 								</div>
-								<div class="col s12 m6 l6 card hide">
-								<span class="col l12" style="padding:1%;font-weight:bold;color:black;width:100%;text-align:center;"><u>Member Status</u></span>
-								<!--<table style="width:100%;">
-								<tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
-								<td>SlNo</td>
-								<td>Description</td>
-								<td>Count</td>								
-								</tr>
-								@php
-								$totm=0;
-								$summ=0;
-								$data['match']=array();
-								@endphp
-								@foreach($data['match'] as $key=>$cmpcunt)
-								@php
-								//var_dump($cmpcunt->company_id);
-								//exit;
-								/*$mtch_name= SubMatchmaster::where([
-									['id','=',$cmpcunt->match_no]
-								])->value('match_name');
-								*/
-								@endphp
-								<tr class="hideonchg">
-								<td>{{$key+1}}</td>
-								<td><a href="{{ url('mismatchdetails/'.$cmpcunt->subcompany_id.'/'.$cmpcunt->id) }}" >{{ $cmpcunt->match_name }} </a> </td>
-								<td>@php $totm += $cmpcunt->total; @endphp {{ $cmpcunt->total }}</td>
-								
-								</tr>
-								@endforeach
-								<tr style="font-weight:bold;color:black" class="hideonchg">
-								<td style="font-weight:bold" colspan="2">Total</td>
-								<td style="font-weight:bold">@php echo $tot; @endphp</td>								
-								</tr>
-								<tbody id="tbdy1">
-								</tbody>
-								<tr style="color:black;" id="tbdy2">
-								</tr>
-								</table>-->
-								<br><br><br>
+								<div class="col s12 m6 l6">
+									
+									<ul id="projects-collection" class="collection z-depth-1 animate fadeLeft">
+						               <li class="">
+						                
+						                  <h6 class="collection-header m-20" style="margin: 10px 10px;">Subscription Summary </h6>
+						               </li>
+						               <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Company name</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"> <p class="collections-title">Maybank</p></div>
+						                     <div class="col s3">
+						                        <div id="project-line-1"></div>
+						                     </div>
+						                  </div>
+						               </li>
+						               <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Total no of cost centers</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"><p class="collections-title"><span id="totalcostcenter" class="task-cat deep-orange accent-2">{{ count($data['report']) }}</span></p></div>
+						                     <div class="col s3">
+						                        <div id="project-line-2"></div>
+						                     </div>
+						                  </div>
+						               </li>
+						               <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Total no of members</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"><p class="collections-title"><span id="totalmembers" class="task-cat deep-orange accent-2">{{ $tot }}</span></p></div>
+						                     
+						                  </div>
+						               </li>
+						               <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Total amount paid (RM)</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"><p class="collections-title"><span id="totalamt" class="task-cat deep-orange accent-2">{{ $sum }}</span></p></div>
+						                     <div class="col s3">
+						                        <div id="project-line-4"></div>
+						                     </div>
+						                  </div>
+						               </li>
+						            
+
+						            </ul>
+									<br><br><br>
 								</div>
 						</div>
 					  </div>
@@ -273,12 +298,17 @@ $(document).ready(function(){
 					//console.log($.parseJSON(response).size());
 					var totcnt = 0;
 					var sumcnt = 0;
+					var totalcenters = 0;
 					$.each($.parseJSON(response), function(idx, obj) {
 						totcnt += parseInt(obj.total);
 						sumcnt += parseInt(obj.sum);
-						$('#tbdycmpy1').append('<tr><td>'+(idx+1)+'</td><td>'+obj.company_name+'</td><td>'+obj.total+'</td><td>'+obj.sum+'</td></tr>');
+						totalcenters++;
+						$('#tbdycmpy1').append('<tr><td>'+(idx+1)+'</td><td>'+obj.branch_name+'</td><td>'+obj.total+'</td><td>'+obj.sum+'</td></tr>');
 					});
 					$('#tbdycmpy2').append('<td colspan="2"></td><td>'+totcnt+'</td><td>'+sumcnt+'</td>');
+					$("#totalcostcenter").text(totalcenters);
+					$("#totalmembers").text(totcnt);
+					$("#totalamt").text(sumcnt);
 				}
 	});
 

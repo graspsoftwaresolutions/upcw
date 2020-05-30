@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/css/pages/page-users.min.css') }}">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 		<div class="row">
 			<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
@@ -91,7 +92,8 @@
 <!-- BEGIN PAGE VENDOR JS-->
 <script src="{{ asset('public/app-assets/vendors/data-tables/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('public/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js') }}"></script>
-<!-- <script src="{{ asset('public/app-assets/js/scripts/page-users.min.js') }}"></script> -->
+<script src="{{ asset('public/app-assets/js/scripts/page-users.min.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script>
 $(document).ready(function() {

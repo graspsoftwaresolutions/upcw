@@ -203,7 +203,8 @@ class SubscriptionBulkController extends Controller
                                 $mempro['company_names'] = DB::table('companies')->where('id', $cmpy_id)->first()->company_name;
                                 // $mempro['employee_no'] = $empno;   
                                 $mempro['member_status'] = 1;   
-                                $mempro['monthly_fee'] =  $mem_sub;   
+                                $mempro['monthly_fee'] =  $subs_month;   
+                                $mempro['entrance_fee'] = $entrance_fee; 
                                 $savememprof = Memberprofile::create($mempro);  
                                 //echo True;
                                 // dd($mempro['company_names']);

@@ -269,27 +269,32 @@
       <p>PLEASE TYPE OR WRITE CLEARLY IN BLOCK LETTERS</p>
 
       <div style="width: 100%;">
-        Name : <div class="input-field inline"> <input type="text" value="" style="width: 400px;" placeholder="" class=""> </div> 
-        P.F No : <div class="input-field inline" style="text-align: right;"> <input type="text" value="" style="width: 220px;" placeholder="" class=""> </div>
+        Name : <div class="input-field inline" style="margin:0 !important;"> <input type="text" value="" style="width: 400px;" placeholder="" class=""> </div> 
+        P.F No : <div class="input-field inline" style="text-align: right;margin:0 !important;"> <input type="text" value="" style="width: 220px;" placeholder="" class=""> </div>
        
       </div>
       <div class="clearfix"></div> 
       <div style="width: 100%;">
-        <div style="width: 30%;float: left;margin-top: 15px;margin-bottom: 15px;">
+        <div style="width: 20%;float: left;margin-top: 15px;margin-bottom: 15px;">
           Sex : Male / Female
         </div>
         <div style="width: 40%;float: left;margin-bottom: 5px;">
-          Status : Single / Married / Others : <div class="input-field inline" style="margin:0;"> <input type="text" value="" style="width: 200px;" placeholder="" class=""> </div>
+          Status : Single / Married / Others : <div class="input-field inline" style="margin:0 !important;"> <input type="text" value="" style="width: 200px;" placeholder="" class=""> </div>
         </div>
-        <div style="width: 30%;float: left;margin-bottom: 5px;">
-          Date of Birth : <div class="input-field inline" style="margin:0;"> <input type="text" value="" style="width: 300px;" placeholder="" class=""> </div>
+        <div style="width: 40%;float: left;margin-bottom: 5px;">
+          Date of Birth : <div class="input-field inline" style="margin:0 !important;"> <input type="text" value="" style="width: 300px;" placeholder="" class=""> </div>
         </div>
          
       </div>
       <div style="width: 100%;">
-        New IC No : <div class="input-field inline"> <input type="text" value="" style="width: 250px;" placeholder="" class=""> </div> 
-        Date Promoted to Scope of AMCO : <div class="input-field inline" style="text-align: right;"> <input type="text" value="" style="width: 220px;" placeholder="" class=""> </div>
+        New IC No : <div class="input-field inline" style="margin:0 !important;"> <input type="text" value="" style="width: 250px;" placeholder="" class=""> </div> 
+        Date Promoted to Scope of AMCO : <div class="input-field inline" style="text-align: right;margin:0 !important;"> <input type="text" value="" style="width: 220px;" placeholder="" class=""> </div>
        
+      </div>
+      <div style="width: 100%;">
+        Full Home Add(COMPULSORY) : <div class="input-field inline" style="margin:0 !important;"> <input type="text" value="" style="width: 540px;" placeholder="" class=""> </div> 
+        <br>
+        <input type="text" value="" style="width: 540px;margin-left: 185px;" placeholder="" class="">
       </div>
 
 

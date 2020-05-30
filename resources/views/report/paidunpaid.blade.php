@@ -41,19 +41,19 @@
 									<form action="{{route('paidunpaidreport')}}" method="GET" id="fmsubmit">
 										@csrf
 										<div class="input-field col m3 s12">
-											<input type="text" class="datepicker1" name="year_paid_unpaid" id="year_paid_unpaid" autocomplete="off">
+											<input type="text" placeholder="year" class="datepicker1" value="{{ $data['year'] }}" name="year_paid_unpaid" id="year_paid_unpaid" autocomplete="off">
 											<label for="year_paid_unpaid" class="">Year</label>
 										</div>
 										<div class="input-field col m4 s12">
 											<select class="error" id="company_name" name="company_name">
 												<option value="">Choose company name</option>
 												@foreach($data['company'] as $row_res)
-												<option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+												<option selected="" value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 												@endforeach
 											</select>
 										</div>
 										<div class="input-field col m3 s12">
-											<button type="submit" name="submit" id="submit">Submit</button>
+											<button type="submit" class="btn" name="submit" id="submit">Submit</button>
 										</div>
 									</form>
 								</div>

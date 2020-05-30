@@ -72,7 +72,7 @@
 											</select>
 										</div>
 										<div class="input-field col m3 s12">
-											<button type="button" name="submit" id="submit">Submit</button>
+											<button type="button" name="submit" class="btn" id="submit">Submit</button>
 										</div>
 									<!--<div class="input-field col m3 s12">
 										<input id="monthlyyear_paid" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="monthlyyear_paid">

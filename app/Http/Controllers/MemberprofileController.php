@@ -17,6 +17,7 @@ class MemberprofileController extends Controller
 	public function __construct() {
 		
         $this->Memberprofile = new Memberprofile;
+        $this->middleware('auth');
        
     }
     public function index()
@@ -117,15 +118,15 @@ class MemberprofileController extends Controller
 					//{
 						if($cmp_id !=''){
 							$cmp_id = $cmp_id;
-						$query_fetch->where('company_name', '=', $cmp_id);
+						$query_fetch->orWhere('company_name', '=', $cmp_id);
 						}
-                        $query_fetch->Where('member_no', '=',$search);
-                        /*$query_fetch->orWhere('ic_no_new', '=',$search);
+                        $query_fetch->orWhere('member_no', '=',$search);
+                        $query_fetch->orWhere('ic_no_new', '=',$search);
                         $query_fetch->orWhere('race', 'LIKE',"%{$search}%");
                         $query_fetch->orWhere('dob', 'LIKE',"%{$search}%");
-                        $query_fetch->orWhere('doj', 'LIKE',"%{$search}%");*/
+                        $query_fetch->orWhere('member_name', 'LIKE',"%{$search}%");
                        // $query_fetch->orWhere('member_status', 'LIKE',"%{$search}%");
-                      //  $query_fetch->orWhere('company_name', 'LIKE',"%{$search}%");
+                       $query_fetch->orWhere('company_name', 'LIKE',"%{$search}%");
                     $query_fetch->groupBy('id');
                    
 					$query_fetch->orderBy($order,$dir);
@@ -138,16 +139,16 @@ class MemberprofileController extends Controller
 					//{
 						if($cmp_id !=''){
 						$cmp_id = $cmp_id;
-						$query_fetch->where('company_name', '=', $cmp_id);
+						$query_fetch->orWhere('company_name', '=', $cmp_id);
 						}
-                        $query_fetch->Where('member_no', '=',$search);
+                        $query_fetch->orWhere('member_no', '=',$search);
                         //$query_fetch->orWhere('member_status', 'LIKE',"%{$search}%");
-                        /*$query_fetch->orWhere('ic_no_new', '=',$search);
+                    $query_fetch->orWhere('ic_no_new', '=',$search);
                         $query_fetch->orWhere('race', 'LIKE',"%{$search}%");
                         $query_fetch->orWhere('dob', 'LIKE',"%{$search}%");
-                        $query_fetch->orWhere('doj', 'LIKE',"%{$search}%");
-                        $query_fetch->orWhere('member_status', 'LIKE',"%{$search}%");*/
-                     //   $query_fetch->orWhere('company_name', 'LIKE',"%{$search}%");	
+                        $query_fetch->orWhere('member_name', 'LIKE',"%{$search}%");
+                       /* $query_fetch->orWhere('member_status', 'LIKE',"%{$search}%");*/
+                   $query_fetch->orWhere('company_name', 'LIKE',"%{$search}%");	
 					$query_fetch->groupBy('id');
 					//$query_fetch->orWhere('company_name', 'LIKE',"%{$search}%");
 					$query_fetch->offset($start);
@@ -298,7 +299,7 @@ class MemberprofileController extends Controller
     public function store(Request $request)
     {
 		$data = $request->all();
-
+        //return 1;
         $request->validate(
             [
                 'member_name' => 'required',
@@ -320,8 +321,20 @@ class MemberprofileController extends Controller
             ]
         );
 		$data['dob'] = date("Y-m-d", strtotime($data['dob']));
-		$data['doj'] = date("Y-m-d", strtotime($data['doj']));
-		$saveData = Memberprofile::create($data);
+        $data['doj'] = date("Y-m-d", strtotime($data['doj']));
+        
+        $emailid = $request->input('email_id');
+        $emailid = $emailid=='' ? $request->input('member_no').'@amco.com' : $emailid;
+
+        $data['email_id'] = $emailid;
+
+        $password = bcrypt($request->input('ic_no_new'));
+
+        $saveData = Memberprofile::create($data);
+        
+        $userid = DB::table('users')->insertGetId(
+            ['name' => $request->input('member_name'), 'email' => $emailid, 'is_admin' =>0, 'password' => $password ]
+        );
             
 		if($saveData == true)
 		{

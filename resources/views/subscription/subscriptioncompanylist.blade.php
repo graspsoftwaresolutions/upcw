@@ -24,7 +24,17 @@
 					</div>
 				  </div>
 				</div>
-
+				<div class="col s12">
+					<div class="card">
+						<div class="card-content">
+						  <div class="card-title">
+							<h4 class="card-title">Company Name: Maybank</h4>
+							<h4 class="card-title">Subscription Month: {{ date('M / Y',strtotime(CommonHelper::getSubsMonthFromCompanyId($data['subs_id']))) }}</h4>
+						  </div>
+							
+						</div>
+					</div>
+				</div>
 				<div class="col s12">
 					<div class="container">
 						  <section class="users-list-wrapper section">
@@ -37,10 +47,10 @@
 											<thead>
 												<tr>
 													<th style="text-align:center">S No</th>
+													<th style="text-align:center">Cost Center</th>
 													<th style="text-align:center">Member No</th>
 													<th style="text-align:center">Member Name</th>
 													<th style="text-align:center">Subs</th>
-													<th style="text-align:center">Insur</th>
 													<th style="text-align:center">Action</th>
 												  </tr>
 											</thead>
@@ -52,10 +62,10 @@
 												@endphp
 												<tr>
 													<td style="text-align:center">{{ $i }}</td>
+													<td style="text-align:center">{{ CommonHelper::getCostCenterName($row->sub_cid) }}</td>
 													<td style="text-align:center">{{ $row->member_no }}</td>
 													<td style="text-align:center">{{ $row->member_name }}</td>
 													<td style="text-align:center">{{ $row->subs }}</td>
-													<td style="text-align:center">{{ $row->insur }}</td>
 													<td style="text-align:center; width: 300px!important;">
 														
 															<button data-target="modal{{ $row->id }}" class="btn modal-trigger" id="test_modal" data-id="{{ $row->id }}" style="float: left;margin: 0 10px;">Edit</button>

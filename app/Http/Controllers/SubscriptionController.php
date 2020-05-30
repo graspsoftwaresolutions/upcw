@@ -46,17 +46,28 @@ class SubscriptionController extends Controller
         //var_dump($monyr);
         $year = $monyr[0];
         $month = $monyr[1];
-        $data['report']= DB::table('statusmonth')
-        ->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id')
-        ->join('companies', 'companies.id', '=', 'subcompany.company_id')
-        ->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id')
-        ->select('companies.company_name', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
-       // whereYear('created_at', '=', $year)
-       //->whereMonth('created_at', '=', $month)
-        ->whereYear('statusmonth.statusMonth','=',$year)
-        ->whereMonth('statusmonth.statusMonth', '=', $month)
-        ->groupBy('companies.company_name')
+        $data['report']= DB::table('subscription_member as m')
+        ->select('cb.branch_name','m.sub_cid', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
+        ->leftjoin('subcompany as sc', 'm.subcompany_id', '=', 'sc.id')
+        ->leftjoin('statusmonth as sm', 'sc.statusMonth_id', '=', 'sm.id')
+        ->leftjoin('company_branches as cb', 'cb.id', '=', 'm.sub_cid')
+        ->whereYear('sm.statusMonth','=',$year)
+        ->whereMonth('sm.statusMonth', '=', $month)
+        ->groupBy('m.sub_cid')
+        //->dump()
         ->get();
+
+    //     $data['report']= DB::table('statusmonth')
+    //     ->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id')
+    //     ->join('companies', 'companies.id', '=', 'subcompany.company_id')
+    //     ->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id')
+    //     ->select('companies.company_name', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
+    //    // whereYear('created_at', '=', $year)
+    //    //->whereMonth('created_at', '=', $month)
+    //     ->whereYear('statusmonth.statusMonth','=',$year)
+    //     ->whereMonth('statusmonth.statusMonth', '=', $month)
+    //     ->groupBy('subscription_member.s')
+    //     ->get();
         return json_encode($data['report']);
     }
 	public function get_subs_avilablity_check()
@@ -102,22 +113,36 @@ class SubscriptionController extends Controller
 			//exit;
 	}
 	
-    public function importExportView()
+    public function importExportView(Request $request)
     {
-        $year = date('Y');
-        $month = date('m');        
+          
+        $companyid = $request->input('company');    
+        if($companyid==''){
+            $year = date('Y');
+            $month = date('m'); 
+            $date = date('Y-m-01');
+        }else{
+            $date = DB::table('subcompany as sc')
+                    ->leftjoin('statusmonth as sm', 'sm.id', '=', 'sc.statusMonth_id')
+                    ->where('sc.id','=',$companyid)
+                    ->pluck('sm.statusMonth')
+                    ->first();
+            $year = date('Y',strtotime($date));
+            $month = date('m',strtotime($date));
+        }
+        //return $companyid;
        $data['company'] =Company::where('status','=','1')->get();
-       $data['report']= DB::table('statusmonth')
-       ->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id')
-       ->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id')
-       ->select('company_id', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
-      // whereYear('created_at', '=', $year)
-      //->whereMonth('created_at', '=', $month)
-       ->whereYear('statusmonth.statusMonth','=',$year)
-       ->whereMonth('statusmonth.statusMonth', '=', $month)
-       ->groupBy('subcompany.company_id')
+       $data['report']= DB::table('subscription_member as m')
+       ->select('company_id','m.sub_cid', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
+       ->leftjoin('subcompany as sc', 'm.subcompany_id', '=', 'sc.id')
+       ->leftjoin('statusmonth as sm', 'sc.statusMonth_id', '=', 'sm.id')
+       ->whereYear('sm.statusMonth','=',$year)
+       ->whereMonth('sm.statusMonth', '=', $month)
+       ->groupBy('m.sub_cid')
        //->dump()
        ->get();
+
+       $data['subsdate'] = $date;
       // dd($data['report']);
 
      /* $data['match']= DB::table('sub_match_master')
@@ -131,19 +156,19 @@ class SubscriptionController extends Controller
       ->whereMonth('statusmonth.statusMonth', '=', $month)
       ->groupBy('subscription_member.match_name')
       ->get();*/
-      $data['match']= DB::table('sub_match_master')
-      ->join('subscription_member', 'subscription_member.match_no', '=', 'sub_match_master.id')
-      ->join('subcompany', 'subcompany.id', '=', 'subscription_member.subcompany_id')     
-      ->join('statusmonth', 'statusmonth.id', '=', 'subcompany.statusMonth_id')     
-      ->select('sub_match_master.match_name','sub_match_master.id','subscription_member.subcompany_id', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
-     // whereYear('created_at', '=', $year)
-     //->whereMonth('created_at', '=', $month)
-      ->whereYear('statusmonth.statusMonth','=',$year)
-      ->whereMonth('statusmonth.statusMonth', '=', $month)
-      ->groupBy('sub_match_master.match_name')
-      ->groupBy('sub_match_master.id')
-      ->groupBy('subscription_member.subcompany_id')
-      ->get();
+    //   $data['match']= DB::table('sub_match_master')
+    //   ->join('subscription_member', 'subscription_member.match_no', '=', 'sub_match_master.id')
+    //   ->join('subcompany', 'subcompany.id', '=', 'subscription_member.subcompany_id')     
+    //   ->join('statusmonth', 'statusmonth.id', '=', 'subcompany.statusMonth_id')     
+    //   ->select('sub_match_master.match_name','sub_match_master.id','subscription_member.subcompany_id', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
+    //  // whereYear('created_at', '=', $year)
+    //  //->whereMonth('created_at', '=', $month)
+    //   ->whereYear('statusmonth.statusMonth','=',$year)
+    //   ->whereMonth('statusmonth.statusMonth', '=', $month)
+    //   ->groupBy('sub_match_master.match_name')
+    //   ->groupBy('sub_match_master.id')
+    //   ->groupBy('subscription_member.subcompany_id')
+    //   ->get();
 
        //dd($data['match']);
        return view('subscription.import')->with('data',$data);
@@ -180,7 +205,8 @@ class SubscriptionController extends Controller
 	public function subscriptioncompanylist($id)
 	{
 		//dd($id);
-		$data['overall_company_member'] = DB::table('subscription_member')->where('subcompany_id', '=', $id)->get();
+        $data['overall_company_member'] = DB::table('subscription_member')->where('subcompany_id', '=', $id)->get();
+        $data['subs_id'] = $id;
 		return view('subscription.subscriptioncompanylist')->with('data',$data);
 	}
 	public function subscriptionCompanyDelete($id)

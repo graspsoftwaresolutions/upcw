@@ -29,6 +29,19 @@
 				<div class="container">
 					  <div class="row">
 						<div class="col s12">
+							@if (count($errors) > 0)
+							  @foreach ($errors->all() as $error)
+								<div class="card-alert card gradient-45deg-red-pink">
+									<div class="card-content white-text">
+									  <p>
+										<i class="material-icons">check</i> {{ __('Error') }} : {{ __($error) }}</p>
+									</div>
+									<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+									  <span aria-hidden="true">×</span>
+									</button>
+								 </div>
+							  @endforeach
+							@endif
 						  <div id="validations" class="card card-tabs">
 							<div class="card-content">
 							  <div class="card-title">
@@ -57,7 +70,7 @@
 										</div>
 										<div class="col m4 s12">
 										  <div class="input-field">
-											<select class="error" id="race" name="race" data-error=".errorTxt3" required="">
+											<select class="error browser-default" id="race" name="race" data-error=".errorTxt3" required="true">
 												<option value="">Choose race
 												@php 
 													foreach($data['race_list'] as $row)
@@ -72,9 +85,9 @@
 										  </div>
 										</div>
 										<div class="col m4 s12">
-										  <!--label for="sex">Sex</label-->
+										  <!-- <label for="sex">Sex</label> -->
 										  <div class="input-field">
-											<select class="error" id="sex" name="sex" data-error=".errorTxt4" required="">
+											<select class="error browser-default" id="sex" name="sex" data-error=".errorTxt4" required="">
 											  <option value="">Choose sex
 											  <option value="male">Male
 											  <option value="female">Female
@@ -85,13 +98,13 @@
 									</div>
 									<div class="row">
 										<div class="input-field col m6 s12">
-											<input type="text" class="datepicker1" name="dob" id="dob" data-error=".errorTxt5" required="" autocomplete="off">
-											<label for="dob" class="">Date of Birth</label>
+											<input type="text" placeholder="DOB" class="datepicker1" name="dob" id="dob" data-error=".errorTxt5" required="" autocomplete="off">
 											<small class="errorTxt5"></small>
+											<label for="dob" class="active">Date of Birth</label>
 										</div>
 										<div class="input-field col m6 s12">
-											<input type="text" class="datepicker1" name="doj" id="doj" data-error=".errorTxt6" required="" autocomplete="off">
 											<label for="doj" class="">Date of Join</label>
+											<input type="text" placeholder="DOJ" class="datepicker1" name="doj" id="doj" data-error=".errorTxt6" required="" autocomplete="off">
 											<small class="errorTxt6"></small>
 										</div>
 									</div>
@@ -166,7 +179,7 @@
 									</div>
 									<div class="row">
 										<div class="input-field col m12 s12">
-										  <label for="email_id">E-Mail *</label>
+										  <label for="email_id">E-Mail </label>
 										  <input id="email_id" type="email" name="email_id" data-error=".errorTxt16">
 										  <small class="errorTxt16"></small>
 										</div>

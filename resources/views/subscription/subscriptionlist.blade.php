@@ -69,7 +69,8 @@
 												</td>
 												<td style="text-align:center">{{ $row->total }}</td>
 												<td style="text-align:center">
-													<form method="POST" action="{{ route('subscriptionCompanyDelete',$row->sub_cid) }}">
+													<a class="mb6 btn btn-sm waves-light purple lightrn-1" href="{{ url('/importExportView?company='.$row->sub_cid) }}">Summary</a>
+													<form method="POST" style="display: inline-block;" action="{{ route('subscriptionCompanyDelete',$row->sub_cid) }}">
 														{{ csrf_field() }}
 														{{ method_field('DELETE') }}
 
@@ -125,7 +126,7 @@
 <script>
     $('.delete-user').click(function(e){
         e.preventDefault() // Don't post the form, unless confirmed
-        if (confirm('Are you sure?')) {
+        if (confirm('Are you sure you want to delete?')) {
             // Post the form
             $(e.target).closest('form').submit() // Post the surrounding form
         }

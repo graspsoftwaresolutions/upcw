@@ -25,6 +25,19 @@
 				<div class="container">
 					  <div class="row">
 						<div class="col s12">
+							@if (count($errors) > 0)
+							  @foreach ($errors->all() as $error)
+								<div class="card-alert card gradient-45deg-red-pink">
+									<div class="card-content white-text">
+									  <p>
+										<i class="material-icons">check</i> {{ __('Error') }} : {{ __($error) }}</p>
+									</div>
+									<button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+									  <span aria-hidden="true">×</span>
+									</button>
+								 </div>
+							  @endforeach
+							@endif
 						  <div id="validations" class="card card-tabs">
 							<div class="card-content">
 							  <div class="card-title">
@@ -54,7 +67,7 @@
 										</div>
 										<div class="col m4 s12">
 										  <div class="input-field">
-											<select class="error" id="race" name="race" data-error=".errorTxt3" required="">
+											<select class="error browser-default" id="race" name="race" data-error=".errorTxt3" required="">
 												<option value="">Choose race
 												@php 
 													foreach($race_list as $row)
@@ -71,7 +84,7 @@
 										<div class="col m4 s12">
 										  <!--label for="sex">Sex</label-->
 										  <div class="input-field">
-											<select class="error" id="sex" name="sex" data-error=".errorTxt4" required="">
+											<select class="error browser-default" id="sex" name="sex" data-error=".errorTxt4" required="">
 											  <option value="">Choose sex
 											  <option value="male" @php if(strtolower($memberprofile->sex) == "male") { echo "selected"; } @endphp>Male
 											  <option value="female" @php if(strtolower($memberprofile->sex) == "female") { echo "selected"; } @endphp>Female
@@ -82,14 +95,14 @@
 									</div>
 									<div class="row">
 										<div class="input-field col m6 s12">
-											<input type="text" class="datepicker1" name="dob" id="dob" 
-											autocomplete="off" value="@php if((isset($memberprofile->dob)) && (($memberprofile->dob)!='0000-00-00')) { echo date("d/m/Y", strtotime($memberprofile->dob)); } @endphp" data-error=".errorTxt5">
+											<input type="text" placeholder="dob" class="datepicker1" name="dob" id="dob" 
+											autocomplete="off" value="@php if((isset($memberprofile->dob)) && (($memberprofile->dob)!='0000-00-00')) { echo date("d-m-Y", strtotime($memberprofile->dob)); } @endphp" data-error=".errorTxt5">
 											<label for="dob" class="">Date of Birth</label>
 											<small class="errorTxt5"></small>
 										</div>
 										<div class="input-field col m6 s12">
-											<input type="text" class="datepicker1" name="doj" id="doj"
-											autocomplete="off" value="@php if((isset($memberprofile->doj))  && (($memberprofile->doj)!='0000-00-00')) { echo date("d/m/Y", strtotime($memberprofile->doj)); } @endphp" id="doj" data-error=".errorTxt6">
+											<input type="text"  placeholder="doj" class="datepicker1" name="doj" id="doj"
+											autocomplete="off" value="@php if((isset($memberprofile->doj))  && (($memberprofile->doj)!='0000-00-00')) { echo date("d-m-Y", strtotime($memberprofile->doj)); } @endphp" id="doj" data-error=".errorTxt6">
 											<label for="doj" class="">Date of Join</label>
 											<small class="errorTxt6"></small>
 										</div>

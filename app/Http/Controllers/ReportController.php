@@ -49,6 +49,16 @@ class ReportController extends Controller
 			else{
 				$year = date("Y");
 			}
+
+			if(isset($data['company_name']))
+			{
+				
+				$companyid = $data['company_name'];
+			}
+			else{
+				$companyid = '';
+			}
+
 		
 		//dd($year);
 		$query_pt = DB::table('statusmonth');
@@ -316,7 +326,7 @@ class ReportController extends Controller
 			1 => 'company_name',
 			2 => 'member_name',
             3 => 'doj',
-            4 => 'action'
+            4 => 'id'
         );
 		
 		$query_pt = DB::table('memberprofiles');
