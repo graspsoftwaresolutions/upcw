@@ -322,6 +322,10 @@ class MemberprofileController extends Controller
         );
 		$data['dob'] = date("Y-m-d", strtotime($data['dob']));
         $data['doj'] = date("Y-m-d", strtotime($data['doj']));
+        $data['promoted_date'] = date("Y-m-d", strtotime($data['promoted_date']));
+        $data['already_member'] = $data['memberofunion'];
+        $data['meet_date'] = date("Y-m-d", strtotime($data['meet_date']));
+        $data['approved_date'] = date("Y-m-d", strtotime($data['approved_date']));
         
         $emailid = $request->input('email_id');
         $emailid = $emailid=='' ? $request->input('member_no').'@amco.com' : $emailid;
@@ -331,6 +335,7 @@ class MemberprofileController extends Controller
         $password = bcrypt($request->input('ic_no_new'));
 
         $saveData = Memberprofile::create($data);
+        //dd($saveData);
         
         $userid = DB::table('users')->insertGetId(
             ['name' => $request->input('member_name'), 'email' => $emailid, 'is_admin' =>0, 'password' => $password ]
@@ -338,6 +343,8 @@ class MemberprofileController extends Controller
             
 		if($saveData == true)
 		{
+            $memberid = $saveData->id;
+            
 			return  redirect('/memberprofiles')->with('success', 'Member profile inserted successfully!');
 		}
     }

@@ -17,6 +17,12 @@
 	font-size: 13px;
 }
 </style>
+<style type="text/css">
+	label {
+	    font-size: .8rem;
+	    color: #000 !important;
+	}
+</style>
 @include('template.script')
 
 <script>
