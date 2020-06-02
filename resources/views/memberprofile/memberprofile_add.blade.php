@@ -119,7 +119,7 @@
 										  </div>
 										</div>
 										 <div class="col m6 s12">
-										  <label for="sex">Marital status</label>
+										  <label for="mstatus">Marital status</label>
 										  <div class="">
 											<select class="error browser-default" id="mstatus" name="mstatus" data-error=".errorTxt42" required="">
 											  <option value="">Choose status</option>
@@ -382,7 +382,7 @@
 											 	</thead>
 											 	<tbody id="gaurdarea">
 											 		
-											 	<tr><td><input id="gaurdname" name="gaurdname[]" type="text"></td><td><input id="gaurd_address" name="gaurd_address" type="text"></td><td><input id="gaurd_age" name="gaurd_age" type="text"></td><td><input id="nominee_relationship" name="nominee_relationship" type="text"></td><td><input id="nominee_nric" name="nominee_nric" type="text"></td></tr></tbody>
+											 	<tr><td><input id="gaurdname" name="gaurdname" type="text"></td><td><input id="gaurd_address" name="gaurd_address" type="text"></td><td><input id="gaurd_age" name="gaurd_age" type="text"></td><td><input id="gaurd_relationship" name="gaurd_relationship" type="text"></td><td><input id="gaurd_nric" name="gaurd_nric" type="text"></td></tr></tbody>
 											 	
 											 </table>
 										</div>
@@ -577,7 +577,7 @@
   $('#addnominee').click(function(){
     	var nomineecount = $("#nomineecount").val();
     	//alert(nomineecount);
-	    var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly value="'+nomineecount+'" /><input id="nomineename_'+nomineecount+'" name="nomineename[]" type="text" /></td>';
+	    var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly value="'+nomineecount+'" /><input id="nomineename_'+nomineecount+'" name="nomineename[]" type="text" /><input id="nominee_auto_id_'+nomineecount+'" name="nominee_auto_id[]" type="text" class="hide" value="" /></td>';
 
 	    attachrow += '<td><input id="nominee_address_'+nomineecount+'" name="nominee_address[]" type="text" /></td>';
 	    attachrow += '<td><input id="nominee_age_'+nomineecount+'" name="nominee_age[]" type="text" /></td>';

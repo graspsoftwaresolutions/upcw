@@ -34,14 +34,15 @@
 								  </div>
 								</div>
 							  </div>
-
-								<form class="formValidate" id="formValidate" method="POST" action="{{ route('storeCompany') }}">
-									<input type="hidden" name="id" id="updateid">
+                                @php $row = $data['relation_view']; @endphp
+								<form class="formValidate" id="formValidate" method="POST" action="{{ route('updaterelation') }}">
+									
 									@csrf
+                                    <input type="hidden" name="autoid" value="{{$row->id}}">
 									<div class="row">
 										<div class="input-field col m6 s6">
-										  <label for="member_name">Company Name</label>
-										  <input id="company_name" name="company_name" type="text" data-error=".errorTxt1">
+										  <label for="relation_name">Relationship Name</label>
+										  <input id="relation_name" value="{{$row->relation_name}}" name="relation_name" type="text" data-error=".errorTxt1">
 										  <small class="errorTxt1"></small>
 										</div>
 									</div>

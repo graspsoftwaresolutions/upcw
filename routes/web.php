@@ -80,4 +80,10 @@ Route::get('get_tomonth', 'SubscriptionBulkController@GetToMonth')->name('get_to
 
 Route::get('member_print/{id}', 'MemberprofileController@PrintMember')->name('memberprofiles.print')->middleware('is_admin');
 
-Route::post('importbulk', 'SubscriptionBulkController@import')->name('importbulk')->middleware('is_admin');;
+Route::post('importbulk', 'SubscriptionBulkController@import')->name('importbulk')->middleware('is_admin');
+
+Route::get('relationship','MasterController@relationshiplist')->name('relationship')->middleware('is_admin');
+Route::get('editrelationship/{id}','MasterController@editrelationshipDetail')->name('editrelationship')->middleware('is_admin'); 
+Route::post('updaterelation','MasterController@UpdateRelationDetail')->name('updaterelation')->middleware('is_admin');
+Route::get('relationshipnew','MasterController@relationshipNew')->name('relationshipnew')->middleware('is_admin');
+Route::post('storeRelationship','MasterController@relationshipStore')->name('storeRelationship')->middleware('is_admin'); 

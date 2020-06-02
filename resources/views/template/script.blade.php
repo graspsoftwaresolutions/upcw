@@ -2,12 +2,13 @@
 <!-- BEGIN VENDOR JS-->
 <script src="{{ asset('public/app-assets/js/vendors.min.js') }}"></script>
 <!-- BEGIN VENDOR JS-->
-<script src="{{ asset('public/app-assets/vendors/sweetalert/sweetalert.min.js') }}"></script>
+
 <!-- BEGIN THEME  JS-->
 <script src="{{ asset('public/app-assets/js/plugins.min.js') }}"></script>
 <script src="{{ asset('public/app-assets/js/search.min.js') }}"></script>
 <script src="{{ asset('public/app-assets/js/custom/custom-script.min.js') }}"></script> <!--pending-->
 <script src="{{ asset('public/app-assets/js/scripts/customizer.min.js') }}"></script>
+<script src="{{ asset('public/app-assets/vendors/sweetalert/sweetalert.min.js') }}"></script>
 
 <!-- BEGIN PAGE LEVEL JS-->
 <!--script src="{{ asset('public/app-assets/js/scripts/extra-components-sweetalert.min.js') }}"></script-->
@@ -28,6 +29,20 @@
 $(document).ready(function(){
 	$(".card-alert").delay(2000).slideUp(300);
 });
+
+</script>
+<script>
+ $("#collapsible_expen").mouseover(function(){
+	
+                //$("#projectStatusDrp").show();
+				$(".sidenav-main").addClass("nav-expanded");
+				$(".sidenav-main").removeClass("nav-collapsed");
+ });
+
+ //      $("#collapsible_expen").blur(function() {
+ //            $(".sidenav-main").addClass("nav-expanded");
+	// 		$(".sidenav-main").removeClass("nav-collapsed");
+ //        });
 </script>
 <script>
 $(window).resize(function(){

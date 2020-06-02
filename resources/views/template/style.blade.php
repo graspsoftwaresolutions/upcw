@@ -23,18 +23,5 @@
 	    color: #000 !important;
 	}
 </style>
-@include('template.script')
 
-<script>
- $("#collapsible_expen").mouseover(function(){
-	 alert("testt");
-                //$("#projectStatusDrp").show();
-				$(".sidenav-main").addClass("nav-expanded");
-				$(".sidenav-main").removeClass("nav-collapsed");
- });
 
-      $("#collapsible_expen").blur(function() {
-            $(".sidenav-main").addClass("nav-expanded");
-			$(".sidenav-main").removeClass("nav-collapsed");
-        });
-</script>

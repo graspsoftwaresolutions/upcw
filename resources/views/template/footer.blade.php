@@ -7,6 +7,6 @@
       </div>
     </footer>
 
-    
+    @include('template.script')
   </body>
 </html>

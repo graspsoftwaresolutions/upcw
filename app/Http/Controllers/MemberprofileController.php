@@ -326,6 +326,7 @@ class MemberprofileController extends Controller
         $data['already_member'] = $data['memberofunion'];
         $data['meet_date'] = date("Y-m-d", strtotime($data['meet_date']));
         $data['approved_date'] = date("Y-m-d", strtotime($data['approved_date']));
+        $data['marital_status'] = $data['mstatus'];
         
         $emailid = $request->input('email_id');
         $emailid = $emailid=='' ? $request->input('member_no').'@amco.com' : $emailid;
@@ -344,6 +345,35 @@ class MemberprofileController extends Controller
 		if($saveData == true)
 		{
             $memberid = $saveData->id;
+
+            $check_nominee_auto_id = $request->input('nominee_auto_id');
+			if( isset($check_nominee_auto_id)){
+				$nominee_count = count($request->input('nominee_auto_id'));
+				for($j =0; $j<$nominee_count; $j++){
+					$nominee_auto_id = $request->input('nominee_auto_id')[$j];
+                    $nominee_name = $request->input('nomineename')[$j];
+                    $nominee_address = $request->input('nominee_address')[$j];
+                    $nominee_age = $request->input('nominee_age')[$j];
+                    $nominee_relationship = $request->input('nominee_relationship')[$j];
+                    $nominee_nric = $request->input('nominee_nric')[$j];
+
+                    if($nominee_auto_id==''){
+                        $nomineeid = DB::table('member_nominees')->insertGetId(
+                            ['member_id' => $memberid, 'name' => $nominee_name, 'home_address' => $nominee_address, 'age' => $nominee_age, 'relationship' => $nominee_relationship, 'nric_no' => $nominee_nric, 'status' =>1 ]
+                        );
+                    }
+                }
+            } 
+            
+            $gaurdname = $request->input('gaurdname');
+            $gaurd_address = $request->input('gaurd_address');
+            $gaurd_age = $request->input('gaurd_age');
+            $gaurd_relationship = $request->input('gaurd_relationship');
+            $gaurd_nric = $request->input('gaurd_nric');
+
+            $gid = DB::table('member_guardian')->insertGetId(
+                ['member_id' => $memberid, 'name' => $gaurdname, 'home_address' => $gaurd_address, 'age' => $gaurd_age, 'relationship' => $gaurd_relationship, 'nric_no' => $gaurd_nric, 'status' =>1 ]
+            );
             
 			return  redirect('/memberprofiles')->with('success', 'Member profile inserted successfully!');
 		}
@@ -430,6 +460,12 @@ class MemberprofileController extends Controller
         else{
              $data['resign_date'] = "0000-00-00";
         }
+
+        $data['promoted_date'] = $data['promoted_date']!= null ?  date("Y-m-d", strtotime($data['promoted_date'])) : '';
+        $data['already_member'] = $data['memberofunion'];
+        $data['meet_date'] = $data['meet_date']!= null ? date("Y-m-d", strtotime($data['meet_date'])) : '';
+        $data['approved_date'] = $data['approved_date']!= null ? date("Y-m-d", strtotime($data['approved_date'])) : '';
+        $data['marital_status'] = $data['mstatus'];
     }
        // dd($data['resign_date']);
         //dd($data['doj']);

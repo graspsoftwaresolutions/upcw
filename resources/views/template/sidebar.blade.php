@@ -17,6 +17,8 @@
             <ul class="collapsible collapsible-sub" data-collapsible="accordion">
               <li><a href="{{ route('companylist') }}" class="{{ Request::is('companylist') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Company">Company</span></a>
               </li>
+              <li><a href="{{ route('relationship') }}" class="{{ Request::is('relationship') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Company">Relationship</span></a>
+              </li>
             </ul>
           </div>
         </li>

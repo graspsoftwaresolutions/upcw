@@ -7,11 +7,11 @@
 				  <div class="container">
 					<div class="row">
 					  <div class="col s10 m6 l6">
-						<h5 class="breadcrumbs-title mt-0 mb-0"><span>Company Name</span></h5>
+						<h5 class="breadcrumbs-title mt-0 mb-0"><span>Relationship Name</span></h5>
 						<ol class="breadcrumbs mb-0">
 						  <li class="breadcrumb-item"><a href="#">Dashboard</a>
 						  </li>
-						  <li class="breadcrumb-item active">Company add
+						  <li class="breadcrumb-item active">Relationship add
 						  </li>
 						</ol>
 					  </div>
@@ -35,13 +35,13 @@
 								</div>
 							  </div>
 
-								<form class="formValidate" id="formValidate" method="POST" action="{{ route('storeCompany') }}">
+								<form class="formValidate" id="formValidate" method="POST" action="{{ route('storeRelationship') }}">
 									<input type="hidden" name="id" id="updateid">
 									@csrf
 									<div class="row">
 										<div class="input-field col m6 s6">
-										  <label for="member_name">Company Name</label>
-										  <input id="company_name" name="company_name" type="text" data-error=".errorTxt1">
+										  <label for="relationship_name">Relationship Name</label>
+										  <input id="relationship_name" placeholder="Relationship" name="relationship_name" type="text" data-error=".errorTxt1">
 										  <small class="errorTxt1"></small>
 										</div>
 									</div>

@@ -112,6 +112,11 @@ class MasterController extends Controller
 	{
 		return view('masters.company.new');
 
+    } 
+    public function relationshipNew()
+	{
+		return view('masters.relationship.new');
+
 	} 
  public function companyStore(Request $request)
  {
@@ -136,6 +141,12 @@ class MasterController extends Controller
        $data['company_view'] = Company::where('id','=',$id)->get();
        return view('masters.company.edit')->with('data',$data);
    }
+   public function editrelationshipDetail($relationid)
+   {
+       $id = Crypt::decrypt($relationid);
+       $data['relation_view'] = DB::table('relation')->where('status','=',1)->where('id','=',$id)->first();
+       return view('masters.relationship.edit')->with('data',$data);
+   }
    public function UpdateCompanyDetail(request $request)
    {
       // return 1;
@@ -157,4 +168,23 @@ class MasterController extends Controller
         $Company->where('id','=',$id)->delete();
         return  redirect('companylist')->with('message','Company Deleted Succesfully');
    }
+    public function relationshiplist()
+    {
+      $data['relationship_view'] = DB::table('relation')->where('status','=',1)->get();
+      return view('masters.relationship.list')->with('data',$data);
+    }
+    public function UpdateRelationDetail(request $request)
+    {
+        //return 1;
+         $request->validate([
+             'relation_name'=>'required',
+         ],
+         [
+             'relation_name.required'=>'Please enter relation name',
+         ]);
+         $data = $request->all();
+         $data['id'] = $request->autoid;
+         $relation = DB::table('relation')->where('id','=',$data['id'])->update(['relation_name' => $data['relation_name']]);
+         return  redirect('relationship')->with('message','Relation Updated Succesfully');
+    }
 }
