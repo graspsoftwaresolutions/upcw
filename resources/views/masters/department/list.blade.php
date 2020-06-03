@@ -15,16 +15,16 @@
 				  <div class="container">
 					<div class="row">
 					  <div class="col s10 m6 l6">
-						<h5 class="breadcrumbs-title mt-0 mb-0"><span>Relationship</span></h5>
+						<h5 class="breadcrumbs-title mt-0 mb-0"><span>Designation</span></h5>
 						<ol class="breadcrumbs mb-0">
 						  <li class="breadcrumb-item"><a href="#">Dashboard</a>
 						  </li>
-						  <li class="breadcrumb-item active">Relationship List
+						  <li class="breadcrumb-item active">Designation List
 						  </li>
 						</ol>
 					  </div>
 					  <div class="col s2 m6 l6">
-							<a href="{{ route('relationshipnew') }}" class="btn waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> Add </a>
+							<a href="{{ route('designationnew') }}" class="btn waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> Add </a>
 					  </div>
 					</div>
 				  </div>
@@ -40,26 +40,26 @@
 									  <table id="memberprofilelist_datatable" class="table">
 										<thead>
 											<tr>
-												<th>Relationship Name</th>
+												<th>Designation Name</th>
 												<th style="text-align:center" >Action</th>
 											  </tr>
 										</thead>
 										<tbody>
-											@foreach($data['relationship_view'] as $relation)
+											@foreach($data['designation_view'] as $des)
 											<tr>
 												<td>
-													{{ $relation->relation_name }}
+													{{ $des->designation }}
 												</td>
 												<td>
 													@php
-													$enc_id = Crypt::encrypt($relation->id);
-                 									$edit = route('editrelationship',$enc_id);
+													$enc_id = Crypt::encrypt($des->id);
+                 									$edit = route('editdesignation',$enc_id);
 													@endphp
 													<p>
 														<a href="{{$edit}}" style="float:left"><i class="material-icons" style="color: #00bcd4!important;">edit</i></a>
 														<a style="float:left"></a>
 													</p>
-													<form style="display:inline-block;" action="{{ route('Relationshipdestroy',$enc_id) }}" method="POST"><a style="float:left">    
+													<form style="display:inline-block;" action="{{ route('Designationdestroy',$enc_id) }}" method="POST"><a style="float:left">    
 														@csrf
                   										@method('DELETE')
 														&nbsp;&nbsp;<button type="submit" class="btn-sm " onclick="return ConfirmDeletion()" style="background: none;border: none;"><i style="color:red" class="material-icons">delete</i></button> <p></p></a>

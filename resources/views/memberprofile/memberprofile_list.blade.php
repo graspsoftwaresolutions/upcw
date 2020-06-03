@@ -21,7 +21,7 @@
 						</ol>
 					  </div>
 					  <div class="col s2 m6 l6">
-							<a href="{{ route('memberprofiles.create') }}" class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> Add </a>
+							<a href="{{ route('memberprofiles.create') }}" class="btn waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> Add </a>
 					  </div>
 					</div>
 				  </div>

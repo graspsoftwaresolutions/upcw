@@ -187,4 +187,148 @@ class MasterController extends Controller
          $relation = DB::table('relation')->where('id','=',$data['id'])->update(['relation_name' => $data['relation_name']]);
          return  redirect('relationship')->with('message','Relation Updated Succesfully');
     }
+    public function RelationshipDestroy($relationid)
+   {
+        $id = Crypt::decrypt($relationid);
+        DB::table('relation')->where('id','=',$id)->delete();
+        return  redirect('relationship')->with('message','Relationship Deleted Succesfully');
+   }
+   public function relationshipStore(Request $request)
+   {
+       $request->validate([
+          'relationship_name'=>'required',
+      ],
+      [
+          'relationship_name.required'=>'Please enter Relationship name',
+      ]);
+      $data = $request->all();  
+  
+     // $saveCompany = Company::create($data);
+
+      $saveRelation =  DB::table('relation')->insert(
+         ['relation_name' => $data['relationship_name'], 'status' => 1]
+        );
+         
+          if($saveRelation == true)
+          {
+              return  redirect('relationship')->with('message','Relationship Added Succesfully');
+          }
+     }
+
+    public function designationlist()
+    {
+      $data['designation_view'] = DB::table('designation')->where('status','=',1)->get();
+      return view('masters.designation.list')->with('data',$data);
+    }
+    public function designationNew()
+	{
+		return view('masters.designation.new');
+
+    } 
+    
+    public function DesignationStore(Request $request)
+    {
+        $request->validate([
+           'designation_name'=>'required',
+       ],
+       [
+           'designation_name.required'=>'Please enter Designation name',
+       ]);
+       $data = $request->all();  
+   
+      // $saveCompany = Company::create($data);
+ 
+       $saveRelation =  DB::table('designation')->insert(
+          ['designation' => $data['designation_name'], 'status' => 1]
+         );
+          
+           if($saveRelation == true)
+           {
+               return  redirect('designation')->with('message','Designation Added Succesfully');
+           }
+      }
+      public function editdesignationDetail($designationid)
+      {
+          $id = Crypt::decrypt($designationid);
+          $data['designation_view'] = DB::table('designation')->where('status','=',1)->where('id','=',$id)->first();
+          return view('masters.designation.edit')->with('data',$data);
+      }
+      public function UpdateDesignationDetail(request $request)
+      {
+            //return 1;
+            $request->validate([
+                'designation_name'=>'required',
+            ],
+            [
+                'designation_name.required'=>'Please enter Designation name',
+            ]);
+            $data = $request->all();
+            $data['id'] = $request->autoid;
+            $relation = DB::table('designation')->where('id','=',$data['id'])->update(['designation' => $data['designation_name']]);
+            return  redirect('designation')->with('message','Designation Updated Succesfully');
+      }
+        public function DesignationDestroy($designationid)
+        {
+                $id = Crypt::decrypt($designationid);
+                DB::table('designation')->where('id','=',$id)->delete();
+                return  redirect('designation')->with('message','Designation Deleted Succesfully');
+        }
+        public function departmentlist()
+        {
+          $data['department_view'] = DB::table('department')->where('status','=',1)->get();
+          return view('masters.department.list')->with('data',$data);
+        }
+        public function departmentNew()
+        {
+            return view('masters.department.new');
+    
+        } 
+        
+        public function DepartmentStore(Request $request)
+        {
+            $request->validate([
+               'department_name'=>'required',
+           ],
+           [
+               'department_name.required'=>'Please enter department name',
+           ]);
+           $data = $request->all();  
+       
+          // $saveCompany = Company::create($data);
+     
+           $saveRelation =  DB::table('department')->insert(
+              ['department' => $data['department_name'], 'status' => 1]
+             );
+              
+               if($saveRelation == true)
+               {
+                   return  redirect('department')->with('message','Department Added Succesfully');
+               }
+          }
+          public function editdepartmentDetail($designationid)
+          {
+              $id = Crypt::decrypt($designationid);
+              $data['department_view'] = DB::table('department')->where('status','=',1)->where('id','=',$id)->first();
+              return view('masters.department.edit')->with('data',$data);
+          }
+          public function UpdateDepartmentDetail(request $request)
+          {
+                //return 1;
+                $request->validate([
+                    'department_name'=>'required',
+                ],
+                [
+                    'department_name.required'=>'Please enter Department name',
+                ]);
+                $data = $request->all();
+                $data['id'] = $request->autoid;
+                $des = DB::table('department')->where('id','=',$data['id'])->update(['department' => $data['department_name']]);
+                return  redirect('department')->with('message','Department Updated Succesfully');
+          }
+            public function DepartmentDestroy($designationid)
+            {
+                    $id = Crypt::decrypt($designationid);
+                    DB::table('department')->where('id','=',$id)->delete();
+                    return  redirect('department')->with('message','Department Deleted Succesfully');
+            }
 }

@@ -18,7 +18,7 @@
 						</ol>
 					  </div>
 					  <div class="col s2 m6 l6">
-							<a href="{{ route('memberprofiles.index') }}" class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> List </a>
+							<a href="{{ route('memberprofiles.index') }}" class="btn waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> List </a>
 					  </div>
 					</div>
 				  </div>
