@@ -266,10 +266,15 @@
 										  <input id="position" type="text" placeholder="Position" name="position" data-error=".errorTxt10">
 										  <small class="errorTxt10"></small>
 										</div>
-										<div class="input-field col m6 s12">
-										  <label for="approvedrejected">Approved / Rejected</label>
-										  <input id="approvedrejected" type="text" placeholder="Approved / Rejected" name="approved_status" data-error=".errorTxt10">
-										  <small class="errorTxt10"></small>
+										<div class="col m6 s12">
+										    <label for="approvedrejected">Approved / Rejected</label>
+										    <select class="error" id="approvedrejected" name="approvedrejected" data-error=".errorTxt110" required="">
+												<option value="">Choose Status</option>
+												<option value="Approved">Approved</option>
+												<option value="Rejected">Rejected</option>
+											</select>
+									
+										 	<small class="errorTxt10"></small>
 										</div>
 									</div>
 									
@@ -327,17 +332,38 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="input-field col m6 s12">
-										  <label for="designation">Designation and Department/Branch</label>
-										  <input id="designation" type="text" placeholder="Designation and Department/Branch" name="designation_branch" data-error=".errorTxt20">
-										  <small class="errorTxt20"></small>
+										<div class="col m6 s12">
+											<div class="row">
+												<div class="col m6 s12">
+													<label for="designation">Designation</label>
+													<select class="error" id="designation" name="designation" data-error=".errorTxt21" required="">
+														<option value="">Select</option>
+														@foreach($data['designation_list'] as $designation)
+															<option value="{{$designation->id}}">{{$designation->designation}}</option>
+														@endforeach
+													</select>
+													
+													  <small class="errorTxt21"></small>
+												</div>
+												<div class="col m6 s12">
+													<label for="department">Department/Branch</label>
+													<select class="error" id="department" name="department" data-error=".errorTxt21" required="">
+														<option value="">Select</option>
+														@foreach($data['department_list'] as $department)
+															<option value="{{$department->id}}">{{$department->department}}</option>
+														@endforeach
+													</select>
+													  <small class="errorTxt20"></small>
+												</div>
+											</div>
+										 
 										</div>
 										<div class="col s6">
 										  <label for="member_status">Member Status *</label>
 										  <div class="">
 											<select class="error" id="member_status" name="member_status" data-error=".errorTxt21" required="">
-											  <option value="1">Active
-											  <option value="2">Deactive
+											  <option value="1">Active</option>
+											  <option value="2">Deactive</option>
 											</select>
 											<small class="errorTxt21"></small>
 										  </div>
@@ -382,7 +408,16 @@
 											 	</thead>
 											 	<tbody id="gaurdarea">
 											 		
-											 	<tr><td><input id="gaurdname" name="gaurdname" type="text"></td><td><input id="gaurd_address" name="gaurd_address" type="text"></td><td><input id="gaurd_age" name="gaurd_age" type="text"></td><td><input id="gaurd_relationship" name="gaurd_relationship" type="text"></td><td><input id="gaurd_nric" name="gaurd_nric" type="text"></td></tr></tbody>
+											 	<tr><td><input id="gaurdname" name="gaurdname" type="text"></td><td><input id="gaurd_address" name="gaurd_address" type="text"></td><td><input id="gaurd_age" name="gaurd_age" type="text"></td>
+											 	<td>
+											 		<select class="error" id="gaurd_relationship" name="gaurd_relationship" data-error=".errorTxt212">
+														<option value="">Select</option>
+														@foreach($data['relation_list'] as $relation)
+															<option value="{{$relation->id}}">{{$relation->relation_name}}</option>
+														@endforeach
+													</select>
+											 	</td>
+											 	<td><input id="gaurd_nric" name="gaurd_nric" type="text"></td></tr></tbody>
 											 	
 											 </table>
 										</div>
@@ -581,7 +616,15 @@
 
 	    attachrow += '<td><input id="nominee_address_'+nomineecount+'" name="nominee_address[]" type="text" /></td>';
 	    attachrow += '<td><input id="nominee_age_'+nomineecount+'" name="nominee_age[]" type="text" /></td>';
-	    attachrow += '<td><input id="nominee_relationship_'+nomineecount+'" name="nominee_relationship[]" type="text" /></td>';
+	   // attachrow += '<td><input id="nominee_relationship_'+nomineecount+'" name="nominee_relationship[]" type="text" /></td>';
+	    attachrow += '<td><select class="error browser-default" id="nominee_relationship_'+nomineecount+'" name="nominee_relationship[]" data-error=".errorTxt21" required="">';
+	    attachrow += '<option value="">Select</option>';
+		@foreach($data['relation_list'] as $relation)
+			attachrow += '<option value="{{$relation->id}}">{{$relation->relation_name}}</option>';
+		@endforeach
+	    attachrow += '<option value="">Select</option>';
+
+	    attachrow += '</select></td>';
 	    attachrow += '<td><input id="nominee_nric_'+nomineecount+'" name="nominee_nric[]" type="text" /></td>';
 		
 		attachrow += '<td><button type="button" data-id="'+nomineecount+'" class="delete_nominee waves-light btn">Delete</button></td></tr>';

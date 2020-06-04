@@ -262,11 +262,17 @@
 										  <input id="position" type="text" name="position" value="{{ $memberprofile->position }}" data-error=".errorTxt10">
 										  <small class="errorTxt10"></small>
 										</div>
-										<div class="input-field col m6 s12">
-										  <label for="approvedrejected">Approved / Rejected</label>
-										  <input id="approvedrejected" type="text" placeholder="Approved / Rejected" value="{{ $memberprofile->approved_status }}" name="approved_status" data-error=".errorTxt10">
-										  <small class="errorTxt10"></small>
+										<div class="col m6 s12">
+										    <label for="approvedrejected">Approved / Rejected</label>
+										    <select class="error" id="approvedrejected" name="approvedrejected" data-error=".errorTxt110" required="">
+												<option value="">Choose Status</option>
+												<option @if($memberprofile->approved_status=='Approved') selected @endif value="Approved">Approved</option>
+												<option @if($memberprofile->approved_status=='Rejected') selected @endif value="Rejected">Rejected</option>
+											</select>
+									
+										 	<small class="errorTxt10"></small>
 										</div>
+										
 									</div>
 									
 									<div class="row">
@@ -321,10 +327,32 @@
 										</div>
 	`								</div>
 									<div class="row">
-										<div class="input-field col m6 s12">
-										  <label for="designation">Designation and Department/Branch</label>
-										  <input id="designation" type="text" value="{{ $memberprofile->designation_branch }}" placeholder="Designation and Department/Branch" name="designation_branch" data-error=".errorTxt20">
-										  <small class="errorTxt20"></small>
+
+										<div class="col m6 s12">
+											<div class="row">
+												<div class="col m6 s12">
+													<label for="designation">Designation</label>
+													<select class="error" id="designation" name="designation" data-error=".errorTxt21" required="">
+														<option value="">Select</option>
+														@foreach($designation_list as $designation)
+															<option @if($memberprofile->designation==$designation->id) selected @endif value="{{$designation->id}}">{{$designation->designation}}</option>
+														@endforeach
+													</select>
+													
+													  <small class="errorTxt21"></small>
+												</div>
+												<div class="col m6 s12">
+													<label for="department">Department/Branch</label>
+													<select class="error" id="department" name="department" data-error=".errorTxt21" required="">
+														<option value="">Select</option>
+														@foreach($department_list as $department)
+															<option @if($memberprofile->department==$department->id) selected @endif value="{{$department->id}}">{{$department->department}}</option>
+														@endforeach
+													</select>
+													  <small class="errorTxt20"></small>
+												</div>
+											</div>
+										 
 										</div> 	
 										<div class="col s6">
 										  <label for="member_status">Member Status *</label>
@@ -349,6 +377,85 @@
 										</div>
 									</div>
 									@php } @endphp
+
+									<div class="row">
+										@php
+											$nomineedata = CommonHelper::getNomineeData($memberprofile->id);
+										@endphp
+										<div class="col s12 m12">
+											Nominee Details
+											<input type="button" class="btn btn-sm purple" name="addnominee" id="addnominee" value="Add Nominee" />
+											 <input type="text" name="nomineecount" class="hide" readonly id="nomineecount" value="0" />
+											 <table>
+											 	<thead>
+											 		<tr>
+											 			<th width="20%">Name</th>
+											 			<th width="40%">Home Address</th>
+											 			<th width="5%">Age</th>
+											 			<th width="15%">Relationship</th>
+											 			<th width="10%">NRIC No</th>
+											 			<th>Action</th>
+											 		</tr>
+											 	</thead>
+											 	<tbody id="nomineearea">
+											 		@foreach($nomineedata as $nominee)
+											 			<tr>
+											 				<td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly="" value="0"><input id="nomineename_0" name="nomineename[]" value="{{ $nominee->name }}" type="text"><input id="nominee_auto_id_0" name="nominee_auto_id[]" type="text" class="hide" value=""></td>
+											 				<td><input id="nominee_address_0" value="{{ $nominee->home_address }}" name="nominee_address[]" type="text"></td>
+											 				<td><input id="nominee_age_0" value="{{ $nominee->age }}" name="nominee_age[]" type="text"></td>
+											 				<td>
+											 					<select class="error browser-default" id="nominee_relationship_0" name="nominee_relationship[]" data-error=".errorTxt21" required="">
+											 						<option value="">Select</option>
+											 						@foreach($relation_list as $relation)
+																		<option @if($nominee->relationship==$relation->id) selected @endif value="{{$relation->id}}">{{$relation->relation_name}}</option>
+																	@endforeach
+											 					</select>
+											 				</td>
+											 				<td><input id="nominee_nric_0" value="{{ $nominee->nric_no }}" name="nominee_nric[]" type="text"></td><td><button type="button" data-id="0" class="delete_nominee waves-light btn">Delete</button></td></tr>
+											 		@endforeach
+											 	</tbody>
+											 	
+											 </table>
+										</div>
+										<div class="col s12 m12">
+											<br>
+											<br>
+											@php
+												$gaurdiandata = CommonHelper::getGaurdianData($memberprofile->id);
+											@endphp
+											Guardian Details
+											<table>
+											 	<thead>
+											 		<tr>
+											 			<th width="20%">Name</th>
+											 			<th width="40%">Home Address</th>
+											 			<th width="5%">Age</th>
+											 			<th width="15%">Relationship</th>
+											 			<th width="10%">NRIC No</th>
+											 		</tr>
+											 	</thead>
+											 	<tbody id="gaurdarea">
+											 		@foreach($gaurdiandata as $gaurd)
+												 	<tr>
+												 		<td><input id="gaurdname" name="gaurdname" value="{{ $gaurd->name }}" type="text"></td>
+												 		<td><input id="gaurd_address" value="{{ $gaurd->home_address }}" name="gaurd_address" type="text"></td><td><input id="gaurd_age" value="{{ $gaurd->age }}" name="gaurd_age" type="text"></td>
+													 	<td>
+													 		<select class="error" id="gaurd_relationship" name="gaurd_relationship" data-error=".errorTxt212">
+																<option value="">Select</option>
+																@foreach($relation_list as $relation)
+																	<option @if($gaurd->relationship==$relation->id) selected @endif  value="{{$relation->id}}">{{$relation->relation_name}}</option>
+																@endforeach
+															</select>
+													 	</td>
+													 	<td><input id="gaurd_nric" value="{{ $gaurd->nric_no }}" name="gaurd_nric" type="text"></td>
+												 	</tr>
+												 	@endforeach
+												</tbody>
+											 	
+											 </table>
+										</div>
+									</div>
+									
 
 									<div class="row">
 										<div class="input-field col s12">

@@ -7,16 +7,16 @@
 				  <div class="container">
 					<div class="row">
 					  <div class="col s10 m6 l6">
-						<h5 class="breadcrumbs-title mt-0 mb-0"><span>Designation Name</span></h5>
+						<h5 class="breadcrumbs-title mt-0 mb-0"><span>Department Name</span></h5>
 						<ol class="breadcrumbs mb-0">
 						  <li class="breadcrumb-item"><a href="#">Dashboard</a>
 						  </li>
-						  <li class="breadcrumb-item active">Designation add
+						  <li class="breadcrumb-item active">Department add
 						  </li>
 						</ol>
 					  </div>
 					  <div class="col s2 m6 l6">
-							<a href="{{ route('designation') }}" class="btn waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> List </a>
+							<a href="{{ route('department') }}" class="btn waves-effect waves-light breadcrumbs-btn right" ><i class="material-icons hide-on-med-and-up">settings</i> List </a>
 					  </div>
 					</div>
 				  </div>
@@ -35,13 +35,13 @@
 								</div>
 							  </div>
 
-								<form class="formValidate" id="formValidate" method="POST" action="{{ route('storeDesignation') }}">
+								<form class="formValidate" id="formValidate" method="POST" action="{{ route('storeDepartment') }}">
 									<input type="hidden" name="id" id="updateid">
 									@csrf
 									<div class="row">
 										<div class="input-field col m6 s6">
-										  <label for="designation_name">Designation Name</label>
-										  <input id="designation_name" placeholder="Designation" name="designation_name" type="text" data-error=".errorTxt1">
+										  <label for="department_name">Department Name</label>
+										  <input id="department_name" placeholder="Department" name="department_name" type="text" data-error=".errorTxt1">
 										  <small class="errorTxt1"></small>
 										</div>
 									</div>

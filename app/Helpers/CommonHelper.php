@@ -59,4 +59,12 @@ class CommonHelper
 					->pluck('sm.statusMonth')->first();
 		
 	}
+	public static function getNomineeData($memberid){
+      return $status_data = DB::table('member_nominees')->where('member_id', $memberid)->get();
+       
+	}
+	public static function getGaurdianData($memberid){
+      return $status_data = DB::table('member_guardian')->where('member_id', $memberid)->get();
+       
+	}
 }

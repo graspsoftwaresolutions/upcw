@@ -260,7 +260,10 @@ class MemberprofileController extends Controller
     public function create()
     {
 		$data['race_list'] = Race::where('status','=','1')->get();
-		$data['company_list'] = Company::where('status','=','1')->get();
+        $data['company_list'] = Company::where('status','=','1')->get();
+        $data['designation_list'] = DB::table('designation')->where('status','=','1')->get();
+        $data['department_list'] = DB::table('department')->where('status','=','1')->get();
+        $data['relation_list'] = DB::table('relation')->where('status','=','1')->get();
         return view('memberprofile.memberprofile_add')->with('data',$data);
     }
 	public function findMemberNoExists(Request $request)
@@ -326,7 +329,11 @@ class MemberprofileController extends Controller
         $data['already_member'] = $data['memberofunion'];
         $data['meet_date'] = date("Y-m-d", strtotime($data['meet_date']));
         $data['approved_date'] = date("Y-m-d", strtotime($data['approved_date']));
+        $data['approved_status'] = $data['approvedrejected'];
         $data['marital_status'] = $data['mstatus'];
+
+        $data['designation'] = $data['designation'];
+        $data['department'] = $data['department'];
         
         $emailid = $request->input('email_id');
         $emailid = $emailid=='' ? $request->input('member_no').'@amco.com' : $emailid;
@@ -399,8 +406,11 @@ class MemberprofileController extends Controller
     public function edit(Memberprofile $memberprofile)
     {
 		$race_list = Race::where('status','=','1')->get();
-		$company_list = Company::where('status','=','1')->get();
-		return view('memberprofile.memberprofile_edit',compact('memberprofile','race_list','company_list'));
+        $company_list = Company::where('status','=','1')->get();
+        $designation_list = DB::table('designation')->where('status','=','1')->get();
+        $department_list = DB::table('department')->where('status','=','1')->get();
+        $relation_list = DB::table('relation')->where('status','=','1')->get();
+		return view('memberprofile.memberprofile_edit',compact('memberprofile','race_list','company_list','designation_list','department_list','relation_list'));
         //$data['member_list'] = Memberprofile::where('id',$memberprofile->id)->first();
        // return view('admin.memberprofile_list')->with('data',$data);
     }
@@ -465,7 +475,12 @@ class MemberprofileController extends Controller
         $data['already_member'] = $data['memberofunion'];
         $data['meet_date'] = $data['meet_date']!= null ? date("Y-m-d", strtotime($data['meet_date'])) : '';
         $data['approved_date'] = $data['approved_date']!= null ? date("Y-m-d", strtotime($data['approved_date'])) : '';
+        
+        $data['approved_status'] = $data['approvedrejected'];
         $data['marital_status'] = $data['mstatus'];
+
+        $data['designation'] = $data['designation'];
+        $data['department'] = $data['department'];
     }
        // dd($data['resign_date']);
         //dd($data['doj']);
@@ -476,7 +491,7 @@ class MemberprofileController extends Controller
 		$updateData = $memberprofile->update($data);
 		if($updateData == true)
 		{
-			return  redirect('/memberprofiles')->with('warning', 'Member profile updated successfully!');
+			return  redirect('/memberprofiles')->with('success', 'Member profile updated successfully!');
 		}
 		
        // return redirect()->route('memberprofile.index')->with('success','Product updated successfully');
