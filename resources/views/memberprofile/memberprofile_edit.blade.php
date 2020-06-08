@@ -400,7 +400,8 @@
 											 	<tbody id="nomineearea">
 											 		@foreach($nomineedata as $nominee)
 											 			<tr>
-											 				<td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly="" value="0"><input id="nomineename_0" name="nomineename[]" value="{{ $nominee->name }}" type="text"><input id="nominee_auto_id_0" name="nominee_auto_id[]" type="text" class="hide" value=""></td>
+											 				<td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly="" value="0"><input id="nomineename_0" name="nomineename[]" value="{{ $nominee->name }}" type="text">
+											 				<input id="nominee_auto_id_0" name="nominee_auto_id[]" type="text" class="hide" value="{{ $nominee->id }}"></td>
 											 				<td><input id="nominee_address_0" value="{{ $nominee->home_address }}" name="nominee_address[]" type="text"></td>
 											 				<td><input id="nominee_age_0" value="{{ $nominee->age }}" name="nominee_age[]" type="text"></td>
 											 				<td>
@@ -435,21 +436,26 @@
 											 		</tr>
 											 	</thead>
 											 	<tbody id="gaurdarea">
-											 		@foreach($gaurdiandata as $gaurd)
+											 		@php
+											 			//dd($gaurdiandata);
+											 			$gaurd = count($gaurdiandata)!=0 ? $gaurdiandata[0] : '';
+
+											 			$relationid = count($gaurdiandata)!=0 ? $gaurd->relationship : 0;
+											 		@endphp
+											 		
 												 	<tr>
-												 		<td><input id="gaurdname" name="gaurdname" value="{{ $gaurd->name }}" type="text"></td>
-												 		<td><input id="gaurd_address" value="{{ $gaurd->home_address }}" name="gaurd_address" type="text"></td><td><input id="gaurd_age" value="{{ $gaurd->age }}" name="gaurd_age" type="text"></td>
+												 		<td><input id="gaurd_auto_id" name="gaurd_auto_id" type="text" class="hide" value="{{ $gaurd!='' ? $gaurd->id : '' }}"><input id="gaurdname" name="gaurdname" value="{{ $gaurd!='' ? $gaurd->name : '' }}" type="text"></td>
+												 		<td><input id="gaurd_address" value="{{ $gaurd!='' ? $gaurd->home_address : '' }}" name="gaurd_address" type="text"></td><td><input id="gaurd_age" value="{{ $gaurd!='' ? $gaurd->age : '' }}" name="gaurd_age" type="text"></td>
 													 	<td>
 													 		<select class="error" id="gaurd_relationship" name="gaurd_relationship" data-error=".errorTxt212">
 																<option value="">Select</option>
 																@foreach($relation_list as $relation)
-																	<option @if($gaurd->relationship==$relation->id) selected @endif  value="{{$relation->id}}">{{$relation->relation_name}}</option>
+																	<option @if($relationid==$relation->id) selected @endif  value="{{$relation->id}}">{{$relation->relation_name}}</option>
 																@endforeach
 															</select>
 													 	</td>
-													 	<td><input id="gaurd_nric" value="{{ $gaurd->nric_no }}" name="gaurd_nric" type="text"></td>
+													 	<td><input id="gaurd_nric" value="{{ $gaurd!='' ? $gaurd->nric_no : '' }}" name="gaurd_nric" type="text"></td>
 												 	</tr>
-												 	@endforeach
 												</tbody>
 											 	
 											 </table>
@@ -631,4 +637,37 @@
 		changeYear: true
 	});
   });
+  $(document.body).on('click', '.delete_nominee' ,function(){
+		if(confirm('Are you sure you want to delete?')){
+			var attach_id = $(this).data('id');
+			var parrent = $(this).parents("tr");
+			parrent.remove(); 
+		}else{
+			return false;
+		}
+		
+	});
+  $('#addnominee').click(function(){
+    	var nomineecount = $("#nomineecount").val();
+    	//alert(nomineecount);
+	    var attachrow = '<tr><td><input type="text" name="serialnumber[]" id="serialnumber" class="hide" readonly value="'+nomineecount+'" /><input id="nomineename_'+nomineecount+'" name="nomineename[]" type="text" /><input id="nominee_auto_id_'+nomineecount+'" name="nominee_auto_id[]" type="text" class="hide" value="" /></td>';
+
+	    attachrow += '<td><input id="nominee_address_'+nomineecount+'" name="nominee_address[]" type="text" /></td>';
+	    attachrow += '<td><input id="nominee_age_'+nomineecount+'" name="nominee_age[]" type="text" /></td>';
+	   // attachrow += '<td><input id="nominee_relationship_'+nomineecount+'" name="nominee_relationship[]" type="text" /></td>';
+	    attachrow += '<td><select class="error browser-default" id="nominee_relationship_'+nomineecount+'" name="nominee_relationship[]" data-error=".errorTxt21" required="">';
+	    attachrow += '<option value="">Select</option>';
+		@foreach($relation_list as $relation)
+			attachrow += '<option value="{{$relation->id}}">{{$relation->relation_name}}</option>';
+		@endforeach
+	    attachrow += '<option value="">Select</option>';
+
+	    attachrow += '</select></td>';
+	    attachrow += '<td><input id="nominee_nric_'+nomineecount+'" name="nominee_nric[]" type="text" /></td>';
+		
+		attachrow += '<td><button type="button" data-id="'+nomineecount+'" class="delete_nominee waves-light btn">Delete</button></td></tr>';
+		$('#nomineearea').append(attachrow);
+		nomineecount = parseInt(1)+parseInt(nomineecount);
+		$("#nomineecount").val(nomineecount);
+	});
 </script>

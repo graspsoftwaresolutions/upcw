@@ -488,9 +488,52 @@ class MemberprofileController extends Controller
         //dd(date('Y-m-d', strtotime($datedb)));
 		//$data['dob'] = date('Y-m-d', strtotime($datedb));
 		//$data['doj'] =date('Y-m-d', strtotime($datedj));
-		$updateData = $memberprofile->update($data);
+        $updateData = $memberprofile->update($data);
+       // dd($data->id);
+        $memberid = $request->input('id');
 		if($updateData == true)
 		{
+            $check_nominee_auto_id = $request->input('nominee_auto_id');
+			if( isset($check_nominee_auto_id)){
+				$nominee_count = count($request->input('nominee_auto_id'));
+				for($j =0; $j<$nominee_count; $j++){
+					$nominee_auto_id = $request->input('nominee_auto_id')[$j];
+                    $nominee_name = $request->input('nomineename')[$j];
+                    $nominee_address = $request->input('nominee_address')[$j];
+                    $nominee_age = $request->input('nominee_age')[$j];
+                    $nominee_relationship = $request->input('nominee_relationship')[$j];
+                    $nominee_nric = $request->input('nominee_nric')[$j];
+
+                    if($nominee_auto_id==''){
+                        $nomineeid = DB::table('member_nominees')->insertGetId(
+                            ['member_id' => $memberid, 'name' => $nominee_name, 'home_address' => $nominee_address, 'age' => $nominee_age, 'relationship' => $nominee_relationship, 'nric_no' => $nominee_nric, 'status' =>1 ]
+                        );
+                    }else{
+                        DB::table('member_nominees')
+                        ->where('id', $nominee_auto_id)
+                        ->update(['member_id' => $memberid, 'name' => $nominee_name, 'home_address' => $nominee_address, 'age' => $nominee_age, 'relationship' => $nominee_relationship, 'nric_no' => $nominee_nric, 'status' =>1 ]);
+                    }
+                }
+            } 
+            
+            $gaurd_auto_id = $request->input('gaurd_auto_id');
+            $gaurdname = $request->input('gaurdname');
+            $gaurd_address = $request->input('gaurd_address');
+            $gaurd_age = $request->input('gaurd_age');
+            $gaurd_relationship = $request->input('gaurd_relationship');
+            $gaurd_nric = $request->input('gaurd_nric');
+
+            if($gaurd_auto_id==''){
+                $gid = DB::table('member_guardian')->insertGetId(
+                    ['member_id' => $memberid, 'name' => $gaurdname, 'home_address' => $gaurd_address, 'age' => $gaurd_age, 'relationship' => $gaurd_relationship, 'nric_no' => $gaurd_nric, 'status' =>1 ]
+                );
+            }else{
+                DB::table('member_guardian')
+                ->where('id', $gaurd_auto_id)
+                ->update(['member_id' => $memberid, 'name' => $gaurdname, 'home_address' => $gaurd_address, 'age' => $gaurd_age, 'relationship' => $gaurd_relationship, 'nric_no' => $gaurd_nric, 'status' =>1 ]);
+            }
+            
+
 			return  redirect('/memberprofiles')->with('success', 'Member profile updated successfully!');
 		}
 		
