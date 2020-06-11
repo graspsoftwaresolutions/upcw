@@ -14,6 +14,7 @@
 <!--script src="{{ asset('public/app-assets/js/scripts/extra-components-sweetalert.min.js') }}"></script-->
 	
 <script src="{{ asset('public/app-assets/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('public/app-assets/js/datepicker.js') }}"></script>
 <!-- END PAGE LEVEL JS-->
 <style>
 .card-alert {

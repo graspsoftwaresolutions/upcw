@@ -275,12 +275,12 @@
 								    <div class="row">
 										<div class="input-field col m6 s12">
 										  <label for="meet_on">Decision on this application made at EXCO Meeting held on </label>
-										  <input id="meet_on" placeholder="Meet on" type="text" class="datepickerone" name="meet_date" data-error=".errorTxt16">
+										  <input id="meet_on" placeholder="Meet on" type="text" autocomplete="off" class="datepickerone" name="meet_date" data-error=".errorTxt16">
 										  <small class="errorTxt16"></small>
 										</div>
 										<div class="input-field col m6 s12">
 										  <label for="date_approved"> Date Approved  </label>
-										  <input id="date_approved" placeholder="Date" type="text" class="datepickerone" name="approved_date" data-error=".errorTxt16">
+										  <input id="date_approved" placeholder="Date" type="text" autocomplete="off" class="datepickerone" name="approved_date" data-error=".errorTxt16">
 										  <small class="errorTxt16"></small>
 										</div>
 									</div>
