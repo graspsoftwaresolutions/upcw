@@ -122,7 +122,7 @@ use App\Model\SubMatchmaster;
 								<table style="width:100%;">
 								<tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
 								<td>SlNo</td>
-								<td>Company Name</td>
+								<td>Cost Center</td>
 								<td>Member Count</td>
 								<td>Total Amount</td>
 								</tr>
