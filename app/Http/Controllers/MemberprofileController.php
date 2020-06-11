@@ -7,6 +7,7 @@ use App\Model\Race;
 use App\Model\Company;
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 class MemberprofileController extends Controller
 {
     /**
@@ -539,8 +540,11 @@ class MemberprofileController extends Controller
                 ->update(['member_id' => $memberid, 'name' => $gaurdname, 'home_address' => $gaurd_address, 'age' => $gaurd_age, 'relationship' => $gaurd_relationship, 'nric_no' => $gaurd_nric, 'status' =>1 ]);
             }
             
-
-			return  redirect('/memberprofiles')->with('success', 'Member profile updated successfully!');
+            if(Auth::user()->is_admin==1){
+              return redirect('/memberprofiles')->with('success', 'Member profile updated successfully!');
+            }else{
+                return redirect('/admin/home')->with('success', 'Member profile updated successfully!');
+            }
 		}
 		
        // return redirect()->route('memberprofile.index')->with('success','Product updated successfully');
@@ -562,5 +566,20 @@ class MemberprofileController extends Controller
        // return $memberid;
         $memberprofile = Memberprofile::find($memberid); 
         return view('memberprofile.memberprofile_print',compact('memberprofile'));
+    }
+
+    public function ViewEditMember(){
+        if(Auth::user()->is_admin==0){
+            $email = Auth::user()->email;
+            $memberid = DB::table('memberprofiles')
+                ->where('email_id', $email)
+                ->pluck('id')
+                ->first();
+            if($memberid!=''){
+                return redirect('memberprofiles/'.$memberid.'/edit');
+            }
+            
+        }
+        
     }
 }

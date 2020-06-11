@@ -1,4 +1,5 @@
 @include('template.header')
+@include('flash-message')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<div class="row">
 			<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>

@@ -62,6 +62,7 @@
             </ul>
             <!-- profile-dropdown-->
             <ul class="dropdown-content" id="profile-dropdown">
+               <li style="text-align: center;"><a class="grey-text text-darken-1">{{ Auth::user()->is_admin==1 ? 'Admin' : 'User' }} </a></li>
               <li><a class="grey-text text-darken-1" href="#"><i class="material-icons">person_outline</i> Profile</a></li>
               <!--li><a class="grey-text text-darken-1" href="app-chat.html"><i class="material-icons">chat_bubble_outline</i> Chat</a></li>
               <li><a class="grey-text text-darken-1" href="page-faq.html"><i class="material-icons">help_outline</i> Help</a></li>

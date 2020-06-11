@@ -223,6 +223,13 @@ class SubscriptionBulkController extends Controller
                                 //echo True;
                                 // dd($mempro['company_names']);
                                 $member_id  = $savememprof->id;    
+
+                                $emailid = $mem_no.'@amco.com';
+                                $password = bcrypt($mem_ic);
+
+                                $userid = DB::table('users')->insertGetId(
+                                    ['name' => $mem_name, 'email' => $emailid, 'is_admin' =>0, 'password' => $password ]
+                                );
             
                                 }    
 

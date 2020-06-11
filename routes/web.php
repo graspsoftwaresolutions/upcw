@@ -103,3 +103,5 @@ Route::post('updatedepartment','MasterController@UpdateDepartmentDetail')->name(
 Route::get('departmentnew','MasterController@departmentNew')->name('departmentnew')->middleware('is_admin');
 Route::post('storeDepartment','MasterController@DepartmentStore')->name('storeDepartment')->middleware('is_admin'); 
 Route::delete('Departmentdestroy/{id}','MasterController@Departmentdestroy')->name('Departmentdestroy')->middleware('is_admin');
+
+Route::get('memberredirect', 'MemberprofileController@ViewEditMember')->name('editmember.locate');
