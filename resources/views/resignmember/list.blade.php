@@ -128,7 +128,7 @@
 				  <div class="row">
 					<div class="input-field col s12">
 						<input type="hidden" name="resign_id" id="resign_id" value="">
-						<input id="resign_date" name="resign_date" type="text" required>
+						<input id="resign_date" name="resign_date" placeholder="resign date" type="text" required>
 						<label for="resign_date" class="active">Resign Date</label>
 					</div>
 					<div class="input-field col s12">

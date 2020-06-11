@@ -165,6 +165,19 @@ class SubscriptionBulkController extends Controller
                                 else{
                                     $mem_welfare = 0;
                                 } 
+
+                                if($member_costcenter!=''){
+                                    $costcenterid = DB::table('company_branches')->where([
+                                        ['company_id','=',$cmpy_id],
+                                        ['branch_name','=',$member_costcenter]
+                                    ])->pluck('id')->first();
+                                    if($costcenterid==''){
+                                        $costcenterid = DB::table('company_branches')->insertGetId(
+                                            ['company_id' => $cmpy_id, 'branch_name' => $member_costcenter, 'status' =>1 ]
+                                        );
+                                    }
+                                    //dd($costcenterid);
+                                }
             
                                 $member_exists = Memberprofile::where([
                                     ['member_no','=',$member_no]
@@ -200,6 +213,7 @@ class SubscriptionBulkController extends Controller
                                 $mempro['doj'] = $doj;
                                 $mempro['ic_no_new'] = $mem_ic; 
                                 $mempro['company_name'] =  $cmpy_id; 
+                                $mempro['cost_centerid'] =  $costcenterid; 
                                 $mempro['company_names'] = DB::table('companies')->where('id', $cmpy_id)->first()->company_name;
                                 // $mempro['employee_no'] = $empno;   
                                 $mempro['member_status'] = 1;   
@@ -212,18 +226,7 @@ class SubscriptionBulkController extends Controller
             
                                 }    
 
-                                if($member_costcenter!=''){
-                                    $costcenterid = DB::table('company_branches')->where([
-                                        ['company_id','=',$cmpy_id],
-                                        ['branch_name','=',$member_costcenter]
-                                    ])->pluck('id')->first();
-                                    if($costcenterid==''){
-                                        $costcenterid = DB::table('company_branches')->insertGetId(
-                                            ['company_id' => $cmpy_id, 'branch_name' => $member_costcenter, 'status' =>1 ]
-                                        );
-                                    }
-                                    //dd($costcenterid);
-                                }
+                               
                                 
             
                                 $data_subdetails['subcompany_id'] = $cmpystat_id;
