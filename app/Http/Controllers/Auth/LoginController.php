@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Auth;
+use DB;
 
 class LoginController extends Controller
 {
@@ -39,25 +41,56 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {   
-        $input = $request->all();
+    {
+        $membernumber = $request->input('email');
 
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        if(strpos($membernumber, '@') !== false){
+           $email = $membernumber;
+        }else{
+            $email = DB::table('memberprofiles')->where('member_no','=',$membernumber)->pluck('email_id')->first();
+        }
+        
 
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
-        {
+        // Validate the form data
+          $this->validate($request, [
+            'email'   => 'required',
+            'password' => 'required|min:6'
+          ]);
+          
+          // Attempt to log the user in
+          if (Auth::attempt(['email' => $email, 'password' => $request->password])) {
+            // if successful, then redirect to their intended location
+           
             if (auth()->user()->is_admin == 1) {
                 return redirect()->route('admin.home');
             }else{
                 return redirect()->route('home');
             }
-        }else{
-            return redirect()->route('login')
-                ->with('error','Email-Address And Password Are Wrong.');
-        }
-        
+          } 
+          // if unsuccessful, then redirect back to the login with the form data
+          return redirect()->back()->withInput($request->only('email', 'remember'));
     }
+
+    // public function login(Request $request)
+    // {   
+    //     $input = $request->all();
+
+    //     $this->validate($request, [
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
+
+    //     if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
+    //     {
+    //         if (auth()->user()->is_admin == 1) {
+    //             return redirect()->route('admin.home');
+    //         }else{
+    //             return redirect()->route('home');
+    //         }
+    //     }else{
+    //         return redirect()->route('login')
+    //             ->with('error','Email-Address And Password Are Wrong.');
+    //     }
+        
+    // }
 }

@@ -40,7 +40,7 @@
       <div class="row margin">
         <div class="input-field col s12">
           <i class="material-icons prefix pt-2">person_outline</i>
-          <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+          <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
           <label for="username" class="center-align">{{ __('E-Mail Address') }}</label>
 			@error('email')
 				<span class="invalid-feedback" role="alert">
