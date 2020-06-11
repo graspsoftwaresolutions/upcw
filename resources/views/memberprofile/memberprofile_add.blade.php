@@ -89,7 +89,9 @@
 													}
 												@endphp 
 											</select>
-											<small class="errorTxt3"></small>
+											<div class="input-field">
+												<small class="errorTxt3"></small>
+											</div>
 										  
 										</div>
 										
@@ -110,24 +112,28 @@
 						              <div class="col m6 s12">
 										  <label for="sex">Sex</label>
 										  <div class="">
-											<select class="error browser-default" id="sex" name="sex" data-error=".errorTxt41" required="">
+											<select class="error browser-default" id="sex" name="sex" data-error=".errorTxt41">
 											  <option value="">Choose sex</option>
 											  <option value="male">Male</option>
 											  <option value="female">Female</option>
 											</select>
-											<small class="errorTxt41"></small>
+											<div class="input-field">
+												<small class="errorTxt41"></small>
+											</div>
 										  </div>
 										</div>
 										 <div class="col m6 s12">
 										  <label for="mstatus">Marital status</label>
 										  <div class="">
-											<select class="error browser-default" id="mstatus" name="mstatus" data-error=".errorTxt42" required="">
+											<select class="error browser-default" id="mstatus" name="marital_status" data-error=".errorTxt42" >
 											  <option value="">Choose status</option>
 											  <option value="Single">Single</option>
 											  <option value="Married">Married</option>
 											  <option value="Others">Others</option>
 											</select>
-											<small class="errorTxt42"></small>
+											<div class="input-field">
+												<small class="errorTxt42"></small>
+											</div>
 										  </div>
 										</div>
 						              
@@ -457,10 +463,10 @@
 	  race: {
         required: true,
       },
-	  sex: {
+	  /* sex: {
         required: true,
       },
-	  /* dob: {
+	   dob: {
         required: true,
 		date:true
       }, */

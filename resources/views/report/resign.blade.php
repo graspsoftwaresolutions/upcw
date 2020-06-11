@@ -60,15 +60,25 @@
 										<input id="monthlyyear_resignmember" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="monthlyyear_resignmember">
 										<label for="monthlyyear_resignmember" class="">DATE</label>
 									</div>
-									<div class="input-field col m4 s12">
+									<div class="input-field col m3 s12">
 										
 										<select class="error" id="company_name" name="company_name">
 										<option value="">Choose company name</option>
 											@foreach($data['company'] as $row_res)
-											<option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+											<option selected="" value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 											@endforeach
 										</select>
 										<label for="company_name" class="">Company Name</label>
+									</div>
+									<div class="input-field col m3 s12">
+										
+										<select class="error" id="cost_center" name="cost_center">
+										<option value="">Choose cost center</option>
+											@foreach($data['costcenters'] as $cost)
+											<option value="{{ $cost->id}}" >{{ $cost->branch_name }}</option>
+											@endforeach
+										</select>
+										<label for="cost_center" class="">Cost center</label>
 									</div>
 									<div class="input-field col m2 s12">
 										<button class="btn waves-effect waves-light right" id="filter_by_monthyear_resgnmember" type="submit" name="action">Search
@@ -96,6 +106,7 @@
 											<tr>
 												<th>Member No</th>
 												<th>Company Name</th>
+												<th style="text-align:center">Cost Center</th>
 												<th>Member Name</th>
 												<th>IC No(New)</th>
 												<th>Race</th>
@@ -158,6 +169,9 @@ $(document).ready(function() {
 					cmp_id: function() {
 						return $('#company_name').val();
 					},
+					costcenter_id: function() {
+						return $('#cost_center').val();
+					},
 					_token: "{{csrf_token()}}",
 				}
 			},
@@ -213,6 +227,9 @@ $(document).ready(function() {
 				},
 				{
 					"data": "company_name"
+				},
+				{
+					"data": "cost_center"
 				},
 				{
 					"data": "member_name"

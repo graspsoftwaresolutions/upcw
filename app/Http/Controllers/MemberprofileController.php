@@ -51,7 +51,7 @@ class MemberprofileController extends Controller
             9 => 'options'
         );
 		$query_pt = DB::table('memberprofiles');
-		$query_pt->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status');
+		$query_pt->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 		//if($monthlyyear_paid != "")
 		//{
 			if($cmp_id !=''){
@@ -73,7 +73,7 @@ class MemberprofileController extends Controller
             if( $limit == -1){
                 
 				$query_fetch = DB::table('memberprofiles');
-				$query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status');
+				$query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 				//if($monthlyyear_paid != "")
 				//{
 					if($cmp_id !=''){
@@ -89,7 +89,7 @@ class MemberprofileController extends Controller
             }else{
                  //dd($dir);
                 $query_fetch = DB::table('memberprofiles');
-                $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status');
+                $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 				
 				//if($monthlyyear_paid != "")
 				//{
@@ -112,7 +112,7 @@ class MemberprofileController extends Controller
 
 			if( $limit == -1){
                     $query_fetch = DB::table('memberprofiles');
-                    $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status');
+                    $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 				
 					//if($monthlyyear_paid != "")
 					//{
@@ -133,7 +133,7 @@ class MemberprofileController extends Controller
 					$paidlist = $query_fetch->get()->toArray();
 			}else{
                     $query_fetch = DB::table('memberprofiles');
-                    $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status');
+                    $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 				
 					//if($monthlyyear_paid != "")
 					//{
@@ -158,7 +158,7 @@ class MemberprofileController extends Controller
 			}
 			//dd($paidlist);
             $query_pt = DB::table('memberprofiles');
-            $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status');
+            $query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 				
 			//if($monthlyyear_paid != "")
 			//{
@@ -232,6 +232,7 @@ class MemberprofileController extends Controller
             $nestedData['dob'] = $dob;
             $nestedData['doj'] = $doj;
             $nestedData['member_status'] = $member_status;
+            $nestedData['cost_center'] = $mprofile->cost_centerid;
             $nestedData['options'] = "<a href='".$edit."'><i class='material-icons' style='color: #00bcd4!important;'>edit</i></a>&nbsp;<a href='".$view."'><i class='material-icons' style='color: #ff6f00!important;'>remove_red_eye</i></a>&nbsp;&nbsp;<a href='".$print."'><i class='material-icons' style='color: #f2000!important;'>print</i></a>";
             $data[] = $nestedData;
 
@@ -308,7 +309,7 @@ class MemberprofileController extends Controller
                 'member_name' => 'required',
                 'ic_no_new' => 'required',
                 'race' => 'required',
-                'sex' => 'required',
+               // 'sex' => 'required',
                 'company_name' => 'required',
                 'member_no' => 'required',
                 'employee_no' => 'required'
@@ -317,20 +318,20 @@ class MemberprofileController extends Controller
                 'member_name.required' => 'please enter member name',
                 'ic_no_new.required' => 'please enter ic new no',
                 'race.required' => 'please choose race',
-                'sex.required' => 'please choose sex',
+                //'sex.required' => 'please choose sex',
                 'company_name.required' => 'please choose company name',
                 'member_no.required' => 'please enter member no',
                 'employee_no.required' => 'please enter employee no'
             ]
         );
-		$data['dob'] = date("Y-m-d", strtotime($data['dob']));
-        $data['doj'] = date("Y-m-d", strtotime($data['doj']));
-        $data['promoted_date'] = date("Y-m-d", strtotime($data['promoted_date']));
+		$data['dob'] = $data['dob']!='' ? date("Y-m-d", strtotime($data['dob'])) : '';
+        $data['doj'] = $data['doj']!='' ? date("Y-m-d", strtotime($data['doj'])) : '';
+        $data['promoted_date'] = $data['promoted_date']!='' ? date("Y-m-d", strtotime($data['promoted_date'])) : '';
         $data['already_member'] = $data['memberofunion'];
-        $data['meet_date'] = date("Y-m-d", strtotime($data['meet_date']));
-        $data['approved_date'] = date("Y-m-d", strtotime($data['approved_date']));
+        $data['meet_date'] = $data['meet_date']!='' ? date("Y-m-d", strtotime($data['meet_date'])) : '';
+        $data['approved_date'] = $data['approved_date']!='' ? date("Y-m-d", strtotime($data['approved_date'])) : '';
         $data['approved_status'] = $data['approvedrejected'];
-        $data['marital_status'] = $data['mstatus'];
+        $data['marital_status'] = $data['marital_status'];
 
         $data['designation'] = $data['designation'];
         $data['department'] = $data['department'];
@@ -463,31 +464,33 @@ class MemberprofileController extends Controller
              $data['doj'] = "0000-00-00";
         }
         if(isset($data['resign_date'])){
-        if($data['resign_date'] != null){
-            $dateresign_date = str_replace('/', '-', $data['resign_date']);
-            $data['resign_date'] = date('Y-m-d', strtotime($dateresign_date));
+            if($data['resign_date'] != null){
+                $dateresign_date = str_replace('/', '-', $data['resign_date']);
+                $data['resign_date'] = date('Y-m-d', strtotime($dateresign_date));
+            }
+            else{
+                $data['resign_date'] = "0000-00-00";
+            }
         }
-        else{
-             $data['resign_date'] = "0000-00-00";
-        }
-
+       // dd($data['promoted_date']);
         $data['promoted_date'] = $data['promoted_date']!= null ?  date("Y-m-d", strtotime($data['promoted_date'])) : '';
         $data['already_member'] = $data['memberofunion'];
         $data['meet_date'] = $data['meet_date']!= null ? date("Y-m-d", strtotime($data['meet_date'])) : '';
         $data['approved_date'] = $data['approved_date']!= null ? date("Y-m-d", strtotime($data['approved_date'])) : '';
         
         $data['approved_status'] = $data['approvedrejected'];
-        $data['marital_status'] = $data['mstatus'];
+        $data['marital_status'] = $data['marital_status'];
 
         $data['designation'] = $data['designation'];
         $data['department'] = $data['department'];
-    }
+   
        // dd($data['resign_date']);
         //dd($data['doj']);
        // dd($data['doj']);
         //dd(date('Y-m-d', strtotime($datedb)));
 		//$data['dob'] = date('Y-m-d', strtotime($datedb));
-		//$data['doj'] =date('Y-m-d', strtotime($datedj));
+        //$data['doj'] =date('Y-m-d', strtotime($datedj));
+      
         $updateData = $memberprofile->update($data);
        // dd($data->id);
         $memberid = $request->input('id');

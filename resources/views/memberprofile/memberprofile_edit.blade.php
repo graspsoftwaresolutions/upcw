@@ -116,7 +116,7 @@
 										<div class="col m6 s12">
 										  <label for="mstatus">Marital status</label>
 										  <div class="">
-											<select class="error browser-default" id="mstatus" name="mstatus" data-error=".errorTxt42" required="">
+											<select class="error browser-default" id="mstatus" name="marital_status" data-error=".errorTxt42" required="">
 											  <option value="">Choose status</option>
 											  <option @if($memberprofile->marital_status=='Single') selected @endif value="Single">Single</option>
 											  <option @if($memberprofile->marital_status=='Married') selected @endif value="Married">Married</option>

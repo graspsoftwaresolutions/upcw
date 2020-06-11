@@ -308,25 +308,29 @@ class ReportController extends Controller
 	public function newmemberreport()
 	{
 		$data['company'] = Company::where('status','=','1')->get();
+		$data['costcenters'] = DB::table('company_branches')->where('status','=','1')->get();
 		return view('report.newmembers')->with('data',$data);
 	}
 	public function get_reportnewmember_list(Request $request)
 	{
 		$monthlyyear_paid = $_POST['mypaid'];
 		$cmp_id = $_POST['cmp_id'];
+		$costcenter_id = $_POST['costcenter_id'];
         if($monthlyyear_paid!=""){
           $fmmm_date = explode("/",$monthlyyear_paid);
           $month = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
           $year = date('Y',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
 		}
+		$slno = 0;
 	
 		//dd($year);
 		$columns = array( 
-			0 => 'member_no',
-			1 => 'company_name',
-			2 => 'member_name',
-            3 => 'doj',
-            4 => 'id'
+			$slno++ => 'member_no',
+			$slno++ => 'company_name',
+			$slno++ => 'member_name',
+            $slno++ => 'doj',
+			$slno++ => 'id' ,
+			$slno++ => 'id' ,
         );
 		
 		$query_pt = DB::table('memberprofiles');
@@ -344,7 +348,10 @@ class ReportController extends Controller
 		if($cmp_id !=''){
 			$cmp_id = $cmp_id;
 			$query_pt->where('company_name', '=', $cmp_id);
-			}
+		}
+		if($costcenter_id !=''){
+			$query_pt->where('cost_centerid', '=', $costcenter_id);
+		}
 		$totalData = $query_pt->get()->count();
         $totalFiltered = $totalData;
 		
@@ -370,7 +377,10 @@ class ReportController extends Controller
 				if($cmp_id !=''){
 					$cmp_id = $cmp_id;
 					$query_fetch->where('company_name', '=', $cmp_id);
-					}
+				}
+				if($costcenter_id !=''){
+					$query_fetch->where('cost_centerid', '=', $costcenter_id);
+				}
 				$query_fetch->orderBy($order,$dir);
 				$newmemberlist = $query_fetch->get()->toArray();
                 
@@ -390,7 +400,10 @@ class ReportController extends Controller
 				if($cmp_id !=''){
 					$cmp_id = $cmp_id;
 					$query_fetch->where('company_name', '=', $cmp_id);
-					}
+				}
+				if($costcenter_id !=''){
+					$query_fetch->where('cost_centerid', '=', $costcenter_id);
+				}
 				$query_fetch->offset($start);
 				$query_fetch->limit($limit);
 				$query_fetch->orderBy($order,$dir);
@@ -415,7 +428,10 @@ class ReportController extends Controller
 					if($cmp_id !=''){
 						$cmp_id = $cmp_id;
 						$query_fetch->where('company_name', '=', $cmp_id);
-						}
+					}
+					if($costcenter_id !=''){
+						$query_fetch->where('cost_centerid', '=', $costcenter_id);
+					}
 					$query_fetch->Where('member_no', '=',$search);
 					$query_fetch->orWhere('member_name', 'LIKE',"%{$search}%");
 					$query_fetch->orWhere('doj', 'LIKE',"%{$search}%");
@@ -437,7 +453,10 @@ class ReportController extends Controller
 					if($cmp_id !=''){
 						$cmp_id = $cmp_id;
 						$query_fetch->where('company_name', '=', $cmp_id);
-						}
+					}
+					if($costcenter_id !=''){
+						$query_fetch->where('cost_centerid', '=', $costcenter_id);
+					}
 					$query_fetch->Where('member_no', '=',$search);
 					$query_fetch->orWhere('member_name', 'LIKE',"%{$search}%");
 					$query_fetch->orWhere('doj', 'LIKE',"%{$search}%");
@@ -462,7 +481,10 @@ class ReportController extends Controller
 			if($cmp_id !=''){
 				$cmp_id = $cmp_id;
 				$query_pt->where('company_name', '=', $cmp_id);
-				}
+			}
+			if($costcenter_id !=''){
+				$query_pt->where('cost_centerid', '=', $costcenter_id);
+			}
 			$query_pt->Where('member_no', '=',$search);
 			$query_pt->orWhere('member_name', 'LIKE',"%{$search}%");
 			$query_pt->orWhere('doj', 'LIKE',"%{$search}%");
@@ -482,7 +504,8 @@ class ReportController extends Controller
 				//$nestedData['company_name'] = '<p style="text-align:center">'.$newmember->company_name.'</p>';
 				$nestedData['company_name'] = DB::table('companies')->where('id' ,$newmember->company_name)->value('company_name');
 				$nestedData['member_name'] = '<p style="text-align:center">'.$newmember->member_name.'</p>';
-                $nestedData['doj'] = '<p style="text-align:center">'.date("d/m/Y", strtotime($newmember->doj)).'</p>';
+				$nestedData['doj'] = '<p style="text-align:center">'.date("d/m/Y", strtotime($newmember->doj)).'</p>';
+				$nestedData['cost_center'] = DB::table('company_branches')->where('id' ,$newmember->cost_centerid)->pluck('branch_name')->first();
                 $nestedData['action'] = '<p style="text-align:center"> N </p>';
                 $data[] = $nestedData;
 
@@ -500,12 +523,14 @@ class ReportController extends Controller
 	public function resignreport()
 	{
 		$data['company'] = Company::where('status','=','1')->get();
+		$data['costcenters'] = DB::table('company_branches')->where('status','=','1')->get();
 		return view('report.resign')->with('data',$data);
 	}
 	public function get_resignreport_list(Request $request)
 	{		
 		$monthlyyear_resigndate = $_POST['monthlyyear_resignmember'];
 		$cmp_id = $_POST['cmp_id'];
+		$costcenter_id = $_POST['costcenter_id'];
         if($monthlyyear_resigndate!=""){
           $fmmm_date = explode("/",$monthlyyear_resigndate);
           $month = date('m',strtotime('01-'.$fmmm_date[0].'-'.$fmmm_date[1]));
@@ -522,15 +547,19 @@ class ReportController extends Controller
 		else{
 			$cmp_id = '';
 		}
+
+		$slno = 0;
+
 		$columns = array( 
-            0 => 'member_no',
-			1 => 'company_name',
-            2 => 'member_name', 
-            3 => 'ic_no_new', 
-            4 => 'race', 
-            5 => 'dob', 
-            6 => 'doj',
-            7 => 'resign_date'
+            $slno++ => 'member_no',
+			$slno++ => 'company_name',
+			$slno++ => 'cost_centerid',
+            $slno++ => 'member_name', 
+            $slno++ => 'ic_no_new', 
+            $slno++ => 'race', 
+            $slno++ => 'dob', 
+            $slno++ => 'doj',
+            $slno++ => 'resign_date'
 		);
 		$query_pt = DB::table('memberprofiles');
 		$query_pt->select('memberprofiles.*');
@@ -547,7 +576,10 @@ class ReportController extends Controller
 		if($cmp_id !=''){
 			$cmp_id = $cmp_id;
 			$query_pt->where('company_name', '=', $cmp_id);
-			}
+		}
+		if($costcenter_id !=''){
+			$query_pt->where('cost_centerid', '=', $costcenter_id);
+		}
 		$totalData = $query_pt->get()->count();
         $totalFiltered = $totalData;
 		
@@ -573,7 +605,10 @@ class ReportController extends Controller
 				if($cmp_id !=''){
 					$cmp_id = $cmp_id;
 					$query_fetch->where('company_name', '=', $cmp_id);
-					}
+				}
+				if($costcenter_id !=''){
+					$query_fetch->where('cost_centerid', '=', $costcenter_id);
+				}
 				$query_fetch->where('member_status', '=', 2);
 				$query_fetch->orderBy($order,$dir);
 				$resignlist = $query_fetch->get()->toArray();
@@ -594,8 +629,11 @@ class ReportController extends Controller
 				if($cmp_id !=''){
 					$cmp_id = $cmp_id;
 					$query_fetch->where('company_name', '=', $cmp_id);
-					}
-					$query_fetch->where('member_status', '=', 2);
+				}
+				if($costcenter_id !=''){
+					$query_fetch->where('cost_centerid', '=', $costcenter_id);
+				}
+				$query_fetch->where('member_status', '=', 2);
 				$query_fetch->offset($start);
 				$query_fetch->limit($limit);
 				$query_fetch->orderBy($order,$dir);
@@ -620,7 +658,10 @@ class ReportController extends Controller
 					if($cmp_id !=''){
 						$cmp_id = $cmp_id;
 						$query_fetch->where('company_name', '=', $cmp_id);
-						}
+					}
+					if($costcenter_id !=''){
+						$query_fetch->where('cost_centerid', '=', $costcenter_id);
+					}
 					$query_fetch->where('member_status', '=', 2);
 					$query_fetch->Where('member_no', '=',$search);
 					$query_fetch->orWhere('member_name', 'LIKE',"%{$search}%");
@@ -644,7 +685,10 @@ class ReportController extends Controller
 					if($cmp_id !=''){
 						$cmp_id = $cmp_id;
 						$query_fetch->where('company_name', '=', $cmp_id);
-						}
+					}
+					if($costcenter_id !=''){
+						$query_fetch->where('cost_centerid', '=', $costcenter_id);
+					}
 					$query_fetch->where('member_status', '=', 2);
 					$query_fetch->Where('member_no', '=',$search);
 					$query_fetch->orWhere('member_name', 'LIKE',"%{$search}%");
@@ -671,7 +715,10 @@ class ReportController extends Controller
 			if($cmp_id !=''){
 				$cmp_id = $cmp_id;
 				$query_pt->where('company_name', '=', $cmp_id);
-				}
+			}
+			if($costcenter_id !=''){
+				$query_pt->where('cost_centerid', '=', $costcenter_id);
+			}
 			$query_pt->where('member_status', '=', 2);
 			$query_pt->Where('member_no', '=',$search);
 			$query_pt->orWhere('member_name', 'LIKE',"%{$search}%");
@@ -691,7 +738,8 @@ class ReportController extends Controller
                 $nestedData['member_no'] = $resign->member_no;
 				$nestedData['company_name'] = trim(DB::table('companies')->where('id' ,$resign->company_name)->value('company_name'));
                 $nestedData['member_name'] = $resign->member_name;
-                $nestedData['ic_no_new'] = $resign->ic_no_new;
+				$nestedData['ic_no_new'] = $resign->ic_no_new;
+				$nestedData['cost_center'] = DB::table('company_branches')->where('id' ,$resign->cost_centerid)->pluck('branch_name')->first();
                 $nestedData['race'] = $resign->race;
                 $nestedData['dob'] = $resign->dob;
                 $nestedData['doj'] = $resign->doj;
