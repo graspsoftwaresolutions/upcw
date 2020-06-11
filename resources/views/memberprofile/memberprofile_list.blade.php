@@ -60,8 +60,8 @@
 										<thead>
 											<tr>
 												<th>Member No</th>
-												<th>Company Name</th>
 												<th>Member Name</th>
+												<th>Cost Center</th>
 												<th>IC No(New)</th>
 												<th>Race</th>
 												<th>Sex</th>
@@ -122,11 +122,12 @@ $(document).ready(function() {
 				{
 					"data": "member_no"
 				},
-				{
-					"data": "company_name"
-				},
+				
 				{
 					"data": "member_name"
+				},
+				{
+					"data": "cost_center"
 				},
 				{
 					"data": "ic_no_new"

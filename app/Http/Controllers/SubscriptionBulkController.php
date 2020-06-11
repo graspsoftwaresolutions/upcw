@@ -250,7 +250,9 @@ class SubscriptionBulkController extends Controller
                                         //dd( $saveMember_Data);              
                                     }
                                     else{
-                                        dd($data_subdetails);
+                                        SubscriptionMember::where(array('subcompany_id'=>$cmpystat_id,'member_code'=>$member_id,'sub_cid'=>$costcenterid))->update($data_subdetails);
+
+                                       // dd($data_subdetails);
                                     
                                     }                           
                                 }      

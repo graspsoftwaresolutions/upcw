@@ -84,7 +84,7 @@ use App\Model\SubMatchmaster;
 													  <option value="">Choose company name</option>
 													  
 													  @foreach($data['company'] as $row_res)
-													  <option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+													  <option selected="" value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 													  @endforeach
 													 <!-- <option value="1">company 1
 													  <option value="2">company 2-->

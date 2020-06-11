@@ -212,7 +212,7 @@
 										</div>
 									</div>
 									<div class="row">
-										<div class="col m12 s12">
+										<div class="col m6 s12">
 										  <label for="sex">Company name</label>
 										  <div class="">
 											<select class="error" id="company_name" name="company_name" data-error=".errorTxt9" required="">
@@ -228,6 +228,24 @@
 											</select>
 											<small class="errorTxt9"></small>
 										  </div>
+										</div>
+										<div class="col m6 s12">
+										  <label for="cost_centerid">Cost Center</label>
+										 
+											<select class="error browser-default" id="cost_centerid" name="cost_centerid" data-error=".errorTxt125" required="">
+												<option value="">Choose cost center
+												@php 
+													foreach($data['company_branches'] as $row)
+													{
+												@endphp
+												<option value="{{ $row->id }}">{{ $row->branch_name }}
+												@php
+													}
+												@endphp
+											</select>
+											<div class="input-field">
+												<small class="errorTxt125"></small>
+										  	</div>
 										</div>
 									</div>
 									<div class="row">

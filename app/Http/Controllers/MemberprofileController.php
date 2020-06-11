@@ -38,17 +38,18 @@ class MemberprofileController extends Controller
        // $cmp_id = $_POST['cmp_id'];
        $cmp_id = $_POST['cmp_id'];
       //var_dump($cmp_id);
+       $slno = 0;
 		$columns = array( 
-            0 => 'member_no',
-			1 => 'employee_no',
-            2 => 'member_name', 
-            3 => 'ic_no_new', 
-            4 => 'race', 
-            5 => 'sex', 
-            6 => 'dob', 
-            7 => 'doj', 
-            8 => 'member_status', 
-            9 => 'options'
+            $slno++ => 'member_no',
+			$slno++ => 'employee_no',
+            $slno++ => 'member_name', 
+            $slno++ => 'ic_no_new', 
+            $slno++ => 'race', 
+            $slno++ => 'sex', 
+            $slno++ => 'dob', 
+            $slno++ => 'doj', 
+            $slno++ => 'member_status', 
+            $slno++ => 'id'
         );
 		$query_pt = DB::table('memberprofiles');
 		$query_pt->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
@@ -232,7 +233,7 @@ class MemberprofileController extends Controller
             $nestedData['dob'] = $dob;
             $nestedData['doj'] = $doj;
             $nestedData['member_status'] = $member_status;
-            $nestedData['cost_center'] = $mprofile->cost_centerid;
+            $nestedData['cost_center'] = DB::table('company_branches')->where('id' ,$mprofile->cost_centerid)->pluck('branch_name')->first();
             $nestedData['options'] = "<a href='".$edit."'><i class='material-icons' style='color: #00bcd4!important;'>edit</i></a>&nbsp;<a href='".$view."'><i class='material-icons' style='color: #ff6f00!important;'>remove_red_eye</i></a>&nbsp;&nbsp;<a href='".$print."'><i class='material-icons' style='color: #f2000!important;'>print</i></a>";
             $data[] = $nestedData;
 
@@ -265,6 +266,7 @@ class MemberprofileController extends Controller
         $data['designation_list'] = DB::table('designation')->where('status','=','1')->get();
         $data['department_list'] = DB::table('department')->where('status','=','1')->get();
         $data['relation_list'] = DB::table('relation')->where('status','=','1')->get();
+        $data['company_branches'] = DB::table('company_branches')->where('status','=','1')->get();
         return view('memberprofile.memberprofile_add')->with('data',$data);
     }
 	public function findMemberNoExists(Request $request)
@@ -411,7 +413,8 @@ class MemberprofileController extends Controller
         $designation_list = DB::table('designation')->where('status','=','1')->get();
         $department_list = DB::table('department')->where('status','=','1')->get();
         $relation_list = DB::table('relation')->where('status','=','1')->get();
-		return view('memberprofile.memberprofile_edit',compact('memberprofile','race_list','company_list','designation_list','department_list','relation_list'));
+        $company_branches = DB::table('company_branches')->where('status','=','1')->get();
+		return view('memberprofile.memberprofile_edit',compact('memberprofile','race_list','company_list','designation_list','department_list','relation_list','company_branches'));
         //$data['member_list'] = Memberprofile::where('id',$memberprofile->id)->first();
        // return view('admin.memberprofile_list')->with('data',$data);
     }

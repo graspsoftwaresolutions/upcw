@@ -23,6 +23,8 @@
               </li>
               <li><a href="{{ route('department') }}" class="{{ Request::is('department') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Company">Department</span></a>
               </li>
+              <li><a href="{{ route('department') }}" class="{{ Request::is('department') ? 'active' : '' }}"><i class="material-icons">radio_button_unchecked</i><span data-i18n="Company">Race</span></a>
+              </li>
             </ul>
           </div>
         </li>
