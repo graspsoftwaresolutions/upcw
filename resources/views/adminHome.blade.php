@@ -1,5 +1,48 @@
 @include('template.header')
 @include('flash-message')
+
+<div class="row">
+    <div class="col s12">
+      <h3 class="center">ASSOCIATION OF MAYBANK CLASS ONE OFFICERS</h3>
+    </div>
+    @if(Auth::user()->is_admin==1)
+    @php
+      $costcenters_count = CommonHelper::CostCentersCount();
+      $members_count = CommonHelper::MembersCount();
+    @endphp
+    <div class="col s12 m6 l3">
+      <a style="color:white" href="#">
+       <div class="card animate fadeLeft">
+          <div class="card-content cyan white-text">
+             <p class="card-stats-title"> No of Cost Centers</p>
+             <h4 class="card-stats-number white-text">{{ $costcenters_count }}</h4>
+             <!-- <p class="card-stats-compare">
+                <i class="mdi-creation"></i> 15%
+                <span class="cyan text text-lighten-5">from yesterday</span>
+             </p> -->
+          </div>
+          <div class="card-action cyan darken-1">
+             <div id="clients-bar" class="center-align">Cost Centers List</div>
+          </div>
+       </div>
+       </a> 
+    </div>
+    
+    <div class="col s12 m6 l3">
+      <a style="color:white" href="{{ route('memberprofiles.index') }}">
+       <div class="card animate fadeRight">
+          <div class="card-content orange lighten-1 white-text">
+             <p class="card-stats-title"><i class="material-icons"></i>No of Members</p>
+             <h4 class="card-stats-number white-text">{{ $members_count }}</h4>
+          </div>
+          <div class="card-action orange">
+             <div id="profit-tristate" class="center-align">Members List </div>
+          </div>
+       </div>
+       </a>
+    </div>
+    @endif
+</div>
 <!-- START RIGHT SIDEBAR NAV -->
 <!--aside id="right-sidebar-nav">
   <div id="slide-out-right" class="slide-out-right-sidenav sidenav rightside-navigation">

@@ -23,6 +23,20 @@
 	    font-size: .8rem;
 	    color: #000 !important;
 	}
+	.buttons-pdf {
+	    background-color: red;
+	    color: white;
+	    padding: 6px;
+	    border-radius: 4px;
+	    margin-left: 13px;
+	}
+	.buttons-excel {
+	    background-color: #1a630c !important;
+	    margin-left: 20px;
+	    color: white;
+	    padding: 6px;
+	    border-radius: 4px;
+	}
 </style>
 
 

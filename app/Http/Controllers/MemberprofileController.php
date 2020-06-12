@@ -191,6 +191,7 @@ class MemberprofileController extends Controller
            // $view =  $mprofile['id'];
             $edit =  route('memberprofiles.edit',$mprofile->id);
             $print =  route('memberprofiles.print',$mprofile->id);
+            $view =  route('memberprofiles.history',$mprofile->id);
            // $edit = $mprofile['id'];
             $member_status ="";
             if($mprofile->member_status == "1")
@@ -235,7 +236,9 @@ class MemberprofileController extends Controller
             $nestedData['doj'] = $doj;
             $nestedData['member_status'] = $member_status;
             $nestedData['cost_center'] = DB::table('company_branches')->where('id' ,$mprofile->cost_centerid)->pluck('branch_name')->first();
-            $nestedData['options'] = "<a href='".$edit."'><i class='material-icons' style='color: #00bcd4!important;'>edit</i></a>&nbsp;<a href='".$view."'><i class='material-icons' style='color: #ff6f00!important;'>remove_red_eye</i></a>&nbsp;&nbsp;<a href='".$print."'><i class='material-icons' style='color: #f2000!important;'>print</i></a>";
+            $nestedData['options'] = "<a href='".$edit."'><i class='material-icons' style='color: #00bcd4!important;'>edit</i></a>&nbsp;
+            <a href='".$view."' class='hide'><i class='material-icons' style='color: #ff6f00!important;'>remove_red_eye</i></a>&nbsp;&nbsp;<a href='".$view."'><i class='material-icons' style='color: #ff2000!important;'>history</i></a>&nbsp;&nbsp;
+            <a href='".$print."' class='hide'><i class='material-icons' style='color: #f2000!important;'>print</i></a>";
             $data[] = $nestedData;
 
         }
@@ -581,5 +584,35 @@ class MemberprofileController extends Controller
             
         }
         
+    }
+
+    public function MemberHistory(Request $request,$memberid){
+        $data['memberinfo'] = DB::table('memberprofiles')
+                    ->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid')
+                    ->where('id','=',$memberid)
+                    ->first();
+        $data['memberhistory'] = DB::table('subscription_member as sm')
+                        ->select('sm.subs','sm.welfare_fee','sm.entrance_fee','s.statusMonth')    
+                        ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
+                        ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
+                        ->where('sm.member_code','=',$memberid)
+                        ->orderBy('s.statusMonth','asc')
+                        ->get();
+        
+        return view('memberprofile.memberprofile_history')->with('data',$data);
+    }
+    public function ViewHistoryMember()
+    {
+        if(Auth::user()->is_admin==0){
+            $email = Auth::user()->email;
+            $memberid = DB::table('memberprofiles')
+                ->where('email_id', $email)
+                ->pluck('id')
+                ->first();
+            if($memberid!=''){
+                return redirect('member_history/'.$memberid);
+            }
+            
+        }
     }
 }

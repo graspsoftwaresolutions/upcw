@@ -67,4 +67,12 @@ class CommonHelper
       return $status_data = DB::table('member_guardian')->where('member_id', $memberid)->get();
        
 	}
+	public static function CostCentersCount(){
+      return $status_data = DB::table('company_branches')->where('status', 1)->count();
+       
+	}
+	public static function MembersCount(){
+      return $status_data = DB::table('memberprofiles')->count();
+       
+	}
 }

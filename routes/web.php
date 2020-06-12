@@ -105,3 +105,6 @@ Route::post('storeDepartment','MasterController@DepartmentStore')->name('storeDe
 Route::delete('Departmentdestroy/{id}','MasterController@Departmentdestroy')->name('Departmentdestroy')->middleware('is_admin');
 
 Route::get('memberredirect', 'MemberprofileController@ViewEditMember')->name('editmember.locate');
+Route::get('historyredirect', 'MemberprofileController@ViewHistoryMember')->name('history.locate');
+
+Route::get('member_history/{id}', 'MemberprofileController@MemberHistory')->name('memberprofiles.history')->middleware('is_admin');

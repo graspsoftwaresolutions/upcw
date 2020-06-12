@@ -74,6 +74,10 @@
         href="{{ route('editmember.locate') }}"><i class="material-icons">note</i>
         <span class="menu-title" data-i18n="Member Query">Member Details</span></a>
         </li>
+        <li class="bold"><a class=" waves-effect waves-cyan " 
+        href="{{ route('history.locate') }}"><i class="material-icons">history</i>
+        <span class="menu-title" data-i18n="Member Query">Member History</span></a>
+        </li>
         @endif
 		
       </ul>

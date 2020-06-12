@@ -216,6 +216,10 @@ class SubscriptionBulkController extends Controller
                                 $mempro['cost_centerid'] =  $costcenterid; 
                                 $mempro['company_names'] = DB::table('companies')->where('id', $cmpy_id)->first()->company_name;
                                 // $mempro['employee_no'] = $empno;   
+
+                                $emailid = $mem_no.'@amco.com';
+                                $mempro['email_id'] =  $emailid;
+
                                 $mempro['member_status'] = 1;   
                                 $mempro['monthly_fee'] =  $subs_month;   
                                 $mempro['entrance_fee'] = $entrance_fee; 
@@ -224,7 +228,8 @@ class SubscriptionBulkController extends Controller
                                 // dd($mempro['company_names']);
                                 $member_id  = $savememprof->id;    
 
-                                $emailid = $mem_no.'@amco.com';
+                               
+                                //dd($emailid);
                                 $password = bcrypt($mem_ic);
 
                                 $userid = DB::table('users')->insertGetId(
