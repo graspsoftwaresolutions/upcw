@@ -47,7 +47,7 @@ class SubscriptionController extends Controller
         $year = $monyr[0];
         $month = $monyr[1];
         $data['report']= DB::table('subscription_member as m')
-        ->select('cb.branch_name','m.sub_cid', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'))
+        ->select('cb.branch_name','m.sub_cid', DB::raw('sum(subs) as sum'), DB::raw('count(*) as total'), DB::raw('sum(m.welfare_fee) as sumwelfare'), DB::raw('sum(m.entrance_fee) as sumentrance'))
         ->leftjoin('subcompany as sc', 'm.subcompany_id', '=', 'sc.id')
         ->leftjoin('statusmonth as sm', 'sc.statusMonth_id', '=', 'sm.id')
         ->leftjoin('company_branches as cb', 'cb.id', '=', 'm.sub_cid')

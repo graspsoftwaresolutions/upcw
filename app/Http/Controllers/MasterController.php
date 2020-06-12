@@ -331,4 +331,121 @@ class MasterController extends Controller
                     DB::table('department')->where('id','=',$id)->delete();
                     return  redirect('department')->with('message','Department Deleted Succesfully');
             }
+            public function racelist()
+            {
+              $data['race_view'] = DB::table('races')->where('status','=',1)->get();
+              return view('masters.race.list')->with('data',$data);
+            }
+            public function raceNew()
+            {
+                return view('masters.race.new');
+        
+            } 
+            
+            public function RaceStore(Request $request)
+            {
+                $request->validate([
+                   'race_name'=>'required',
+               ],
+               [
+                   'race_name.required'=>'Please enter race name',
+               ]);
+               $data = $request->all();  
+           
+               // $saveCompany = Company::create($data);
+         
+                $saveRelation =  DB::table('races')->insert(
+                  ['name' => $data['race_name'], 'status' => 1]
+                 );
+                  
+                if($saveRelation == true)
+                {
+                    return  redirect('race')->with('message','Race Added Succesfully');
+                }
+            }
+            public function editraceDetail($raceid)
+            {
+                $id = Crypt::decrypt($raceid);
+                $data['race_view'] = DB::table('races')->where('status','=',1)->where('id','=',$id)->first();
+                return view('masters.race.edit')->with('data',$data);
+            }
+            public function UpdateRaceDetail(request $request)
+            {
+                //return 1;
+                $request->validate([
+                    'race_name'=>'required',
+                ],
+                [
+                    'race_name.required'=>'Please enter Race name',
+                ]);
+                $data = $request->all();
+                $data['id'] = $request->autoid;
+                $des = DB::table('races')->where('id','=',$data['id'])->update(['name' => $data['race_name']]);
+                return  redirect('race')->with('message','Race Updated Succesfully');
+            }
+            public function RaceDestroy($raceid)
+            {
+                $id = Crypt::decrypt($raceid);
+                DB::table('races')->where('id','=',$id)->delete();
+                return  redirect('race')->with('message','Race Deleted Succesfully');
+            }
+
+            public function costcenterlist()
+            {
+              $data['cost_view'] = DB::table('company_branches')->where('status','=',1)->get();
+              return view('masters.costcenter.list')->with('data',$data);
+            }
+            public function costcenterNew()
+            {
+                return view('masters.costcenter.new');
+        
+            } 
+            
+            public function CostcenterStore(Request $request)
+            {
+                $request->validate([
+                   'cost_center'=>'required',
+               ],
+               [
+                   'cost_center.required'=>'Please enter cost center',
+               ]);
+               $data = $request->all();  
+           
+               // $saveCompany = Company::create($data);
+         
+                $saveRelation =  DB::table('company_branches')->insert(
+                  ['branch_name' => $data['cost_center'], 'company_id' => 1, 'status' => 1]
+                 );
+                  
+                if($saveRelation == true)
+                {
+                    return  redirect('costcenter')->with('message','Cost Center Added Succesfully');
+                }
+            }
+            public function editcostcenterDetail($raceid)
+            {
+                $id = Crypt::decrypt($raceid);
+                $data['cost_view'] = DB::table('company_branches')->where('status','=',1)->where('id','=',$id)->first();
+                return view('masters.costcenter.edit')->with('data',$data);
+            }
+            public function UpdateCostcenterDetail(request $request)
+            {
+                //return 1;
+                $request->validate([
+                    'cost_center'=>'required',
+                ],
+                [
+                    'cost_center.required'=>'Please enter cost_center name',
+                ]);
+                $data = $request->all();
+                $data['id'] = $request->autoid;
+                $des = DB::table('company_branches')->where('id','=',$data['id'])->update(['branch_name' => $data['cost_center']]);
+                return  redirect('costcenter')->with('message','Cost center Updated Succesfully');
+            }
+            public function CostcenterDestroy($raceid)
+            {
+                $id = Crypt::decrypt($raceid);
+                DB::table('company_branches')->where('id','=',$id)->delete();
+                return  redirect('costcenter')->with('message','Cost Center Deleted Succesfully');
+            }
 }

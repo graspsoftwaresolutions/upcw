@@ -75,4 +75,13 @@ class CommonHelper
       return $status_data = DB::table('memberprofiles')->count();
        
 	}
+
+	public static function getSubsFees($date){
+		return $status_data = DB::table('subscription_member as m')
+     			    ->select('m.sub_cid', DB::raw('sum(m.subs) as sum'), DB::raw('sum(m.welfare_fee) as sumwelfare'), DB::raw('sum(m.entrance_fee) as sumentrance'), DB::raw('count(*) as total'))
+					->leftjoin('subcompany as sc', 'm.subcompany_id', '=', 'sc.id')
+					->leftjoin('statusmonth as sm', 'sc.statusMonth_id', '=', 'sm.id')
+					->where('sm.statusMonth', $date)
+					->first();
+	}
 }

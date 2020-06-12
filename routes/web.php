@@ -108,3 +108,17 @@ Route::get('memberredirect', 'MemberprofileController@ViewEditMember')->name('ed
 Route::get('historyredirect', 'MemberprofileController@ViewHistoryMember')->name('history.locate');
 
 Route::get('member_history/{id}', 'MemberprofileController@MemberHistory')->name('memberprofiles.history')->middleware('is_admin');
+
+Route::get('race','MasterController@racelist')->name('race')->middleware('is_admin');
+Route::get('editrace/{id}','MasterController@editraceDetail')->name('editrace')->middleware('is_admin'); 
+Route::post('updaterace','MasterController@UpdateRaceDetail')->name('updaterace')->middleware('is_admin');
+Route::get('racenew','MasterController@raceNew')->name('racenew')->middleware('is_admin');
+Route::post('storeRace','MasterController@RaceStore')->name('storeRace')->middleware('is_admin'); 
+Route::delete('Racedestroy/{id}','MasterController@Racedestroy')->name('Racedestroy')->middleware('is_admin');
+
+Route::get('costcenter','MasterController@costcenterlist')->name('costcenter')->middleware('is_admin');
+Route::get('editcostcenter/{id}','MasterController@editcostcenterDetail')->name('editcostcenter')->middleware('is_admin'); 
+Route::post('updatecostcenter','MasterController@UpdateCostcenterDetail')->name('updatecostcenter')->middleware('is_admin');
+Route::get('costcenternew','MasterController@costcenterNew')->name('costcenternew')->middleware('is_admin');
+Route::post('storeCostcenter','MasterController@CostcenterStore')->name('storeCostcenter')->middleware('is_admin'); 
+Route::delete('Costcenterdestroy/{id}','MasterController@Costcenterdestroy')->name('Costcenterdestroy')->middleware('is_admin');

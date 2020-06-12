@@ -129,7 +129,7 @@ use App\Model\SubMatchmaster;
 								@php
 									$tot=0;
 									$sum=0;
-									//dd($data['subsdate']);
+									//dd($data);
 								@endphp
 								@foreach($data['report'] as $k=>$cmpcunt)
 								@php
@@ -207,10 +207,50 @@ use App\Model\SubMatchmaster;
 						               <li class="collection-item">
 						                  <div class="row">
 						                     <div class="col s6">
-						                        <p class="collections-title">Total amount paid (RM)</p>
+						                        <p class="collections-title">Total Subs paid (RM)</p>
 						                        <p class="collections-content"></p>
 						                     </div>
 						                     <div class="col s3"><p class="collections-title"><span id="totalamt" class="task-cat deep-orange accent-2">{{ $sum }}</span></p></div>
+						                     <div class="col s3">
+						                        <div id="project-line-4"></div>
+						                     </div>
+						                  </div>
+						               </li>
+						               @php
+						               	$feedata = CommonHelper::getSubsFees($data['subsdate']);
+
+						               @endphp
+						                <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Total Welfare paid (RM)</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"><p class="collections-title"><span id="totalwelfareamt" class="task-cat deep-orange accent-2">{{ $feedata=='' ? '' : $feedata->sumwelfare }}</span></p></div>
+						                     <div class="col s3">
+						                        <div id="project-line-4"></div>
+						                     </div>
+						                  </div>
+						               </li>
+						               <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Total Entrance paid (RM)</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"><p class="collections-title"><span id="totalentranceamt" class="task-cat deep-orange accent-2">{{ $feedata=='' ? '' : $feedata->sumentrance }}</span></p></div>
+						                     <div class="col s3">
+						                        <div id="project-line-4"></div>
+						                     </div>
+						                  </div>
+						               </li>
+						               <li class="collection-item">
+						                  <div class="row">
+						                     <div class="col s6">
+						                        <p class="collections-title">Total paid (RM)</p>
+						                        <p class="collections-content"></p>
+						                     </div>
+						                     <div class="col s3"><p class="collections-title"><span id="totalpaid" class="task-cat deep-orange accent-2">{{ $feedata=='' ? '' : $feedata->sumentrance+$feedata->sumwelfare+$sum }}</span></p></div>
 						                     <div class="col s3">
 						                        <div id="project-line-4"></div>
 						                     </div>
@@ -299,9 +339,13 @@ $(document).ready(function(){
 					var totcnt = 0;
 					var sumcnt = 0;
 					var totalcenters = 0;
+					var totalwelfare = 0;
+					var totalentrance = 0;
 					$.each($.parseJSON(response), function(idx, obj) {
 						totcnt += parseInt(obj.total);
 						sumcnt += parseInt(obj.sum);
+						totalwelfare += parseInt(obj.sumwelfare);
+						totalentrance += parseInt(obj.sumentrance);
 						totalcenters++;
 						$('#tbdycmpy1').append('<tr><td>'+(idx+1)+'</td><td>'+obj.branch_name+'</td><td>'+obj.total+'</td><td>'+obj.sum+'</td></tr>');
 					});
@@ -309,6 +353,10 @@ $(document).ready(function(){
 					$("#totalcostcenter").text(totalcenters);
 					$("#totalmembers").text(totcnt);
 					$("#totalamt").text(sumcnt);
+					$("#totalwelfareamt").text(totalwelfare);
+					$("#totalentranceamt").text(totalentrance);
+					var totalpaid = parseFloat(totalwelfare)+parseFloat(totalentrance)+parseFloat(sumcnt);
+					$("#totalpaid").text(totalpaid);
 				}
 	});
 
