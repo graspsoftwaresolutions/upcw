@@ -11,7 +11,7 @@
       $members_count = CommonHelper::MembersCount();
     @endphp
     <div class="col s12 m6 l3">
-      <a style="color:white" href="#">
+      <a style="color:white" href="{{ route('costcenter') }}">
        <div class="card animate fadeLeft">
           <div class="card-content cyan white-text">
              <p class="card-stats-title"> No of Cost Centers</p>
