@@ -84,4 +84,36 @@ class CommonHelper
 					->where('sm.statusMonth', $date)
 					->first();
 	}
+
+	public static function getMemberHistory($memberid,$year){
+		return $status_data = DB::table('subscription_member as sm')
+			        ->select('sm.subs','sm.welfare_fee','sm.entrance_fee','s.statusMonth','sm.total_subs')  
+			        ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
+			        ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
+			        ->where('sm.member_code','=',$memberid)
+			        ->where(DB::raw('YEAR(s.statusMonth)'),'=',$year)
+			        ->orderBy('s.statusMonth','asc')
+			        ->get();
+	}
+	public static function getMemberDatewiseHistory($memberid,$fromdate,$todate){
+		return $status_data = DB::table('subscription_member as sm')
+			        ->select('sm.subs','sm.welfare_fee','sm.entrance_fee','s.statusMonth','sm.total_subs')  
+			        ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
+			        ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
+			        ->where('sm.member_code','=',$memberid)
+			        ->where('s.statusMonth','>=',$fromdate)
+                    ->where('s.statusMonth','<=',$todate)
+			        ->orderBy('s.statusMonth','asc')
+			        ->get();
+	}
+	public static function getLastPaidDate($memberid){
+		return $status_data = DB::table('subscription_member as sm')
+			        ->select('s.statusMonth')  
+			        ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
+			        ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
+			        ->where('sm.member_code','=',$memberid)
+			        ->orderBy('s.statusMonth','desc')
+			        ->pluck('s.statusMonth')
+			        ->first();
+	}
 }

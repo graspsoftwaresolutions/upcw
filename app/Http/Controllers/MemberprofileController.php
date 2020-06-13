@@ -591,13 +591,38 @@ class MemberprofileController extends Controller
                     ->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid')
                     ->where('id','=',$memberid)
                     ->first();
-        $data['memberhistory'] = DB::table('subscription_member as sm')
-                        ->select('sm.subs','sm.welfare_fee','sm.entrance_fee','s.statusMonth')    
+        $data['member_years'] = DB::table('subscription_member as sm')
+                        ->select(DB::raw('YEAR(s.statusMonth) as years'))    
                         ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
                         ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
                         ->where('sm.member_code','=',$memberid)
-                        ->orderBy('s.statusMonth','asc')
+                        ->orderBy('s.statusMonth','desc')
+                        ->GroupBy(DB::raw('YEAR(s.statusMonth)'))
                         ->get();
+        
+        // $data['member_years'] = DB::table($this->membermonthendstatus_table.' as ms')->select(DB::raw('YEAR(ms.StatusMonth) as years'))
+        //                 ->where('ms.MEMBER_CODE','=',$id)
+        //                 ->OrderBy('ms.StatusMonth','desc')
+        //                 ->GroupBy(DB::raw('YEAR(ms.StatusMonth)'))
+        //                 ->get();
+        
+        $memberhistoryone = DB::table('subscription_member as sm')
+        ->select('sm.subs','sm.id as smid','s.statusMonth')    
+        ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
+        ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
+        ->where('sm.member_code','=',$memberid)
+        ->orderBy('s.statusMonth','asc')
+        ->get();
+
+        $totalsubs = 0;
+        foreach ($memberhistoryone as $key => $history) {
+            $totalsubs += $history->subs;
+            DB::table('subscription_member')
+            ->where('id', $history->smid)
+            ->update(['total_subs' => $totalsubs]);
+        }
+        $data['from_date'] = '';
+        $data['to_date'] = '';
         
         return view('memberprofile.memberprofile_history')->with('data',$data);
     }
@@ -614,5 +639,39 @@ class MemberprofileController extends Controller
             }
             
         }
+    }
+
+    public function ViewMemberHistory(Request $request, $memberid)
+    {
+        $frommonth = $request->input('from_month');
+        $to_month = $request->input('to_month');
+
+        $datearr = explode("/",$frommonth);  
+        $frommonthname = $datearr[0];
+        $fromyear = $datearr[1];
+        $from_date = date('Y-m-d',strtotime('01-'.$frommonthname.'-'.$fromyear));
+
+        $todatearr = explode("/",$to_month);  
+        $tomonthname = $todatearr[0];
+        $toyear = $todatearr[1];
+        $to_date = date('Y-m-d',strtotime('01-'.$tomonthname.'-'.$toyear));
+        
+        $data['memberinfo'] = DB::table('memberprofiles')
+                    ->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid')
+                    ->where('id','=',$memberid)
+                    ->first();
+        $data['member_years'] = DB::table('subscription_member as sm')
+                        ->select(DB::raw('YEAR(s.statusMonth) as years'))    
+                        ->leftjoin('subcompany as sc', 'sc.id', '=', 'sm.subcompany_id')
+                        ->leftjoin('statusmonth as s', 's.id', '=', 'sc.statusMonth_id')
+                        ->where('sm.member_code','=',$memberid)
+                        ->where('s.statusMonth','>=',$from_date)
+                        ->where('s.statusMonth','<=',$to_date)
+                        ->orderBy('s.statusMonth','desc')
+                        ->GroupBy(DB::raw('YEAR(s.statusMonth)'))
+                        ->get();
+        $data['from_date'] = $from_date;
+        $data['to_date'] = $to_date;
+        return view('memberprofile.memberprofile_history')->with('data',$data);
     }
 }

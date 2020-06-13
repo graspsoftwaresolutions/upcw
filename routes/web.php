@@ -122,3 +122,5 @@ Route::post('updatecostcenter','MasterController@UpdateCostcenterDetail')->name(
 Route::get('costcenternew','MasterController@costcenterNew')->name('costcenternew')->middleware('is_admin');
 Route::post('storeCostcenter','MasterController@CostcenterStore')->name('storeCostcenter')->middleware('is_admin'); 
 Route::delete('Costcenterdestroy/{id}','MasterController@Costcenterdestroy')->name('Costcenterdestroy')->middleware('is_admin');
+
+Route::post('member_history/{id}','MemberprofileController@ViewMemberHistory')->name('ViewMemberHistory')->middleware('is_admin'); 
