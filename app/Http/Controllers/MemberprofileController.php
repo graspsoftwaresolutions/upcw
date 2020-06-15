@@ -24,6 +24,8 @@ class MemberprofileController extends Controller
     public function index()
     {
         $data['company'] =Company::where('status','=','1')->get();
+        $data['costcenters'] = DB::table('company_branches')->where('status','=','1')->get();
+        $data['race_list'] = Race::where('status','=','1')->get();
         return view('memberprofile.memberprofile_list')->with('data',$data);
     }
 	public function memberprofile()
@@ -37,7 +39,12 @@ class MemberprofileController extends Controller
 	{
 		
        // $cmp_id = $_POST['cmp_id'];
-       $cmp_id = $_POST['cmp_id'];
+       $cmp_id = $request->input('cmp_id');
+       $from_doj = $request->input('from_doj');
+       $to_doj = $request->input('to_doj');
+       $cost_center = $request->input('cost_center');
+       $race = $request->input('race');
+       $sex = $request->input('sex');
       //var_dump($cmp_id);
        $slno = 0;
 		$columns = array( 
@@ -56,10 +63,26 @@ class MemberprofileController extends Controller
 		$query_pt->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 		//if($monthlyyear_paid != "")
 		//{
-			if($cmp_id !=''){
-			$cmp_id = $cmp_id;			
-			$query_pt->where('company_name', '=', $cmp_id);
-			}
+        if($cmp_id !=''){
+            $cmp_id = $cmp_id;			
+            $query_pt->where('company_name', '=', $cmp_id);
+        }
+        if($from_doj !='' && $to_doj !=''){
+            $from_date = date('Y-m-d',strtotime($from_doj));
+            $to_date = date('Y-m-d',strtotime($to_doj));
+           // $cmp_id = $cmp_id;			
+            $query_pt->where('doj', '>=', $from_date);
+            $query_pt->where('doj', '<=', $to_date);
+        }
+        if($cost_center !=''){
+            $query_pt->where('cost_centerid', '=', $cost_center);
+        }
+        if($race !=''){
+            $query_pt->where('race', '=', $race);
+        }
+        if($sex !=''){
+            $query_pt->where('sex', '=', $sex);
+        }
 			
 		$totalData = $query_pt->get()->count();
         $totalFiltered = $totalData;
@@ -78,10 +101,26 @@ class MemberprofileController extends Controller
 				$query_fetch->select('id','member_no','member_name','company_name','company_names','employee_no','ic_no_new','race','sex','dob','doj','member_status','cost_centerid');
 				//if($monthlyyear_paid != "")
 				//{
-					if($cmp_id !=''){
-					$cmp_id = $cmp_id;
-					$query_fetch->where('company_name', '=', $cmp_id);
-					}
+                if($cmp_id !=''){
+                    $cmp_id = $cmp_id;
+                    $query_fetch->where('company_name', '=', $cmp_id);
+                }
+                if($from_doj !='' && $to_doj !=''){
+                    $from_date = date('Y-m-d',strtotime($from_doj));
+                    $to_date = date('Y-m-d',strtotime($to_doj));
+                   // $cmp_id = $cmp_id;			
+                    $query_fetch->where('doj', '>=', $from_date);
+                    $query_fetch->where('doj', '<=', $to_date);
+                }
+                if($cost_center !=''){
+                    $query_fetch->where('cost_centerid', '=', $cost_center);
+                }
+                if($race !=''){
+                    $query_fetch->where('race', '=', $race);
+                }
+                if($sex !=''){
+                    $query_fetch->where('sex', '=', $sex);
+                }
 					
 				$query_fetch->orderBy($order,$dir);
 				$paidlist = $query_fetch->get()->toArray();
@@ -95,10 +134,26 @@ class MemberprofileController extends Controller
 				
 				//if($monthlyyear_paid != "")
 				//{
-					if($cmp_id !=''){
-					$cmp_id = $cmp_id;
+                if($cmp_id !=''){
+                    $cmp_id = $cmp_id;
                     $query_fetch->where('company_name', '=', $cmp_id);
-					}
+                }
+                if($from_doj !='' && $to_doj !=''){
+                    $from_date = date('Y-m-d',strtotime($from_doj));
+                    $to_date = date('Y-m-d',strtotime($to_doj));
+                   // $cmp_id = $cmp_id;			
+                    $query_fetch->where('doj', '>=', $from_date);
+                    $query_fetch->where('doj', '<=', $to_date);
+                }
+                if($cost_center !=''){
+                    $query_fetch->where('cost_centerid', '=', $cost_center);
+                }
+                if($race !=''){
+                    $query_fetch->where('race', '=', $race);
+                }
+                if($sex !=''){
+                    $query_fetch->where('sex', '=', $sex);
+                }
 				$query_fetch->groupBy('id');
 				$query_fetch->offset($start);
 				$query_fetch->limit($limit);
@@ -120,8 +175,24 @@ class MemberprofileController extends Controller
 					//{
 						if($cmp_id !=''){
 							$cmp_id = $cmp_id;
-						$query_fetch->orWhere('company_name', '=', $cmp_id);
-						}
+					    	$query_fetch->orWhere('company_name', '=', $cmp_id);
+                        }
+                        if($from_doj !='' && $to_doj !=''){
+                            $from_date = date('Y-m-d',strtotime($from_doj));
+                            $to_date = date('Y-m-d',strtotime($to_doj));
+                           // $cmp_id = $cmp_id;			
+                            $query_fetch->where('doj', '>=', $from_date);
+                            $query_fetch->where('doj', '<=', $to_date);
+                        }
+                        if($cost_center !=''){
+                            $query_fetch->where('cost_centerid', '=', $cost_center);
+                        }
+                        if($race !=''){
+                            $query_fetch->where('race', '=', $race);
+                        }
+                        if($sex !=''){
+                            $query_fetch->where('sex', '=', $sex);
+                        }
                         $query_fetch->orWhere('member_no', '=',$search);
                         $query_fetch->orWhere('ic_no_new', '=',$search);
                         $query_fetch->orWhere('race', 'LIKE',"%{$search}%");
@@ -140,9 +211,25 @@ class MemberprofileController extends Controller
 					//if($monthlyyear_paid != "")
 					//{
 						if($cmp_id !=''){
-						$cmp_id = $cmp_id;
-						$query_fetch->orWhere('company_name', '=', $cmp_id);
-						}
+                            $cmp_id = $cmp_id;
+                            $query_fetch->orWhere('company_name', '=', $cmp_id);
+                        }
+                        if($from_doj !='' && $to_doj !=''){
+                            $from_date = date('Y-m-d',strtotime($from_doj));
+                            $to_date = date('Y-m-d',strtotime($to_doj));
+                           // $cmp_id = $cmp_id;			
+                            $query_fetch->where('doj', '>=', $from_date);
+                            $query_fetch->where('doj', '<=', $to_date);
+                        }
+                        if($cost_center !=''){
+                            $query_fetch->where('cost_centerid', '=', $cost_center);
+                        }
+                        if($race !=''){
+                            $query_fetch->where('race', '=', $race);
+                        }
+                        if($sex !=''){
+                            $query_fetch->where('sex', '=', $sex);
+                        }
                         $query_fetch->orWhere('member_no', '=',$search);
                         //$query_fetch->orWhere('member_status', 'LIKE',"%{$search}%");
                     $query_fetch->orWhere('ic_no_new', '=',$search);
@@ -166,7 +253,7 @@ class MemberprofileController extends Controller
 			//{
 				if($cmp_id !=''){
 					$cmp_id = $cmp_id;
-				$query_pt->where('company_name', '=', $cmp_id);
+				    $query_pt->where('company_name', '=', $cmp_id);
 				}
                 $query_pt->Where('member_no', '=',$search);
                 $query_pt->orWhere('ic_no_new', '=',$search);

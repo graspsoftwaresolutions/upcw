@@ -95,6 +95,11 @@ class ReportController extends Controller
 		$data['company'] =Company::where('status','=','1')->get();
 		return view('report.statistics')->with('data',$data);
 	}
+	public function coststatisticsreport(Request $request)
+	{
+		$data['costcenters'] = DB::table('company_branches')->where('status','=','1')->get();
+		return view('report.coststatistics')->with('data',$data);
+	}
 	public function get_reportpaid_list(Request $request)
 	{
 		//	var_dump($_POST['cmp_id']);

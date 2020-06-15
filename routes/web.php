@@ -54,6 +54,7 @@ Route::post('get_reportpaid_list', 'ReportController@get_reportpaid_list')->midd
 Route::get('monthwisecompanyreport/{id}', 'ReportController@monthwisecompanyreport')->name('monthwisecompanyreport')->middleware('is_admin');
 Route::get('paidunpaidreport', 'ReportController@paidunpaidreport')->name('paidunpaidreport')->middleware('is_admin');
 Route::get('statisticsreport', 'ReportController@statisticsreport')->name('statisticsreport')->middleware('is_admin');
+Route::get('coststatisticsreport', 'ReportController@coststatisticsreport')->name('coststatisticsreport')->middleware('is_admin');
 Route::get('newmemberreport', 'ReportController@newmemberreport')->name('newmemberreport')->middleware('is_admin');
 Route::post('get_reportnewmember_list', 'ReportController@get_reportnewmember_list')->middleware('is_admin');
 Route::get('resignreport', 'ReportController@resignreport')->name('resignreport')->middleware('is_admin');

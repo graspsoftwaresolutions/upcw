@@ -14,7 +14,7 @@
 						<ol class="breadcrumbs mb-0">
 						  <li class="breadcrumb-item"><a href="#">Dashboard</a>
 						  </li>
-						  <li class="breadcrumb-item active">Statistics List
+						  <li class="breadcrumb-item active">Cost Center Statistics List
 						  </li>
 						</ol>
 					  </div>
@@ -37,26 +37,7 @@
 								  </div>
 								</div>
 							  </div>
-								<div class="row">
-									<form action="{{route('paidunpaidreport')}}" method="GET" id="fmsubmit">
-										@csrf
-										<div class="input-field col m3 s12">
-											<input type="text" class="datepicker1" name="year_paid_unpaid" id="year_paid_unpaid" autocomplete="off">
-											<label for="year_paid_unpaid" class="">Year</label>
-										</div>
-										<div class="input-field col m4 s12">
-											<select class="error" id="company_name" name="company_name">
-												<option value="">Choose company name</option>
-												@foreach($data['company'] as $row_res)
-												<option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
-												@endforeach
-											</select>
-										</div>
-										<div class="input-field col m3 s12">
-											<button type="submit" name="submit" id="submit">Submit</button>
-										</div>
-									</form>
-								</div>
+								=
 
 							</div>
 						  </div>
@@ -75,7 +56,7 @@
 										  <table id="statistics_datatable" class="table">
 											<thead>
 												<tr>												
-													<th >Company Name</th>
+													<th >Cost Center</th>
 													@php 
 														//dd($data['subscriptionlist']);
 														$query_fetch = DB::table('races');
@@ -103,19 +84,19 @@
 											</thead>
 											<tbody>
 												@php
-												$data['subscriptionlist']= DB::table('companies')->get();
-												foreach($data['subscriptionlist'] as $res)
+												//$data['subscriptionlist']= DB::table('companies')->get();
+												foreach($data['costcenters'] as $res)
 												{
 												@endphp
-													<tr>
-														<td> <a href="{{ route('coststatisticsreport') }}">{{ $res->company_name }} </a> </td>
+													<tr id="cost_trid{{ $res->id }}">
+														<td> {{ $res->branch_name }} </td>
 														@php 
 														$data_subtotal=0;
 														$data_subtotal_female=0;
 														$data_overall_total=0;
 														foreach($racelist as $row)
 														{
-															$data_toto_count = DB::table('memberprofiles')->where('race', $row->id)->where('member_status', 1)->where('company_name', $res->id)->whereRaw('LOWER(`sex`) LIKE ? ',[trim(strtolower("Male")).'%'])->get()->count();
+															$data_toto_count = DB::table('memberprofiles')->where('race', $row->id)->where('member_status', 1)->where('cost_centerid', $res->id)->whereRaw('LOWER(`sex`) LIKE ? ',[trim(strtolower("Male")).'%'])->get()->count();
 															$data_subtotal +=$data_toto_count;
 														@endphp
 														<td style="text-align:center">{{ $data_toto_count }}</td>
@@ -126,7 +107,7 @@
 														@php 
 														foreach($racelist as $row)
 														{
-															$data_totol_count_female = DB::table('memberprofiles')->where('race', $row->id)->where('member_status', 1)->where('company_name', $res->id)->where('sex','=',"female")->get()->count();
+															$data_totol_count_female = DB::table('memberprofiles')->where('race', $row->id)->where('member_status', 1)->where('cost_centerid', $res->id)->where('sex','=',"female")->get()->count();
 															$data_subtotal_female +=$data_totol_count_female;
 														@endphp
 														<td style="text-align:center">{{ $data_totol_count_female }}</td>
@@ -140,6 +121,13 @@
 															@endphp
 														{{ $data_overall_total }}
 														</td>
+														@if($data_overall_total==0)
+														<style type="text/css">
+															#cost_trid{{$res->id}}{
+																display: none;
+															}
+														</style>
+														@endif
 														
 													</tr>
 												@php

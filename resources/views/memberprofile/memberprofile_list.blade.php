@@ -3,7 +3,23 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/vendors/data-tables/css/jquery.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/css/pages/page-users.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/assets/css/datepicker.css') }}">
+
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+.ui-datepicker-month
+{
+	display: block;
+    height: 30px;
+	float: left;
+}
+.ui-datepicker-year
+{
+	display: block;
+    height: 30px;
+	float: right;
+}
+</style>
 
 		<div class="row">
 			<div class="content-wrapper-before gradient-45deg-indigo-purple"></div>
@@ -26,35 +42,102 @@
 					</div>
 				  </div>
 				</div>
+				<div class="col s12">
+					<div class="container">
+						<div class="row">
+						<div class="col s12">
+						  <div id="validations" class="card card-tabs">
+							<div class="card-content">
+							  <div class="card-title">
+								<div class="row">
+								  <div class="col s12 m6 l10">
+									<h4 class="card-title">Filter</h4>
+								  </div>
+								</div>
+							  </div>
+								<div class="row">
+									<div class="input-field col m2 s12">
+										<input id="from_doj" placeholder="FROM DOJ" type="text" class="validate datepicker-custom" autocomplete="off" value="" name="from_doj">
+										<label for="from_doj" class="">FROM DOJ</label>
+									</div>
+									<div class="input-field col m2 s12">
+										<input id="to_doj" placeholder="TO DOJ" type="text" class="validate datepicker-custom" autocomplete="off" value="" name="to_doj">
+										<label for="to_doj" class="">TO DOJ</label>
+									</div>
+									<div class="input-field col m3 s12 hide">
+										
+										<select class="error" id="company_name" name="company_name">
+										<option value="">Choose company name</option>
+											@foreach($data['company'] as $row_res)
+											<option value="{{ $row_res->id}}" selected="" >{{ $row_res->company_name }}</option>
+											@endforeach
+										</select>
+										<label for="company_name" class="">Company Name</label>
+									</div>
+									<div class="input-field col m3 s12">
+										
+										<select class="error" id="cost_center" name="cost_center">
+										<option value="">Choose cost center</option>
+											@foreach($data['costcenters'] as $cost)
+											<option value="{{ $cost->id}}" >{{ $cost->branch_name }}</option>
+											@endforeach
+										</select>
+										<label for="cost_center" class="">Cost center</label>
+									</div>
+									<div class="col m2 s12">
+										  
+										  	<label for="race">Race</label>
+											<select class="error browser-default" id="race" name="race" data-error=".errorTxt3" required="true">
+												<option value="">Choose race</option>
+												@php 
+													foreach($data['race_list'] as $row)
+													{
+												@endphp	
+												<option value="{{ $row->id }}">{{ $row->name }}</option>
+												@php
+													}
+												@endphp 
+											</select>
+											<div class="input-field">
+												<small class="errorTxt3"></small>
+											</div>
+										  
+										</div>
+										<div class="col m2 s12">
+										  <label for="sex">Sex</label>
+										  <div class="">
+											<select class="error browser-default" id="sex" name="sex" data-error=".errorTxt41">
+											  <option value="">Choose sex</option>
+											  <option value="male">Male</option>
+											  <option value="female">Female</option>
+											</select>
+											<div class="input-field">
+												<small class="errorTxt41"></small>
+											</div>
+										  </div>
+										</div>
+
+									<div class="input-field col m1 s12">
+										<br>
+										<button id="submit" class="btn waves-effect waves-light right" id="filter_by_monthyear_newmember" type="submit" name="action">Search
+											<i class="material-icons right">send</i>
+										</button>
+									</div>
+								</div>
+
+							</div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				</div>
 			<div class="col s12">
 				<div class="container">
 					  <section class="users-list-wrapper section">
 							  <div class="users-list-table">
 								<div class="card">
 								  <div class="card-content">
-									<!-- datatable start -->
-									<div class="row hide">								
-										<div class="input-field col m12 s12">
-										<h3>Filter</h3>
-										</div>
-										<div class="input-field col m4 s12">
-										
-											<select class="error" id="company_name" name="company_name">
-											<option value="">Choose company name</option>
-												@foreach($data['company'] as $row_res)
-												<option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
-												@endforeach
-											</select>
-											<label for="company_name" class="">Company Name</label>
-										</div>
-										<div class="input-field col m3 s12">
-											<button type="button" class="btn btn-success" name="submit" id="submit">Submit</button>
-										</div>
-									<!--<div class="input-field col m3 s12">
-										<input id="monthlyyear_paid" type="text" class="validate datepicker-custom" value="{{date('M/Y')}}" name="monthlyyear_paid">
-										<label for="monthlyyear_paid" class="">Date</label>
-									</div>-->
-								</div>
+									
 									<div class="responsive-table">
 									  <table id="memberprofilelist_datatable" class="table">
 										<thead>
@@ -115,6 +198,21 @@ $(document).ready(function() {
 					cmp_id: function() {
 						return $('#company_name').val();
 					},
+					from_doj: function() {
+						return $('#from_doj').val();
+					},
+					to_doj: function() {
+						return $('#to_doj').val();
+					},
+					cost_center: function() {
+						return $('#cost_center').val();
+					},
+					race: function() {
+						return $('#race').val();
+					},
+					sex: function() {
+						return $('#sex').val();
+					},
 					_token: "{{csrf_token()}}"
 				}
 			},
@@ -157,4 +255,21 @@ $(document).ready(function() {
 			//alert("sdfdxfg");
 		});
 });
+</script>
+<script>
+  $(function() {
+  //   $('.datepicker-custom').MonthPicker({ 
+		// Button: false, 
+		// MonthFormat: 'M/yy',
+		// OnAfterChooseMonth: function() { 
+		// 	//getDataStatus();
+		// } 
+	 // });
+	 $('.datepicker,.datepicker-custom').datepicker({
+		    dateFormat: 'dd-mm-yy',
+			changeMonth: true,
+			changeYear: true
+		});
+
+  });
 </script>

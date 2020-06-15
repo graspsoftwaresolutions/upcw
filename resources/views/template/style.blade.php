@@ -11,7 +11,7 @@
 <!-- BEGIN: Page Level CSS-->
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/css/themes/vertical-modern-menu-template/materialize.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/css/themes/vertical-modern-menu-template/style.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/css/datepicker.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('public/app-assets/css/datepicker/datepicker.css') }}">
 <style>
 .users-list-wrapper .users-list-table .dataTable tbody td {
     padding: 7px 0px!important;
