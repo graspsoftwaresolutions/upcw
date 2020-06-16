@@ -121,13 +121,6 @@
 															@endphp
 														{{ $data_overall_total }}
 														</td>
-														@if($data_overall_total==0)
-														<style type="text/css">
-															#cost_trid{{$res->id}}{
-																display: none;
-															}
-														</style>
-														@endif
 														
 													</tr>
 												@php

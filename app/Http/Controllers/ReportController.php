@@ -97,7 +97,10 @@ class ReportController extends Controller
 	}
 	public function coststatisticsreport(Request $request)
 	{
-		$data['costcenters'] = DB::table('company_branches')->where('status','=','1')->get();
+		$data['costcenters'] = DB::table('memberprofiles as m')->select('cb.*')
+								->leftjoin('company_branches as cb', 'cb.id', '=', 'm.cost_centerid')
+								->where('m.cost_centerid','!=',Null)->where('m.race','!=',Null)->where('m.sex','!=',Null)->groupBy('m.cost_centerid')->get();
+		//dd($data['costcenters']);
 		return view('report.coststatistics')->with('data',$data);
 	}
 	public function get_reportpaid_list(Request $request)
