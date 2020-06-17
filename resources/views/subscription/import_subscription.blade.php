@@ -53,38 +53,30 @@ use App\Model\SubMatchmaster;
                                     <div class="row">
                                        <form action="{{ route('importbulk') }}" method="POST" enctype="multipart/form-data">
 											@csrf                                            <div class="row">
-												<div class="col m2 s12">
-                                                    <label for="sub_company">No of months*</label>
-                                                    <select class="error" id="noofmonths" name="noofmonths" onchange="return getToDate();" data-error=".errorTxt9" required="">
-													  <option disabled="" value="">Choose months</option>
-													 
-													  <option value="1" >1 Month</option>
-													  <option value="2" >2 Months</option>
-													  <option value="3" >3 Months</option>
-													  <option selected="" value="4" >4 Months</option>
-													  <option value="5" >5 Months</option>
-													  <option value="6" >6 Months</option>
-													 
-													</select>
-                                                    <div class="errorTxt6"></div>
-                                                </div>
+												
                                                 <div class="col m2 s12">
                                                     <label for="doe" class="active">From Month*</label>
-                                                    <input type="text" name="frommonth" id="frommonth" readonly="" value="" class="datepicker-custom month-year-input">
+                                                    <input type="text" name="frommonth" id="frommonth" readonly="" value="{{ date('M/Y') }}" class="datepicker-custom month-year-input">
                                                    <!--  <input type="text" name="entry_date" id="entry_date" value="Apr/2020" class="datepicker-custom month-year-input" readonly="readonly"> -->
                                                 </div>
-                                                <div class="col m1 s12">
-                                                    <label for="doe" class="active">To Month</label>
-                                                    <input type="text" name="tomonth" id="tomonth" readonly="" class="">
-                                                   <!--  <input type="text" name="entry_date" id="entry_date" value="Apr/2020" class="datepicker-custom month-year-input" readonly="readonly"> -->
+                                                <div class="col m2 s12">
+                                                    <label for="type">Type*</label>
+                                                    <select class="error browser-default" id="type" name="type" data-error=".errorTxt9" required="">
+													  <option value="">Choose Type</option>
+													  <option selected="" value="1" >Single Bank</option>
+													  <option value="2" >Multiple Bank</option>
+													 
+													</select>
+                                                    <div class="errorTxt9"></div>
                                                 </div>
-                                                <div class="col m4 s12">
-                                                    <label for="sub_company">Bank*</label>
-                                                    <select class="error" id="company_name" name="company_name" data-error=".errorTxt9" required="">
-													  <option value="">Choose company name</option>
+                                              
+                                                <div id="divcompanyname" class="col m4 s12">
+                                                    <label for="company_name">Bank*</label>
+                                                    <select class="error browser-default" id="company_name" name="company_name" data-error=".errorTxt6" >
+													  <option value="">Choose bank name</option>
 													  
 													  @foreach($data['company'] as $row_res)
-													  <option selected="" value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+													  <option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 													  @endforeach
 													 <!-- <option value="1">company 1
 													  <option value="2">company 2-->
@@ -177,4 +169,19 @@ use App\Model\SubMatchmaster;
 		}
 		
 	}
+	$(document.body).on('change', '#type' ,function(){
+       var type = $("#type").val();
+       if(type!=""){
+       		if(type==1){
+       			$("#divcompanyname").removeClass('hide');
+       			$("#company_name").attr('required',true);
+       		}else{
+       			$("#divcompanyname").addClass('hide');
+       			$("#company_name").attr('required',false);
+       		}
+       }else{
+       		$("#divcompanyname").addClass('hide');
+       		$("#company_name").attr('required',false);
+       }
+    });
 </script>
