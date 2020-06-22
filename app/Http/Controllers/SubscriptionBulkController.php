@@ -54,7 +54,9 @@ class SubscriptionBulkController extends Controller
     {
         $this->validate($request, array(
             'file'      => 'required'
-        ));	  
+        ));	
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', 10000);  
 
         //dd($request->all());
         $frommonth =  $request->input('frommonth');
@@ -71,6 +73,7 @@ class SubscriptionBulkController extends Controller
         
 
         if($type==1){
+            
             $cmpy_id =  $request->input('company_name');
             $company_name = Company::where([
                 ['id','=',$cmpy_id]
@@ -125,6 +128,7 @@ class SubscriptionBulkController extends Controller
                             $savecompanystat = Subcompany::create($subcmpstat);  
                             $cmpystat_id = $savecompanystat->id;
                         }
+                        $filter = '?company='.$cmpystat_id;
                         
                         for($fi=1; $fi<$arrfirst; $fi++){
                             $comp_name=$company_name;
@@ -257,6 +261,7 @@ class SubscriptionBulkController extends Controller
             
         }
         else{
+            $filter = '?subsdate='.$statusMon;
             // $cmpy_id =  $request->input('company_name');
             // $company_name = Company::where([
             //     ['id','=',$cmpy_id]
@@ -280,7 +285,7 @@ class SubscriptionBulkController extends Controller
                      
        
                     $arrfirst = count($data[0]);
-                    // dd($data[0]);
+                     //dd($data);
                     $details = $data[0];
 
                         $statmon_exists = StatusMonth::where([
@@ -296,26 +301,42 @@ class SubscriptionBulkController extends Controller
                             $saveStatusMont = StatusMonth::create($data_Month);  
                             $stamonth_id = $saveStatusMont->id;
                         }
-                        //sub company creation
-                        // $Sub_cmpy_exists = Subcompany::where([
-                        //     ['statusMonth_id','=',$stamonth_id],
-                        //     ['company_id','=',$cmpy_id],
-                        //     ])->get()->toArray();
-        
-                        // if(!empty($Sub_cmpy_exists)){
-                        //     $cmpystat_id = $Sub_cmpy_exists[0]['id'];
-                        // }
-                        // else{
-                        //     $subcmpstat['statusMonth_id'] = $stamonth_id;
-                        //     $subcmpstat['company_id'] = $cmpy_id; 
-                        //     $savecompanystat = Subcompany::create($subcmpstat);  
-                        //     $cmpystat_id = $savecompanystat->id;
-                        // }
+                       
                         
                         for($fi=0; $fi<$arrfirst; $fi++){
-                            dd($details[$fi]);
-                            $comp_name=$company_name;
-                            //$company_name = $comp_name;
+                            //dd($data);
+                           if($details[$fi][0]=='Bussiness Area:'){
+                               //dd($details);
+                                $companyname = $details[$fi][1];
+                                $company_exists = Company::where([
+                                    [DB::raw("upper(company_name)"),'=',strtoupper($companyname)]
+                                    ])->get()->toArray();
+                                if(!empty($company_exists)){
+                                    $company_id = $company_exists[0]['id'];
+                                }else{
+                                    $companystat['company_name'] = $companyname;
+                                    $companystat['status'] = 1; 
+                                    $savecompany = Company::create($companystat);  
+                                    $company_id = $savecompany->id;
+                                }
+
+                                //sub company creation
+                                $Sub_cmpy_exists = Subcompany::where([
+                                    ['statusMonth_id','=',$stamonth_id],
+                                    ['company_id','=',$company_id],
+                                    ])->get()->toArray();
+                
+                                if(!empty($Sub_cmpy_exists)){
+                                    $cmpystat_id = $Sub_cmpy_exists[0]['id'];
+                                }
+                                else{
+                                    $subcmpstat['statusMonth_id'] = $stamonth_id;
+                                    $subcmpstat['company_id'] = $company_id; 
+                                    $savecompanystat = Subcompany::create($subcmpstat);  
+                                    $cmpystat_id = $savecompanystat->id;
+                                }
+                           }
+                            
                             
                             $sl_no = $details[$fi][0]; 
                             $member_employeeno = $details[$fi][1]; 
@@ -327,25 +348,34 @@ class SubscriptionBulkController extends Controller
                             $mem_subs = $details[$fi][6]; 
                             $member_paid = $details[$fi][7]; 
 
-                            if($member_no!='' && $member_no!=null && $member_no!="Member Id"){
+                            if(($member_no!='' && $member_no!=null && $member_no!="Member Id") || ($member_ic!='' && $member_ic!=null && $member_ic!="I/C No")){
                                 //dd($details[$fi][5]);
                                
                                 if($member_costcenter!=''){
                                     $costcenterid = DB::table('company_branches')->where([
-                                        ['company_id','=',$cmpy_id],
+                                        ['company_id','=',$company_id],
                                         ['branch_name','=',$member_costcenter]
                                     ])->pluck('id')->first();
                                     if($costcenterid==''){
                                         $costcenterid = DB::table('company_branches')->insertGetId(
-                                            ['company_id' => $cmpy_id, 'branch_name' => $member_costcenter, 'status' =>1 ]
+                                            ['company_id' => $company_id, 'branch_name' => $member_costcenter, 'status' =>1 ]
                                         );
                                     }
                                     //dd($costcenterid);
                                 }
-            
-                                $member_exists = Memberprofile::where([
+                
+                                if($member_no!=''){
+                                    $member_exists = Memberprofile::where([
                                     ['member_no','=',$member_no]
                                     ])->get()->toArray();
+                                }else{
+                                    $member_exists = Memberprofile::where([
+                                    ['ic_no_new','=',$member_ic]
+                                    ])->get()->toArray();
+                                }
+                                
+
+                                
                                 
                                 if(!empty($member_exists[0]['id'])){
                                     $member_id = $member_exists[0]['id'];                       
@@ -371,14 +401,14 @@ class SubscriptionBulkController extends Controller
                                 $doj = $statusMon;    
                                 //  $empno = isset($member_empno)?$member_empno:'';    
                                 $mem_sub = $mem_subs;    
-                                $cmp_id = $comp_name;    
+                                //$cmp_id = $comp_name;    
                                 $mempro['member_no'] = $mem_no;
                                 $mempro['member_name'] = $mem_name;
                                 $mempro['doj'] = $doj;
                                 $mempro['ic_no_new'] = $mem_ic; 
-                                $mempro['company_name'] =  $cmpy_id; 
+                                $mempro['company_name'] =  $company_id; 
                                 $mempro['cost_centerid'] =  $costcenterid; 
-                                $mempro['company_names'] = DB::table('companies')->where('id', $cmpy_id)->first()->company_name;
+                                $mempro['company_names'] = DB::table('companies')->where('id', $company_id)->first()->company_name;
                                 // $mempro['employee_no'] = $empno;   
 
                                 $emailid = $mem_no.'@amco.com';
@@ -655,7 +685,7 @@ class SubscriptionBulkController extends Controller
         //     }
         // }
        
-        return  redirect('/importExportView')->with('success', 'Subscription Uploaded successfully!');
+        return  redirect('/importExportView'.$filter)->with('success', 'Subscription Uploaded successfully!');
        
      
     }

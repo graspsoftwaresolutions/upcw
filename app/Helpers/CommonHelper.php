@@ -59,6 +59,13 @@ class CommonHelper
 					->pluck('sm.statusMonth')->first();
 		
 	}
+	public static function getCompanyFromSubsCompanyId($companyid){
+	return $status_data = DB::table('subcompany as sc')
+					->leftjoin('companies as c', 'sc.company_id', '=', 'c.id')
+					->where('sc.id', $companyid)
+					->pluck('c.company_name')->first();
+		
+	}
 	public static function getNomineeData($memberid){
       return $status_data = DB::table('member_nominees')->where('member_id', $memberid)->get();
        
@@ -115,5 +122,20 @@ class CommonHelper
 			        ->orderBy('s.statusMonth','desc')
 			        ->pluck('s.statusMonth')
 			        ->first();
+	}
+
+	public static function getCompanyName($companyid){
+      return $status_data = DB::table('companies')->where('id', $companyid)->pluck('company_name')->first();
+       
+	}
+
+	public static function getCostCount($scid){
+		$mdata = DB::table('subscription_member as m')
+       ->select(DB::raw('count(m.sub_cid) as sum'))
+       ->where('m.subcompany_id','=',$scid)
+       ->groupBy('m.sub_cid')
+       //->dump()
+       ->get();
+       return count($mdata);
 	}
 }

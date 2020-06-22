@@ -3,7 +3,7 @@
 
 <div class="row">
     <div class="col s12">
-      <h4 class="center" style="color: #c11c16;">ASSOCIATION OF MAYBANK CLASS ONE OFFICERS</h4>
+      <h4 class="center" style="color: #c11c16;">UNION OF POSTAL CLERICAL WORKERS</h4>
     </div>
     @if(Auth::user()->is_admin==1)
     @php

@@ -40,6 +40,7 @@
 									  <table id="memberprofilelist_datatable" class="table">
 										<thead>
 											<tr>
+												<th>Company</th>
 												<th>Cost Center</th>
 												<th style="text-align:center" >Action</th>
 											  </tr>
@@ -47,6 +48,9 @@
 										<tbody>
 											@foreach($data['cost_view'] as $cost)
 											<tr>
+												<td>
+													{{ CommonHelper::getCompanyName($cost->company_id) }}
+												</td>
 												<td>
 													{{ $cost->branch_name }}
 												</td>

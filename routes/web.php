@@ -31,6 +31,7 @@ Route::post('update_newmemregister', 'SubscriptionController@update_newmemregist
 //subscription
 Route::get('export', 'SubscriptionController@export')->name('export')->middleware('is_admin');
 Route::get('importExportView', 'SubscriptionController@importExportView')->name('importExportView')->middleware('is_admin');
+Route::get('import_summary', 'SubscriptionController@importSummary')->name('import_summary')->middleware('is_admin');
 Route::get('subscriptionList', 'SubscriptionController@subscriptionList')->name('subscriptionList')->middleware('is_admin');
 Route::get('subscriptioncompanylist/{id}', 'SubscriptionController@subscriptioncompanylist')->name('subscriptioncompanylist')->middleware('is_admin');
 Route::post('subscriptionMemberUpdate', 'SubscriptionController@subscriptionMemberUpdate')->name('subscriptionMemberUpdate')->middleware('is_admin');
@@ -43,6 +44,7 @@ Route::post('update_membercodesub', 'SubscriptionController@update_membercodesub
 Route::post('import', 'SubscriptionController@import')->name('import')->middleware('is_admin');;
 Route::post('get_subdetails', 'SubscriptionController@get_subdetails')->name('get_subdetails')->middleware('is_admin');
 Route::post('get_subdetailscmpy', 'SubscriptionController@get_subdetailscmpy')->name('get_subdetailscmpy')->middleware('is_admin');
+Route::post('get_subdetailsall', 'SubscriptionController@get_subdetailsall')->name('get_subdetailsall')->middleware('is_admin');
 Route::post('get_subs_avilablity_check', 'SubscriptionController@get_subs_avilablity_check')->name('get_subs_avilablity_check')->middleware('is_admin');
 Route::post('delete_existingmembersDetails/{id1}/{id2}', 'SubscriptionController@delete_existingmembersDetails')->middleware('is_admin');
 
@@ -125,3 +127,5 @@ Route::post('storeCostcenter','MasterController@CostcenterStore')->name('storeCo
 Route::delete('Costcenterdestroy/{id}','MasterController@Costcenterdestroy')->name('Costcenterdestroy')->middleware('is_admin');
 
 Route::post('member_history/{id}','MemberprofileController@ViewMemberHistory')->name('ViewMemberHistory')->middleware('is_admin'); 
+
+Route::get('get-costcenters-list','MasterController@getCostCentersList');

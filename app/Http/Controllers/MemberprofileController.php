@@ -23,8 +23,8 @@ class MemberprofileController extends Controller
     }
     public function index()
     {
-        $data['company'] =Company::where('status','=','1')->get();
-        $data['costcenters'] = DB::table('company_branches')->where('status','=','1')->get();
+        $data['company'] =Company::where('status','=','1')->orderBY('company_name','asc')->get();
+        $data['costcenters'] = DB::table('company_branches')->where('status','=','1')->orderBY('branch_name','asc')->get();
         $data['race_list'] = Race::where('status','=','1')->get();
         return view('memberprofile.memberprofile_list')->with('data',$data);
     }
@@ -49,8 +49,9 @@ class MemberprofileController extends Controller
        $slno = 0;
 		$columns = array( 
             $slno++ => 'member_no',
-			$slno++ => 'employee_no',
-            $slno++ => 'member_name', 
+			$slno++ => 'member_name',
+            $slno++ => 'company_name', 
+            $slno++ => 'cost_centerid', 
             $slno++ => 'ic_no_new', 
             $slno++ => 'race', 
             $slno++ => 'sex', 

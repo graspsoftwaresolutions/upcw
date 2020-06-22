@@ -80,7 +80,7 @@ use App\Model\SubMatchmaster;
                                             </div>
 											<div class="col s12 m6 l5">
 											<select class="error " id="company_name" name="company_name" data-error=".errorTxt9" required="">
-											  <option value="">Choose company name</option>
+											  <option disabled="" value="">Choose company name</option>
 											  
 											  @foreach($data['company'] as $row_res)
 											  <option @if($data['companyid']==$row_res->id) selected="" @endif value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
@@ -121,16 +121,14 @@ use App\Model\SubMatchmaster;
 								
 								<table style="width:100%;">
 								<tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
-									<td>SlNo</td>
-									<td>Company Name</td>
-									<td>Cost Centers Count</td>
-									<td>Member Count</td>
-									<td>Total Amount</td>
+								<td>SlNo</td>
+								<td>Cost Center</td>
+								<td>Member Count</td>
+								<td>Total Amount</td>
 								</tr>
 								@php
 									$tot=0;
 									$sum=0;
-									$totcost=0;
 									//dd($data);
 								@endphp
 								@foreach($data['report'] as $k=>$cmpcunt)
@@ -138,8 +136,7 @@ use App\Model\SubMatchmaster;
 								//var_dump($cmpcunt->company_id);
 								//exit;
 
-								$cmpy_name = CommonHelper::getCompanyName($cmpcunt->company_id);
-								$cost_count = CommonHelper::getCostCount($cmpcunt->scid);
+								$costcenter = CommonHelper::getCostCenterName($cmpcunt->sub_cid);
 								
 								// $cmpy_name= Company::where([
 									// ['id','=',$cmpcunt->sub_cid]
@@ -149,16 +146,13 @@ use App\Model\SubMatchmaster;
 								@endphp
 								<tr class="hideonchg">
 								<td>{{ $k+1 }}</td>
-								<td> <a href="{{ URL('import_summary?company='.$cmpcunt->scid) }}"> {{ $cmpy_name  }}</a></td>
-								<td>{{ $cost_count  }}</td>
+								<td>{{ $costcenter  }}</td>
 								<td>@php $tot += $cmpcunt->total; @endphp {{ $cmpcunt->total }}</td>
 								<td>@php $sum += $cmpcunt->sum; @endphp {{ $cmpcunt->sum }}</td>
-									@php $totcost += $cost_count; @endphp
 								</tr>
 								@endforeach
 								<tr style="font-weight:bold;color:black"  class="hideonchg">
 								<td style="font-weight:bold" colspan='2'>Total</td>
-								<td style="font-weight:bold">@php echo $totcost; @endphp</td>
 								<td style="font-weight:bold">@php echo $tot; @endphp</td>
 								<td style="font-weight:bold">@php echo $sum; @endphp</td>
 								</tr>
@@ -169,37 +163,8 @@ use App\Model\SubMatchmaster;
 								</table>
 								<br><br><br>
 								</div>
-								<div class="col s12 m6 l6 card hide">
-									<table style="width:100%;">
-										<tr style="background: -webkit-linear-gradient(45deg, #37459e, #7e27a2);color:#fff;">
-											<td>SlNo</td>
-											<td>Company Name</td>
-											<td>Total cost centers</td>
-											<td>Total members</td>
-											<td>Total Subs paid (RM)</td>
-										</tr>
-										@foreach($data['report'] as $k=>$cmpcunt)
-										@php
-										//var_dump($cmpcunt->company_id);
-										//exit;
-
-										$cmpy_name = CommonHelper::getCompanyName($cmpcunt->company_id);
-										
-										
-										// $cmpy_name= Company::where([
-											// ['id','=',$cmpcunt->sub_cid]
-										// ])->value('company_name');
-										//var_dump($cmpy_name);
-										//exit;
-										@endphp
-										<tr class="hideonchg">
-										<td>{{ $k+1 }}</td>
-										<td>{{ $cmpy_name  }}</td>
-										<td>@php $tot += $cmpcunt->total; @endphp {{ $cmpcunt->total }}</td>
-										<td>@php $sum += $cmpcunt->sum; @endphp {{ $cmpcunt->sum }}</td>
-										</tr>
-										@endforeach
-									</table>
+								<div class="col s12 m6 l6">
+									
 									<ul id="projects-collection" class="collection z-depth-1 animate fadeLeft">
 						               <li class="">
 						                
@@ -368,7 +333,7 @@ $(document).ready(function(){
 	});*/
 	$.ajax({
 			   type:"POST",
-			   url:"{{url('/get_subdetailsall')}}",
+			   url:"{{url('/get_subdetailscmpy')}}",
 			   //data: dataString,
 			   data: {"_token": "{{ csrf_token() }}","statusmonth": statusmonth ,"company_name": company_name },
 				success:function(response) {
@@ -377,25 +342,24 @@ $(document).ready(function(){
 					var totcnt = 0;
 					var sumcnt = 0;
 					var totalcenters = 0;
-					var sumlink='';
-					//var totalwelfare = 0;
-					//var totalentrance = 0;
+					var totalwelfare = 0;
+					var totalentrance = 0;
 					$.each($.parseJSON(response), function(idx, obj) {
-						console.log(obj);
 						totcnt += parseInt(obj.total);
 						sumcnt += parseInt(obj.sum);
-						//totalwelfare += parseInt(obj.sumwelfare);
-						//totalentrance += parseInt(obj.sumentrance);
-						totalcenters += parseInt(obj.costcount);
-						sumlink = "{{ url('/import_summary') }}?company="+obj.scid;
-						//sumlink = {{ "url('/import_summary?company=')"}}+obj.scid;
-						$('#tbdycmpy1').append('<tr><td>'+(idx+1)+'</td><td><a href="'+sumlink+'">'+obj.company_name+'</a></td><td>'+obj.costcount+'</td><td>'+obj.total+'</td><td>'+obj.sum+'</td></tr>');
+						totalwelfare += parseInt(obj.sumwelfare);
+						totalentrance += parseInt(obj.sumentrance);
+						totalcenters++;
+						$('#tbdycmpy1').append('<tr><td>'+(idx+1)+'</td><td>'+obj.branch_name+'</td><td>'+obj.total+'</td><td>'+obj.sum+'</td></tr>');
 					});
-					$('#tbdycmpy2').append('<td colspan="2"></td><td>'+totalcenters+'</td><td>'+totcnt+'</td><td>'+sumcnt+'</td>');
+					$('#tbdycmpy2').append('<td colspan="2"></td><td>'+totcnt+'</td><td>'+sumcnt+'</td>');
 					$("#totalcostcenter").text(totalcenters);
 					$("#totalmembers").text(totcnt);
 					$("#totalamt").text(sumcnt);
-					
+					$("#totalwelfareamt").text(totalwelfare);
+					$("#totalentranceamt").text(totalentrance);
+					var totalpaid = parseFloat(totalwelfare)+parseFloat(totalentrance)+parseFloat(sumcnt);
+					$("#totalpaid").text(totalpaid);
 				}
 	});
 

@@ -28,7 +28,7 @@
 					<div class="card">
 						<div class="card-content">
 						  <div class="card-title">
-							<h4 class="card-title">Company Name: Maybank</h4>
+							<h4 class="card-title">Company Name: {{ CommonHelper::getCompanyFromSubsCompanyId($data['subs_id']) }}</h4>
 							<h4 class="card-title">Subscription Month: {{ date('M / Y',strtotime(CommonHelper::getSubsMonthFromCompanyId($data['subs_id']))) }}</h4>
 						  </div>
 							

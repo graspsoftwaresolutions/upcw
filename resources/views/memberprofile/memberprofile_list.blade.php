@@ -56,33 +56,33 @@
 								</div>
 							  </div>
 								<div class="row">
-									<div class="input-field col m2 s12">
+									<div class="input-field col m1 s12">
 										<input id="from_doj" placeholder="FROM DOJ" type="text" class="validate datepicker-custom" autocomplete="off" value="" name="from_doj">
 										<label for="from_doj" class="">FROM DOJ</label>
 									</div>
-									<div class="input-field col m2 s12">
+									<div class="input-field col m1 s12">
 										<input id="to_doj" placeholder="TO DOJ" type="text" class="validate datepicker-custom" autocomplete="off" value="" name="to_doj">
 										<label for="to_doj" class="">TO DOJ</label>
 									</div>
-									<div class="input-field col m3 s12 hide">
-										
-										<select class="error" id="company_name" name="company_name">
-										<option value="">Choose company name</option>
+									<div class="col m3 s12">
+										<label for="company_name" class="">Company Name</label>
+										<select class="error browser-default" id="company_name" name="company_name">
+											<option value="">Choose company name</option>
 											@foreach($data['company'] as $row_res)
-											<option value="{{ $row_res->id}}" selected="" >{{ $row_res->company_name }}</option>
+											<option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 											@endforeach
 										</select>
-										<label for="company_name" class="">Company Name</label>
-									</div>
-									<div class="input-field col m3 s12">
 										
-										<select class="error" id="cost_center" name="cost_center">
+									</div>
+									<div class="col m3 s12">
+										<label for="cost_center" class="">Cost center</label>
+										
+										<select class="error browser-default" id="cost_center" name="cost_center">
 										<option value="">Choose cost center</option>
 											@foreach($data['costcenters'] as $cost)
 											<option value="{{ $cost->id}}" >{{ $cost->branch_name }}</option>
 											@endforeach
 										</select>
-										<label for="cost_center" class="">Cost center</label>
 									</div>
 									<div class="col m2 s12">
 										  
@@ -103,7 +103,7 @@
 											</div>
 										  
 										</div>
-										<div class="col m2 s12">
+										<div class="col m1 s12">
 										  <label for="sex">Sex</label>
 										  <div class="">
 											<select class="error browser-default" id="sex" name="sex" data-error=".errorTxt41">
@@ -144,6 +144,7 @@
 											<tr>
 												<th>Member No</th>
 												<th>Member Name</th>
+												<th>Company Name</th>
 												<th>Cost Center</th>
 												<th>IC No(New)</th>
 												<th>Race</th>
@@ -185,7 +186,7 @@ $(document).ready(function() {
 			responsive: true,
 			processing: true,
 			serverSide: true,
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
 			lengthMenu: [
 				[10, 25, 50, 100],
 				[10, 25, 50, 100]
@@ -223,6 +224,9 @@ $(document).ready(function() {
 				
 				{
 					"data": "member_name"
+				},
+				{
+					"data": "company_name"
 				},
 				{
 					"data": "cost_center"
@@ -272,4 +276,31 @@ $(document).ready(function() {
 		});
 
   });
+  $('#company_name').change(function() {
+    var companyID = $(this).val();
+
+    if (companyID != '' && companyID != 'undefined') {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "{{ URL::to('/get-costcenters-list') }}?company_id=" + companyID,
+            success: function(res) {
+                if (res) {
+                    $('#cost_center').empty();
+                    $("#cost_center").append($('<option></option>').attr('value', '').text(
+                        "Select"));
+                    $.each(res, function(key, entry) {
+                        $('#cost_center').append($('<option></option>').attr(
+                            'value', entry.branchid).text(entry.branch_name));
+
+                    });
+                } else {
+                    $('#cost_center').empty();
+                }
+            }
+        });
+    } else {
+        $('#cost_center').empty();
+    }
+});
 </script>

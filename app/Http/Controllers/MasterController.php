@@ -397,7 +397,8 @@ class MasterController extends Controller
             }
             public function costcenterNew()
             {
-                return view('masters.costcenter.new');
+                $data['company_view'] = Company::where('status','=',1)->get();
+                return view('masters.costcenter.new')->with('data',$data);
         
             } 
             
@@ -414,7 +415,7 @@ class MasterController extends Controller
                // $saveCompany = Company::create($data);
          
                 $saveRelation =  DB::table('company_branches')->insert(
-                  ['branch_name' => $data['cost_center'], 'company_id' => 1, 'status' => 1]
+                  ['branch_name' => $data['cost_center'], 'company_id' => $data['company_name'], 'status' => 1]
                  );
                   
                 if($saveRelation == true)
@@ -425,6 +426,7 @@ class MasterController extends Controller
             public function editcostcenterDetail($raceid)
             {
                 $id = Crypt::decrypt($raceid);
+                $data['company_view'] = Company::where('status','=',1)->get();
                 $data['cost_view'] = DB::table('company_branches')->where('status','=',1)->where('id','=',$id)->first();
                 return view('masters.costcenter.edit')->with('data',$data);
             }
@@ -439,7 +441,7 @@ class MasterController extends Controller
                 ]);
                 $data = $request->all();
                 $data['id'] = $request->autoid;
-                $des = DB::table('company_branches')->where('id','=',$data['id'])->update(['branch_name' => $data['cost_center']]);
+                $des = DB::table('company_branches')->where('id','=',$data['id'])->update(['branch_name' => $data['cost_center'], 'company_id' => $data['company_name']]);
                 return  redirect('costcenter')->with('message','Cost center Updated Succesfully');
             }
             public function CostcenterDestroy($raceid)
@@ -448,4 +450,16 @@ class MasterController extends Controller
                 DB::table('company_branches')->where('id','=',$id)->delete();
                 return  redirect('costcenter')->with('message','Cost Center Deleted Succesfully');
             }
+            public function getCostCentersList(Request $request)
+            {
+                $id = $request->company_id;
+                $res = DB::table('company_branches as cb')->select('cb.id as branchid','cb.branch_name')
+                        ->leftjoin('companies as c','c.id','=','cb.company_id')
+                        ->where([
+                            ['cb.company_id','=',$id]
+                        ])
+                        //->distinct('branch_name')
+                        ->get();
+                return response()->json($res);
+            } 
 }

@@ -39,6 +39,20 @@
 									<input type="hidden" name="id" id="updateid">
 									@csrf
 									<div class="row">
+										<div id="" class="col m4 s12">
+                                            <label for="company_name">Company*</label>
+                                            <select class=" browser-default" id="company_name" required='true' name="company_name" data-error=".errorTxt6" >
+											  <option value="">Choose company name</option>
+											  
+											  @foreach($data['company_view'] as $row_res)
+											  <option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+											  @endforeach
+											 
+											</select>
+											<div class="input-field">
+	                                            <div class="errorTxt6"></div>
+	                                        </div>
+                                        </div>
 										<div class="input-field col m6 s6">
 										  <label for="cost_center">Cost Center Name</label>
 										  <input id="cost_center" placeholder="Cost Center" required="" name="cost_center" type="text" data-error=".errorTxt1">
@@ -66,14 +80,7 @@
 @include('template.footer')
 
 <script>
-$('select[required]').css({
-    position: 'absolute',
-    display: 'inline',
-    height: 0,
-    padding: 0,
-    border: '1px solid rgba(255,255,255,0)',
-    width: 0
-  }); 
+
 
   $("#formValidate").validate({
     rules: {
@@ -85,7 +92,7 @@ $('select[required]').css({
       //For custom messages
       messages: {
 		company_name:{
-				required: "Enter a Company name"
+				required: "Select Company name"
 			},
       },
       errorElement : 'div',

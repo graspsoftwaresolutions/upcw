@@ -103,8 +103,8 @@
 											</thead>
 											<tbody>
 												@php
-												$data['subscriptionlist']= DB::table('companies')->get();
-												foreach($data['subscriptionlist'] as $res)
+												//$data['subscriptionlist']= DB::table('companies')->get();
+												foreach($data['companies'] as $res)
 												{
 												@endphp
 													<tr>

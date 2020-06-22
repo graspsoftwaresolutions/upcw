@@ -48,7 +48,7 @@
 											<select class="error" id="company_name" name="company_name">
 												<option value="">Choose company name</option>
 												@foreach($data['company'] as $row_res)
-												<option selected="" value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
+												<option value="{{ $row_res->id}}" >{{ $row_res->company_name }}</option>
 												@endforeach
 											</select>
 										</div>

@@ -138,7 +138,7 @@ use App\Model\SubMatchmaster;
             changeYear: true,
             MonthFormat: 'M/yy',
             OnAfterChooseMonth: function() {
-                getToDate();
+                //getToDate();
             }
         });
         $('.ui-button').removeClass("ui-state-disabled");

@@ -50,14 +50,10 @@ class ReportController extends Controller
 				$year = date("Y");
 			}
 
-			if(isset($data['company_name']))
-			{
-				
-				$companyid = $data['company_name'];
-			}
-			else{
-				$companyid = '';
-			}
+			$companyid = '';
+
+			
+			
 
 		
 		//dd($year);
@@ -66,6 +62,13 @@ class ReportController extends Controller
 		$query_pt->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id');
 		$query_pt->join('memberprofiles', 'memberprofiles.id', '=', 'subscription_member.member_code');
 		$query_pt->whereYear('statusmonth.statusMonth',$year);
+
+		if(isset($data['company_name']))
+		{
+			$companyid = $data['company_name'];
+			//dd($companyid);
+			$query_pt->where('subcompany.company_id','=',$companyid);
+		}
 		
 		//dd($data["paidunpaidlist"]);
 		//$dt_paid = $data["paidunpaidlist"];
@@ -93,6 +96,9 @@ class ReportController extends Controller
 	public function statisticsreport(Request $request)
 	{
 		$data['company'] =Company::where('status','=','1')->get();
+		$data['companies'] = DB::table('memberprofiles as m')->select('cb.*')
+								->leftjoin('companies as cb', 'cb.id', '=', 'm.company_name')
+								->where('m.company_name','!=',Null)->where('m.race','!=',Null)->where('m.sex','!=',Null)->groupBy('m.company_name')->get();
 		return view('report.statistics')->with('data',$data);
 	}
 	public function coststatisticsreport(Request $request)
@@ -297,12 +303,21 @@ class ReportController extends Controller
 	public function monthwisecompanyreport($id)
 	{
 		//dd($id);
-		$query_fetch = DB::table('statusmonth');
+		$query_fetch = DB::table('subscription_member as mm');
 		$query_fetch->select('*');
-		$query_fetch->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id');
-		$query_fetch->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id');
-		$query_fetch->where('subcompany_id', '=', $id);
+		$query_fetch->leftjoin('subcompany as sc', 'sc.id', '=', 'mm.subcompany_id');
+		$query_fetch->leftjoin('statusmonth as sm', 'sm.id', '=', 'sc.statusMonth_id');
+		$query_fetch->leftjoin('companies as c', 'c.id', '=', 'sc.company_id');
+		$query_fetch->where('mm.subcompany_id', '=', $id);
 		$data['overall_company'] = $query_fetch->get();
+
+		// $query_fetch = DB::table('statusmonth');
+		// $query_fetch->select('*');
+		// $query_fetch->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id');
+		// $query_fetch->join('subscription_member', 'subscription_member.subcompany_id', '=', 'subcompany.id');
+		// $query_fetch->where('subcompany_id', '=', $id);
+		// $data['overall_company'] = $query_fetch->get();
+		//dd($data['overall_company']);
 		
 		$query_pt = DB::table('statusmonth');
 		$query_pt->join('subcompany', 'subcompany.statusMonth_id', '=', 'statusmonth.id');
